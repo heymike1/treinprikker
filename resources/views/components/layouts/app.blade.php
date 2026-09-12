@@ -37,6 +37,10 @@
     <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}">
     <link rel="manifest" href="{{ asset('site.webmanifest') }}">
 
+    @production
+        <script defer data-website-id="dfid_ptn1lUVSeioDs7nnO9l1e" data-domain="treinprikker.nl" src="https://datafa.st/js/script.js"></script>
+    @endproduction
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
 </head>
@@ -44,13 +48,12 @@
     <header class="shrink-0 border-b border-line bg-paper">
         <div class="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-2.5 sm:py-3">
             <a href="{{ route('home') }}" class="flex items-center gap-1.5 text-base font-bold tracking-tight sm:gap-2 sm:text-lg">
-                <span aria-hidden="true">🚆</span>
+                <x-icon.train class="h-5 w-5 text-rail" />
                 <span>Treinprikker</span>
             </a>
             <nav aria-label="Hoofdmenu" class="flex items-center gap-0.5 sm:gap-1">
                 <a href="{{ route('home') }}" class="nav-link" @if(request()->routeIs('home')) aria-current="page" @endif>Vandaag</a>
                 <a href="{{ route('statistics') }}" class="nav-link" @if(request()->routeIs('statistics') || request()->routeIs('station.show')) aria-current="page" @endif>Statistieken</a>
-                <a href="{{ route('my-statistics') }}" class="nav-link hidden sm:inline-flex" @if(request()->routeIs('my-statistics')) aria-current="page" @endif>Mijn statistieken</a>
                 <a href="{{ route('how-it-works') }}" class="nav-link" @if(request()->routeIs('how-it-works')) aria-current="page" @endif><span class="sm:hidden">Uitleg</span><span class="hidden sm:inline">Hoe werkt het?</span></a>
             </nav>
         </div>
@@ -64,10 +67,7 @@
         <footer class="shrink-0 border-t border-line">
             <div class="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-2 px-4 py-4 text-xs text-muted">
                 <span>Treinprikker · elke dag een nieuwe rit</span>
-                <span class="flex gap-3">
-                    <a href="{{ route('my-statistics') }}" class="hover:text-ink">Mijn statistieken</a>
-                    <a href="{{ route('how-it-works') }}" class="hover:text-ink">Hoe werkt het?</a>
-                </span>
+                <a href="{{ route('how-it-works') }}" class="hover:text-ink">Hoe werkt het?</a>
             </div>
         </footer>
     @endunless

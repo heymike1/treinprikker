@@ -29,9 +29,6 @@ class PlayGame extends Component
     public ?int $gameId = null;
 
     #[Locked]
-    public ?int $gameNumber = null;
-
-    #[Locked]
     public int $totalRounds = 5;
 
     /** guessing | result | finished | unavailable */
@@ -71,7 +68,6 @@ class PlayGame extends Component
         }
 
         $this->gameId = $game->id;
-        $this->gameNumber = $game->game_number;
 
         $this->loadState($game, $gameService->startOrResume($game, $currentPlayer->findOrCreate()));
     }

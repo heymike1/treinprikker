@@ -34,6 +34,7 @@ class GlobalStatistics
 
         $guessAggregate = DB::table('guesses')->selectRaw('COUNT(*) as guess_count, AVG(distance_meters) as avg_distance, AVG(score) as avg_score, COUNT(DISTINCT station_id) as unique_stations')->first();
         $sessionCount = DB::table('game_sessions')->count();
+        $sessionAggregate = DB::table('game_sessions')->whereNotNull('completed_at')->selectRaw('COUNT(*) as completed_count, AVG(total_score) as avg_score')->first();
 
         $ranked = StationStatistic::with('station')
             ->where('guess_count', '>=', $minimumGuesses)
@@ -44,6 +45,8 @@ class GlobalStatistics
         $highestScore = (clone $ranked)->orderByDesc('average_score')->limit(5)->get();
         $lowestScore = (clone $ranked)->orderBy('average_score')->limit(5)->get();
         $mostPrecise = (clone $ranked)->orderByDesc('within_5km_percentage')->limit(5)->get();
+        $mostMisplaced = (clone $ranked)->whereNotNull('centroid_offset_meters')->orderByDesc('centroid_offset_meters')->first();
+        $widestSpread = (clone $ranked)->whereNotNull('spread_meters')->orderByDesc('spread_meters')->first();
 
         // Until enough data exists, show a "voorlopig" ranking with a lower bar so the page is never empty.
         $provisionalMinimum = 5;
@@ -67,7 +70,8 @@ class GlobalStatistics
                 'unique_stations' => (int) $guessAggregate->unique_stations,
                 'active_stations' => Station::active()->count(),
                 'average_distance_meters' => $guessAggregate->guess_count ? (int) round($guessAggregate->avg_distance) : null,
-                'average_score' => $guessAggregate->guess_count ? (int) round($guessAggregate->avg_score) : null,
+                // Per completed game (out of 5000), not per guess.
+                'average_game_score' => $sessionAggregate->completed_count ? (int) round($sessionAggregate->avg_score) : null,
             ],
             'minimum_station_guesses' => $minimumGuesses,
             'minimum_daily_game_completions' => $minimumCompletions,
@@ -80,6 +84,17 @@ class GlobalStatistics
             'highest_score' => $this->stationRows($highestScore),
             'lowest_score' => $this->stationRows($lowestScore),
             'most_precise' => $this->stationRows($mostPrecise),
+            'most_misplaced' => $mostMisplaced?->station ? [
+                'name' => $mostMisplaced->station->name,
+                'slug' => $mostMisplaced->station->slug,
+                'description' => $mostMisplaced->misplacementDescription(),
+            ] : null,
+            'widest_spread' => $widestSpread?->station ? [
+                'name' => $widestSpread->station->name,
+                'slug' => $widestSpread->station->slug,
+                'p25' => $widestSpread->p25_distance_meters,
+                'p75' => $widestSpread->p75_distance_meters,
+            ] : null,
             'hardest_days' => $this->dayRows($hardestDays),
             'easiest_days' => $this->dayRows($easiestDays),
         ];

@@ -13,7 +13,7 @@
             wire:key="game-board"
             class="flex min-h-0 flex-1 flex-col"
             x-data="gameMap(@js([
-                'styleUrl' => config('treinprikker.map.style_url'),
+                'satellite' => config('treinprikker.map.satellite'),
                 'center' => config('treinprikker.map.center'),
                 'zoom' => config('treinprikker.map.zoom'),
                 'minZoom' => config('treinprikker.map.min_zoom'),
@@ -23,37 +23,33 @@
             x-on:round-started.window="reset()"
         >
             {{-- Question --}}
-            <div class="shrink-0 border-b border-line bg-paper">
-                <div class="mx-auto flex max-w-5xl items-center gap-3 px-4 py-2.5 sm:py-3">
+            <div class="shrink-0 border-b border-line bg-paper" x-show="!intro" x-cloak>
+                <div class="mx-auto flex max-w-5xl items-center gap-4 px-4 py-2.5 sm:py-3">
                     <div class="min-w-0 flex-1">
-                        <p class="text-xs font-semibold tracking-wide text-muted uppercase">
-                            Treinprikker #{{ $gameNumber }} · {{ $currentRound }} van {{ $totalRounds }}
-                        </p>
+                        <p class="text-xs font-semibold tracking-wide text-muted uppercase">Station {{ $currentRound }} van {{ $totalRounds }}</p>
                         <h1 class="text-lg leading-tight font-bold sm:text-2xl">
                             <span class="font-normal text-muted">Waar ligt station</span>
                             <span>{{ $currentStationName }}?</span>
                         </h1>
                     </div>
-                    <div class="w-28 shrink-0 sm:w-44" aria-label="Voortgang: {{ count($completedRounds) }} van {{ $totalRounds }} stations geprikt">
-                        <div class="route">
-                            @for($i = 1; $i <= $totalRounds; $i++)
-                                @php $done = collect($completedRounds)->firstWhere('round', $i); @endphp
-                                <span class="route-stop {{ $done ? 'route-stop-done' : ($i === $currentRound ? 'route-stop-current' : '') }}"
-                                      title="{{ $done ? 'Ronde '.$i.': '.$done['score'].' punten' : 'Ronde '.$i }}">{{ $done ? $done['emoji'] : $i }}</span>
-                            @endfor
-                        </div>
+                    <div class="route w-28 shrink-0 sm:w-40" role="img" aria-label="Voortgang: {{ count($completedRounds) }} van {{ $totalRounds }} stations geprikt">
+                        @for($i = 1; $i <= $totalRounds; $i++)
+                            @php $done = collect($completedRounds)->firstWhere('round', $i); @endphp
+                            <span class="route-stop {{ $done ? 'route-stop-done route-stop-'.$done['bucket'] : ($i === $currentRound ? 'route-stop-current' : '') }}"
+                                  title="{{ $done ? 'Station '.$i.': '.$done['score'].' punten' : 'Station '.$i }}"></span>
+                        @endfor
                     </div>
                 </div>
             </div>
 
             {{-- Map --}}
-            <div class="relative min-h-0 flex-1 bg-paper-deep" wire:ignore>
+            <div class="relative min-h-0 flex-1 bg-[#1f2a33]" wire:ignore>
                 <div x-ref="map" class="map-fill" role="application" aria-label="Kaart van Nederland. Klik of tik om je prik te plaatsen."></div>
 
-                <div x-show="!ready && !failed" class="pointer-events-none absolute inset-0 flex items-center justify-center text-sm text-muted">
+                <div x-show="!ready && !failed" class="pointer-events-none absolute inset-0 flex items-center justify-center text-sm text-paper/80">
                     Kaart laden…
                 </div>
-                <div x-show="failed" x-cloak class="absolute inset-0 flex items-center justify-center p-6 text-center text-sm text-muted">
+                <div x-show="failed" x-cloak class="absolute inset-0 flex items-center justify-center p-6 text-center text-sm text-paper/80">
                     De kaart kon niet worden geladen. Controleer je verbinding en ververs de pagina.
                 </div>
 
@@ -66,7 +62,7 @@
             </div>
 
             {{-- Bottom bar --}}
-            <div class="shrink-0 border-t border-line bg-paper pb-[max(env(safe-area-inset-bottom),0.75rem)]">
+            <div class="shrink-0 border-t border-line bg-paper pb-[max(env(safe-area-inset-bottom),0.75rem)]" x-show="!intro" x-cloak>
                 <div class="mx-auto max-w-5xl px-4 pt-3">
                     @if($errorMessage)
                         <p class="mb-3 rounded-lg border border-bad/30 bg-bad-soft px-3 py-2 text-sm text-ink" role="alert">{{ $errorMessage }}</p>

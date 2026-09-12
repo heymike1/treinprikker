@@ -29,7 +29,7 @@ class ShareResultTest extends TestCase
         $text = ShareResult::text($session->fresh());
 
         $this->assertStringContainsString('Treinprikker #'.$game->game_number.' 🚆', $text);
-        $this->assertStringContainsString('/ 5.000', $text);
+        $this->assertStringContainsString('/ 5000', $text);
         $this->assertStringContainsString(config('treinprikker.share_url'), $text);
         $this->assertSame(8, count(explode("\n", $text)));
         $this->assertStringNotContainsString('Geheimstation', $text);

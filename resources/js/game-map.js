@@ -1,5 +1,5 @@
 import maplibregl from 'maplibre-gl';
-import { loadCleanStyle, createMap, pinElement } from './map-style';
+import { loadSatelliteStyle, createMap, pinElement } from './map-style';
 
 /**
  * Alpine component that drives the guessing map. It never knows the answer
@@ -21,6 +21,7 @@ export default function gameMap(config) {
         busy: false,
         locked: false,
         error: null,
+        intro: false,
 
         get hasGuess() {
             return this.pending !== null;
@@ -32,8 +33,13 @@ export default function gameMap(config) {
             }
 
             try {
-                const style = await loadCleanStyle(config.styleUrl);
-                map = createMap(this.$refs.map, style, config);
+                this.intro = !localStorage.getItem('treinprikker_intro_gezien');
+            } catch {
+                this.intro = false;
+            }
+
+            try {
+                map = createMap(this.$refs.map, loadSatelliteStyle(config.satellite), config);
             } catch (error) {
                 console.error(error);
                 this.failed = true;
@@ -47,7 +53,7 @@ export default function gameMap(config) {
                     id: 'guess-line',
                     type: 'line',
                     source: 'guess-line',
-                    paint: { 'line-color': '#1d3f8f', 'line-width': 2.5, 'line-dasharray': [1.5, 1.5] },
+                    paint: { 'line-color': '#ffffff', 'line-width': 3, 'line-dasharray': [1.5, 1.5] },
                 });
                 this.ready = true;
             });
@@ -55,8 +61,18 @@ export default function gameMap(config) {
             map.on('click', (event) => this.place(event.lngLat));
         },
 
+        startGame() {
+            this.intro = false;
+            try {
+                localStorage.setItem('treinprikker_intro_gezien', '1');
+            } catch {
+                // Private mode: the intro simply shows again next time.
+            }
+            map?.resize();
+        },
+
         place(lngLat) {
-            if (this.locked || this.busy || !this.ready) {
+            if (this.intro || this.locked || this.busy || !this.ready) {
                 return;
             }
 

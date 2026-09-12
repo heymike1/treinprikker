@@ -91,23 +91,34 @@ body.game-screen {
     .score-pill-buurt { background: var(--color-meh-soft); color: #8a4210; }
     .score-pill-ver { background: var(--color-bad-soft); color: #8e2c1f; }
 
-    /* Route strip: five "stations" on a line, one per round. */
+    /* Route strip: a track with one stop per station. Done stops take the score colour,
+       the current stop is the "train" (blue ring), upcoming stops are hollow. */
     .route {
         @apply relative flex items-center justify-between;
     }
     .route::before {
         content: '';
-        @apply absolute top-1/2 right-2 left-2 h-0.5 -translate-y-1/2 bg-line;
+        @apply absolute top-1/2 right-1 left-1 h-[3px] -translate-y-1/2 rounded-full bg-line;
     }
     .route-stop {
-        @apply relative z-10 flex h-7 w-7 items-center justify-center rounded-full border-2 border-line bg-card font-mono text-[11px] font-semibold text-muted;
+        @apply relative z-10 h-3 w-3 rounded-full border-2 border-line bg-paper transition-all;
     }
     .route-stop-current {
-        @apply border-rail bg-rail text-paper;
+        @apply h-5 w-5 border-[3px] border-rail bg-card shadow-[0_0_0_3px_var(--color-paper)];
+        animation: route-pulse 1.6s ease-in-out infinite;
     }
     .route-stop-done {
-        @apply border-ink bg-ink text-paper;
+        @apply h-3.5 w-3.5 border-0 shadow-[0_0_0_2px_var(--color-paper)];
     }
+    .route-stop-raak { background: var(--color-good); }
+    .route-stop-dichtbij { background: var(--color-ok); }
+    .route-stop-buurt { background: var(--color-meh); }
+    .route-stop-ver { background: var(--color-bad); }
+}
+
+@keyframes route-pulse {
+    0%, 100% { box-shadow: 0 0 0 3px var(--color-paper); }
+    50% { box-shadow: 0 0 0 3px var(--color-paper), 0 0 0 7px rgba(29, 63, 143, 0.18); }
 }
 
 /* Map containers fill their positioned parent; beats .maplibregl-map { position: relative }. */
@@ -138,6 +149,7 @@ body.game-screen {
     background: #1d3f8f;
     border: 3px solid #fff;
     outline: 2px solid #1d3f8f;
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.35), 0 1px 4px rgba(0, 0, 0, 0.5);
 }
 
 .maplibregl-ctrl-group button {

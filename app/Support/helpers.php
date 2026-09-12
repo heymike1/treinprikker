@@ -14,13 +14,13 @@ if (! function_exists('format_distance')) {
             return $meters.' m';
         }
 
-        return number_format($meters / 1000, $decimals, ',', '.').' km';
+        return number_format($meters / 1000, $decimals, ',', '').' km';
     }
 }
 
 if (! function_exists('format_number')) {
     /**
-     * Dutch number formatting: 4283 -> "4.283", 3.5 -> "3,5".
+     * Plain numbers with a Dutch decimal comma: 4283 -> "4283", 3.5 -> "3,5".
      */
     function format_number(int|float|null $value, int $decimals = 0): string
     {
@@ -28,7 +28,7 @@ if (! function_exists('format_number')) {
             return '–';
         }
 
-        return number_format($value, $decimals, ',', '.');
+        return number_format($value, $decimals, ',', '');
     }
 }
 
@@ -39,6 +39,6 @@ if (! function_exists('format_percentage')) {
             return '–';
         }
 
-        return number_format($value, $decimals, ',', '.').'%';
+        return number_format($value, $decimals, ',', '').'%';
     }
 }

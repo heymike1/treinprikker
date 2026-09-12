@@ -212,6 +212,7 @@ class StatisticsTest extends TestCase
         $stats = app(GlobalStatistics::class)->get();
 
         $this->assertSame(4, $stats['totals']['guesses']);
+        $this->assertSame(3000, $stats['totals']['average_game_score']);
         $this->assertSame(['Veelgeprikt'], array_column($stats['easiest'], 'name'));
         $this->assertNotContains('Zeldenprikt', array_column($stats['hardest'], 'name'));
     }
@@ -225,7 +226,7 @@ class StatisticsTest extends TestCase
         $this->get('/statistieken')->assertOk()->assertSee('Het spoor in cijfers');
         $this->get('/station/teststation')->assertOk()->assertSee($station->name);
         $this->get('/mijn-statistieken')->assertOk();
-        $this->get('/hoe-werkt-het')->assertOk()->assertSee('Maximaal 1.000 punten');
+        $this->get('/hoe-werkt-het')->assertOk()->assertSee('Maximaal 1000 punten');
         $this->get('/statistieken/stations.json')->assertOk()->assertJsonPath('type', 'FeatureCollection');
     }
 }

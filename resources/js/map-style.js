@@ -1,22 +1,33 @@
 import maplibregl from 'maplibre-gl';
 
+// Layers that could give the answer away on any map: railways, stations, airports.
+const ANSWER_LAYERS = /^(railway|airport|poi|transit)/i;
+
+// Layers that make guessing too easy on the game map: place names and street names.
+// Country/state labels, water names and road shields (A2, N33) stay for orientation.
+const PLACE_LAYERS = /^(label_(city|town|village|other)|highway-name)/i;
+
 /**
  * Loads the configured MapLibre style and strips every layer that could give
- * the answer away (railway lines, stations, airports). City and geographic
- * labels stay so players can orient themselves.
+ * the answer away. With `hidePlaces` the map also loses city and street names.
  */
-export async function loadCleanStyle(styleUrl, hiddenLayerPattern = /^(railway|airport|poi|transit)/i) {
+export async function loadCleanStyle(styleUrl, { hidePlaces = false } = {}) {
     const response = await fetch(styleUrl);
     if (!response.ok) {
         throw new Error(`Kaartstijl niet beschikbaar (${response.status})`);
     }
     const style = await response.json();
     style.layers = style.layers
-        .filter((layer) => !hiddenLayerPattern.test(layer.id))
+        .filter((layer) => !ANSWER_LAYERS.test(layer.id))
+        .filter((layer) => !(hidePlaces && PLACE_LAYERS.test(layer.id)))
         .map((layer) => dutchLabels(layer));
     return style;
 }
 
+/**
+ * Aerial imagery for the game map: nothing but the photo. It shows the
+ * landscape, the cities and the railway lines by itself.
+ */
 /**
  * Prefer Dutch names ("Den Haag" instead of "The Hague") on every label layer.
  */
@@ -34,6 +45,25 @@ function dutchLabels(layer) {
             ...layer.layout,
             'text-field': ['coalesce', ['get', 'name:nl'], ['get', 'name:latin'], ['get', 'name']],
         },
+    };
+}
+
+export function loadSatelliteStyle(satellite) {
+    return {
+        version: 8,
+        sources: {
+            satellite: {
+                type: 'raster',
+                tiles: satellite.tiles,
+                tileSize: 256,
+                maxzoom: satellite.max_zoom,
+                attribution: satellite.attribution,
+            },
+        },
+        layers: [
+            { id: 'background', type: 'background', paint: { 'background-color': '#1f2a33' } },
+            { id: 'satellite', type: 'raster', source: 'satellite', paint: { 'raster-saturation': -0.15 } },
+        ],
     };
 }
 

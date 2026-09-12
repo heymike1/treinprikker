@@ -8,10 +8,13 @@ use App\Game\DailyGameGenerator;
 use App\Game\GameService;
 use App\Livewire\PlayGame;
 use App\Models\DailyGame;
+use App\Models\DailyGameStatistic;
 use App\Models\GameSession;
 use App\Models\Guess;
 use App\Models\Player;
 use App\Models\Station;
+use App\Models\StationStatistic;
+use App\Statistics\GlobalStatistics;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Features\SupportLockedProperties\CannotUpdateLockedPropertyException;
 use Livewire\Livewire;
@@ -114,6 +117,19 @@ class GamePlayTest extends TestCase
         $this->assertSame($expectedTotal, $session->total_score);
         $this->assertSame((int) Guess::where('game_session_id', $session->id)->sum('distance_meters'), $session->total_distance_meters);
         $this->assertSame(5, Guess::where('game_session_id', $session->id)->count());
+    }
+
+    public function test_completing_a_game_refreshes_the_statistics_of_its_stations(): void
+    {
+        $service = app(GameService::class);
+        $session = $service->startOrResume($this->game, Player::factory()->create());
+        for ($round = 1; $round <= 5; $round++) {
+            $service->submitGuess($session, $round, 52.0, 5.0);
+        }
+
+        $this->assertSame(5, StationStatistic::where('guess_count', 1)->count());
+        $this->assertSame(1, DailyGameStatistic::where('daily_game_id', $this->game->id)->value('completed_count'));
+        $this->assertSame(5, app(GlobalStatistics::class)->get()['totals']['guesses']);
     }
 
     public function test_completed_session_rejects_further_guesses(): void

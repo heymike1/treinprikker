@@ -1,6 +1,6 @@
 <div class="mx-auto w-full max-w-2xl px-4 py-6 sm:py-10" wire:key="game-summary">
     <div class="text-center">
-        <p class="text-xs font-semibold tracking-wide text-muted uppercase">Treinprikker #{{ $gameNumber }} · klaar voor vandaag</p>
+        <p class="text-xs font-semibold tracking-wide text-muted uppercase">Klaar voor vandaag</p>
         <div class="board mx-auto mt-3 inline-block min-w-56 px-6 py-4">
             <div class="board-number text-5xl">{{ format_number($summary['total_score']) }}</div>
             <div class="mt-1 text-xs font-medium tracking-wider text-paper/80 uppercase">van {{ format_number($summary['maximum_score']) }} punten</div>
@@ -28,7 +28,7 @@
     <ol class="card mt-6 divide-y divide-line">
         @foreach($completedRounds as $round)
             <li class="flex items-center gap-3 px-4 py-3">
-                <span class="route-stop route-stop-done shrink-0">{{ $round['round'] }}</span>
+                <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-ink font-mono text-xs font-semibold text-paper">{{ $round['round'] }}</span>
                 <div class="min-w-0 flex-1">
                     <a href="{{ route('station.show', $round['slug']) }}" class="block truncate font-semibold hover:underline">{{ $round['station'] }}</a>
                     <p class="text-sm text-muted">{{ $round['distance'] }} ernaast · {{ $round['province'] }}</p>
@@ -74,8 +74,7 @@
         </div>
     </dl>
 
-    <div class="mt-6 flex flex-col gap-2 sm:flex-row">
-        <a href="{{ route('my-statistics') }}" class="btn-secondary">Mijn statistieken</a>
+    <div class="mt-6">
         <a href="{{ route('statistics') }}" class="btn-secondary">Alle statistieken</a>
     </div>
     <p class="mt-6 text-center text-sm text-muted">Morgen om 00:00 staat er een nieuwe Treinprikker klaar.</p>

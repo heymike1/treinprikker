@@ -114,13 +114,21 @@ return [
     ],
 
     'map' => [
-        // MapLibre style JSON. Railway and airport layers are removed client-side
-        // so the map never reveals station positions.
+        // MapLibre style JSON used for the statistics maps. Railway and airport
+        // layers are removed client-side so the map never reveals station positions.
         'style_url' => env('TREINPRIKKER_MAP_STYLE_URL', 'https://tiles.openfreemap.org/styles/positron'),
+
+        // The game map shows aerial imagery instead of the vector style: no roads,
+        // labels or boundaries, just the photo.
+        'satellite' => [
+            'tiles' => ['https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'],
+            'max_zoom' => 18,
+            'attribution' => 'Luchtfoto: Esri, Maxar, Earthstar Geographics',
+        ],
         'center' => [5.3, 52.15],
         'zoom' => 6.6,
         'min_zoom' => 5,
-        'max_zoom' => 13,
+        'max_zoom' => 18,
         // Bounding box of the Netherlands used for the initial fit.
         'bounds' => [[3.2, 50.7], [7.3, 53.6]],
     ],

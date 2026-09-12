@@ -3,7 +3,7 @@
 **Hoe goed ken jij het Nederlandse spoor?**
 
 Elke dag vijf Nederlandse treinstations. Prik ze op de kaart en ontdek hoe goed jij het Nederlandse spoor kent.
-Iedereen krijgt dezelfde vijf stations, maximaal 1.000 punten per station, 5.000 per dag. Deel je resultaat, bouw een streak
+Iedereen krijgt dezelfde vijf stations, maximaal 1000 punten per station, 5000 per dag. Deel je resultaat, bouw een streak
 en ontdek samen met alle spelers welk station het moeilijkst te vinden is.
 
 ## Stack
@@ -87,7 +87,7 @@ Elk station heeft een `difficulty_rating` van 1 (heel makkelijk) tot 100 (heel m
 
 ### Statistieken
 
-`treinprikker:recalculate-stats` bouwt uit de ruwe prikken:
+Na elk uitgespeeld potje herberekent een queue-job (`RefreshStatisticsForSession`) de statistieken van de vijf gespeelde stations en van die dag en leegt de cache, zodat `/statistieken` direct meebeweegt. `treinprikker:recalculate-stats` doet elk uur de volledige ronde en bouwt uit de ruwe prikken:
 
 - `station_statistics`: aantal, gemiddelde/mediaan/25e/75e percentiel afstand, gemiddelde/mediaan score, % binnen 1/5/10/25/50 km,
   centroïde van alle prikken + afstand en kompasrichting t.o.v. het station ("spelers plaatsen X gemiddeld 14 km te noordelijk"),
@@ -100,8 +100,11 @@ Stations en dagen worden pas gerangschikt na `minimum_station_guesses` resp. `mi
 
 ### Kaart
 
-MapLibre laadt de OpenFreeMap "positron"-stijl (`TREINPRIKKER_MAP_STYLE_URL`) en verwijdert client-side alle `railway*`- en `airport`-lagen,
-zodat spoorlijnen en stations nooit zichtbaar zijn. Labels gebruiken `name:nl`. Wil je zelf tiles hosten, wijs de env-variabele naar je eigen style-JSON.
+De **speelkaart** toont luchtfoto's (Esri World Imagery, `map.satellite` in de config) met daarop alleen lands- en provinciegrenzen:
+geen wegen, geen plaats- of straatnamen, geen stations-POI's. Je oriënteert op kust, water, steden en het spoor dat je in de foto ziet.
+
+De **statistiekenkaarten** gebruiken de OpenFreeMap "positron"-vectorstijl (`TREINPRIKKER_MAP_STYLE_URL`); `railway*`- en `airport`-lagen worden
+client-side verwijderd en labels gebruiken `name:nl`. Wil je zelf tiles hosten, wijs de env-variabele naar je eigen style-JSON.
 
 ## Routes
 
