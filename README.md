@@ -46,6 +46,7 @@ Ontbreekt de Treinprikker van vandaag toch (scheduler nooit gedraaid), dan wordt
 | `treinprikker:generate-daily [--days=7] [--date=YYYY-MM-DD] [--force]` | Daily Games genereren; `--date` + `--force` kiest een dag opnieuw |
 | `treinprikker:recalculate-stats` | Stationsstatistieken, moeilijkheid en dagstatistieken herberekenen uit de ruwe prikken |
 | `treinprikker:admin email@voorbeeld.nl [--password=...]` | Beheerder aanmaken voor `/admin` (HTTP basic auth) |
+| `treinprikker:reset [--force]` | Alle potjes, prikken, spelers en statistieken wissen; stations, dagen en beheerders blijven |
 
 ## Hoe het spel werkt
 
