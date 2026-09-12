@@ -1,0 +1,152 @@
+@import 'tailwindcss';
+
+@source '../**/*.blade.php';
+@source '../**/*.js';
+@source '../../app/Livewire/**/*.php';
+
+@theme {
+    --font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+    --font-mono: ui-monospace, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+
+    /* Warm paper background, dark ink, railway blue and signal yellow accents. */
+    --color-paper: #f6f1e8;
+    --color-paper-deep: #ede6d9;
+    --color-card: #fffdf9;
+    --color-ink: #1c1a17;
+    --color-muted: #6d655b;
+    --color-line: #e1d8c9;
+    --color-rail: #1d3f8f;
+    --color-rail-deep: #142c66;
+    --color-signal: #f8c200;
+    --color-signal-deep: #d9a800;
+    --color-good: #2f8f5b;
+    --color-good-soft: #dff1e6;
+    --color-ok: #c98700;
+    --color-ok-soft: #fbedc8;
+    --color-meh: #d96b1a;
+    --color-meh-soft: #fbe3d0;
+    --color-bad: #c9432f;
+    --color-bad-soft: #f9dcd7;
+}
+
+html {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    font-family: var(--font-sans);
+    font-variant-numeric: tabular-nums;
+    min-height: 100dvh;
+}
+
+[x-cloak] {
+    display: none !important;
+}
+
+body.game-screen {
+    height: 100dvh;
+    overflow: hidden;
+    overscroll-behavior: none;
+}
+
+@layer components {
+    .nav-link {
+        @apply inline-flex items-center rounded-full px-2 py-1 text-xs font-medium text-muted transition hover:text-ink sm:px-3 sm:py-1.5 sm:text-sm;
+    }
+    .nav-link[aria-current='page'] {
+        @apply bg-ink text-paper hover:text-paper;
+    }
+
+    .btn-primary {
+        @apply inline-flex w-full items-center justify-center gap-2 rounded-xl bg-signal px-5 py-3.5 text-base font-semibold text-ink shadow-[0_2px_0_0_var(--color-signal-deep)] transition;
+        @apply hover:bg-[#ffd21a] active:translate-y-px active:shadow-none disabled:cursor-not-allowed disabled:opacity-40 disabled:shadow-none;
+    }
+    .btn-secondary {
+        @apply inline-flex w-full items-center justify-center gap-2 rounded-xl border border-line bg-card px-5 py-3.5 text-base font-semibold text-ink transition hover:bg-paper-deep;
+    }
+    .btn-dark {
+        @apply inline-flex w-full items-center justify-center gap-2 rounded-xl bg-ink px-5 py-3.5 text-base font-semibold text-paper transition hover:bg-black;
+    }
+
+    .card {
+        @apply rounded-2xl border border-line bg-card;
+    }
+
+    /* Departure-board style number block. */
+    .board {
+        @apply rounded-xl bg-rail px-4 py-3 text-paper;
+    }
+    .board-number {
+        @apply font-mono text-3xl font-semibold tracking-tight text-signal;
+    }
+
+    /* Score quality: colour plus text label, never colour alone. */
+    .score-pill {
+        @apply inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-semibold;
+    }
+    .score-pill-raak { background: var(--color-good-soft); color: #1f6b41; }
+    .score-pill-dichtbij { background: var(--color-ok-soft); color: #7a5200; }
+    .score-pill-buurt { background: var(--color-meh-soft); color: #8a4210; }
+    .score-pill-ver { background: var(--color-bad-soft); color: #8e2c1f; }
+
+    /* Route strip: five "stations" on a line, one per round. */
+    .route {
+        @apply relative flex items-center justify-between;
+    }
+    .route::before {
+        content: '';
+        @apply absolute top-1/2 right-2 left-2 h-0.5 -translate-y-1/2 bg-line;
+    }
+    .route-stop {
+        @apply relative z-10 flex h-7 w-7 items-center justify-center rounded-full border-2 border-line bg-card font-mono text-[11px] font-semibold text-muted;
+    }
+    .route-stop-current {
+        @apply border-rail bg-rail text-paper;
+    }
+    .route-stop-done {
+        @apply border-ink bg-ink text-paper;
+    }
+}
+
+/* Map containers fill their positioned parent; beats .maplibregl-map { position: relative }. */
+.map-fill,
+.map-fill.maplibregl-map {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* Map pins. */
+.map-pin {
+    width: 22px;
+    height: 22px;
+    border-radius: 9999px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+}
+.map-pin-guess {
+    width: 26px;
+    height: 34px;
+    border-radius: 0;
+    box-shadow: none;
+    background: no-repeat center / contain url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 26 34'><path d='M13 33C13 33 2 20.5 2 12A11 11 0 0 1 24 12C24 20.5 13 33 13 33Z' fill='%23f8c200' stroke='%231c1a17' stroke-width='2'/><circle cx='13' cy='12' r='4' fill='%231c1a17'/></svg>");
+    cursor: grab;
+}
+.map-pin-station {
+    background: #1d3f8f;
+    border: 3px solid #fff;
+    outline: 2px solid #1d3f8f;
+}
+
+.maplibregl-ctrl-group button {
+    width: 36px;
+    height: 36px;
+}
+.maplibregl-ctrl-attrib {
+    font-size: 10px;
+}
+.maplibregl-canvas {
+    outline: none;
+}

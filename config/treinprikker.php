@@ -1,0 +1,132 @@
+<?php
+
+/*
+|--------------------------------------------------------------------------
+| Treinprikker game configuration
+|--------------------------------------------------------------------------
+|
+| All tunable game rules live here so the daily game, scoring and statistics
+| can be adjusted without touching domain code.
+|
+*/
+
+return [
+
+    // The Dutch calendar day decides which Daily Game is active.
+    'timezone' => 'Europe/Amsterdam',
+
+    'stations_per_day' => 5,
+
+    // A station should preferably not be reused within this many days
+    // (looking both backwards and forwards, since games are generated ahead).
+    'station_repeat_cooldown_days' => 21,
+
+    // How many days ahead the scheduler keeps Daily Games generated.
+    'generate_days_ahead' => 7,
+
+    'maximum_score_per_station' => 1000,
+
+    /*
+    | Scoring curve (stretched exponential):
+    |
+    |   score = max * exp( -(distance_km / lambda) ^ exponent )
+    |   lambda = half_score_distance_km / ln(2) ^ (1 / exponent)
+    |
+    | With half_score_distance_km = 50 and exponent = 1.2 this gives roughly:
+    |   0 km -> 1000, 1 km -> 994, 5 km -> 957, 10 km -> 904,
+    |   25 km -> 740, 50 km -> 500, 100 km -> 204, 300 km -> 3.
+    |
+    | The curve is smooth (no brackets), rewards near-perfect guesses heavily
+    | and flattens out to ~0 for guesses in the wrong part of the country.
+    */
+    'scoring' => [
+        'half_score_distance_km' => 50,
+        'exponent' => 1.2,
+    ],
+
+    // Distance thresholds (meters) used in statistics ("within X km").
+    'distance_thresholds_meters' => [1000, 5000, 10000, 25000, 50000],
+
+    // Result phrases keyed by upper distance bound in meters (first match wins).
+    'result_phrases' => [
+        500 => 'Bijna op het perron.',
+        2000 => 'Die zat heel dichtbij.',
+        10000 => 'Netjes geprikt.',
+        25000 => 'Niet verkeerd.',
+        50000 => 'Daar zat nog wat spoor tussen.',
+        PHP_INT_MAX => 'Oeps, verkeerde regio.',
+    ],
+
+    // Share text emoji buckets keyed by minimum score (checked high to low).
+    'share_buckets' => [
+        900 => '🟢',
+        700 => '🟡',
+        400 => '🟠',
+        0 => '🔴',
+    ],
+
+    'share_url' => 'treinprikker.nl',
+
+    /*
+    | Difficulty: every station has a rating from 1 (very easy) to 100 (very
+    | hard). Ratings start from a heuristic and are replaced by data once a
+    | station has enough guesses.
+    */
+    'difficulty' => [
+        'easy_max' => 33,
+        'hard_min' => 67,
+
+        // Daily mix, one entry per round. "wildcard" may pick any station.
+        'daily_mix' => ['easy', 'medium', 'medium', 'hard', 'wildcard'],
+
+        // Guesses needed before the data-driven difficulty replaces the heuristic.
+        'minimum_guesses' => 100,
+
+        // Distances (meters) that map to the maximum difficulty contribution.
+        'median_distance_ceiling_meters' => 60000,
+        'spread_ceiling_meters' => 60000,
+
+        'weights' => [
+            'median_distance' => 0.4,
+            'average_score' => 0.3,
+            'within_10km' => 0.2,
+            'spread' => 0.1,
+        ],
+    ],
+
+    'statistics' => [
+        // Minimum guesses before a station is ranked as easiest/hardest.
+        'minimum_station_guesses' => 100,
+
+        // Minimum completed sessions before a Daily Game is ranked.
+        'minimum_daily_game_completions' => 25,
+
+        // Minimum completed sessions today before "beter dan X%" is shown.
+        'minimum_players_for_comparison' => 10,
+
+        // Minimum guesses in a province before it counts for a personal ranking.
+        'minimum_province_guesses' => 3,
+
+        // Seconds to cache expensive global statistics.
+        'cache_ttl' => 600,
+
+        'list_size' => 10,
+    ],
+
+    'map' => [
+        // MapLibre style JSON. Railway and airport layers are removed client-side
+        // so the map never reveals station positions.
+        'style_url' => env('TREINPRIKKER_MAP_STYLE_URL', 'https://tiles.openfreemap.org/styles/positron'),
+        'center' => [5.3, 52.15],
+        'zoom' => 6.6,
+        'min_zoom' => 5,
+        'max_zoom' => 13,
+        // Bounding box of the Netherlands used for the initial fit.
+        'bounds' => [[3.2, 50.7], [7.3, 53.6]],
+    ],
+
+    'player_cookie' => [
+        'name' => 'treinprikker_speler',
+        'minutes' => 60 * 24 * 365 * 5,
+    ],
+];

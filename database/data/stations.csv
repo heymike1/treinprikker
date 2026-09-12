@@ -1,0 +1,398 @@
+code,uic,name,slug,latitude,longitude,province,municipality,type,active
+HT,8400319,'s-Hertogenbosch,s-hertogenbosch,51.690480,5.293620,Noord-Brabant,'s-Hertogenbosch,knooppuntIntercitystation,1
+HTO,8400320,'s-Hertogenbosch Oost,s-hertogenbosch-oost,51.700554,5.318333,Noord-Brabant,'s-Hertogenbosch,stoptreinstation,1
+HDE,8400388,'t Harde,t-harde,52.409168,5.893611,Gelderland,Elburg,stoptreinstation,1
+ATN,8400045,Aalten,aalten,51.921327,6.578627,Gelderland,Aalten,stoptreinstation,1
+AC,8400047,Abcoude,abcoude,52.278500,4.977000,Utrecht,De Ronde Venen,stoptreinstation,1
+AKM,8400049,Akkrum,akkrum,53.046391,5.843611,Fryslân,Heerenveen,stoptreinstation,1
+AMR,8400050,Alkmaar,alkmaar,52.637779,4.739722,Noord-Holland,Alkmaar,knooppuntIntercitystation,1
+AMRN,8400052,Alkmaar Noord,alkmaar-noord,52.643890,4.764167,Noord-Holland,Alkmaar,stoptreinstation,1
+AML,8400051,Almelo,almelo,52.358055,6.653889,Overijssel,Almelo,knooppuntIntercitystation,1
+AMRI,8400520,Almelo de Riet,almelo-de-riet,52.341946,6.666667,Overijssel,Almelo,stoptreinstation,1
+ALMB,8400081,Almere Buiten,almere-buiten,52.394165,5.278056,Flevoland,Almere,stoptreinstation,1
+ALM,8400080,Almere Centrum,almere-centrum,52.375030,5.217640,Flevoland,Almere,knooppuntIntercitystation,1
+ALMM,8400082,Almere Muziekwijk,almere-muziekwijk,52.367500,5.190278,Flevoland,Almere,stoptreinstation,1
+ALMO,8400226,Almere Oostvaarders,almere-oostvaarders,52.403332,5.300556,Flevoland,Almere,stoptreinstation,1
+ALMP,8400104,Almere Parkwijk,almere-parkwijk,52.376667,5.244722,Flevoland,Almere,stoptreinstation,1
+AMPO,8400450,Almere Poort,almere-poort,52.342778,5.151944,Flevoland,Almere,stoptreinstation,1
+APN,8400053,Alphen a/d Rijn,alphen-a-d-rijn,52.124443,4.657778,Zuid-Holland,Alphen aan den Rijn,knooppuntIntercitystation,1
+AMF,8400055,Amersfoort Centraal,amersfoort-centraal,52.153889,5.370555,Utrecht,Amersfoort,knooppuntIntercitystation,1
+AMFS,8400054,Amersfoort Schothorst,amersfoort-schothorst,52.174822,5.403889,Utrecht,Amersfoort,stoptreinstation,1
+AVAT,8400228,Amersfoort Vathorst,amersfoort-vathorst,52.192780,5.433889,Utrecht,Amersfoort,stoptreinstation,1
+ASA,8400057,Amsterdam Amstel,amsterdam-amstel,52.346668,4.917778,Noord-Holland,Amsterdam,intercitystation,1
+ASB,8400074,Amsterdam Bijlmer ArenA,amsterdam-bijlmer-arena,52.312222,4.946944,Noord-Holland,Amsterdam,knooppuntStoptreinstation,1
+ASD,8400058,Amsterdam Centraal,amsterdam-centraal,52.378887,4.900278,Noord-Holland,Amsterdam,megastation,1
+ASHD,8400231,Amsterdam Holendrecht,amsterdam-holendrecht,52.298440,4.959720,Noord-Holland,Amsterdam,stoptreinstation,1
+ASDL,8400079,Amsterdam Lelylaan,amsterdam-lelylaan,52.357777,4.833889,Noord-Holland,Amsterdam,stoptreinstation,1
+ASDM,8400060,Amsterdam Muiderpoort,amsterdam-muiderpoort,52.360554,4.931111,Noord-Holland,Amsterdam,stoptreinstation,1
+RAI,8400056,Amsterdam RAI,amsterdam-rai,52.337223,4.890278,Noord-Holland,Amsterdam,stoptreinstation,1
+ASSP,8400235,Amsterdam Science Park,amsterdam-science-park,52.355260,4.946510,Noord-Holland,Amsterdam,stoptreinstation,1
+ASS,8400059,Amsterdam Sloterdijk,amsterdam-sloterdijk,52.388889,4.837778,Noord-Holland,Amsterdam,knooppuntIntercitystation,1
+ASDZ,8400061,Amsterdam Zuid,amsterdam-zuid,52.338889,4.872356,Noord-Holland,Amsterdam,intercitystation,1
+ANA,8400065,Anna Paulowna,anna-paulowna,52.867222,4.811111,Noord-Holland,Hollands Kroon,stoptreinstation,1
+APD,8400066,Apeldoorn,apeldoorn,52.209167,5.970278,Gelderland,Apeldoorn,knooppuntIntercitystation,1
+APDM,8400233,Apeldoorn De Maten,apeldoorn-de-maten,52.205276,6.000556,Gelderland,Apeldoorn,stoptreinstation,1
+APDO,8400229,Apeldoorn Osseveld,apeldoorn-osseveld,52.215279,6.004445,Gelderland,Apeldoorn,stoptreinstation,1
+APG,8400067,Appingedam,appingedam,53.325814,6.861958,Groningen,Eemsdelta,stoptreinstation,1
+AKL,8400068,Arkel,arkel,51.871944,4.992778,Zuid-Holland,Molenlanden,stoptreinstation,1
+ARN,8400069,Arnemuiden,arnemuiden,51.501667,3.669167,Zeeland,Middelburg (Z.),stoptreinstation,1
+AH,8400071,Arnhem Centraal,arnhem-centraal,51.985001,5.899167,Gelderland,Arnhem,knooppuntIntercitystation,1
+AHPR,8400075,Arnhem Presikhaaf,arnhem-presikhaaf,51.988056,5.943889,Gelderland,Arnhem,stoptreinstation,1
+AHP,8400072,Arnhem Velperpoort,arnhem-velperpoort,51.985279,5.919445,Gelderland,Arnhem,stoptreinstation,1
+AHZ,8400227,Arnhem Zuid,arnhem-zuid,51.955002,5.851944,Gelderland,Arnhem,stoptreinstation,1
+ASN,8400073,Assen,assen,52.991665,6.570833,Drenthe,Assen,knooppuntIntercitystation,1
+BRN,8400086,Baarn,baarn,52.208332,5.280833,Utrecht,Baarn,knooppuntStoptreinstation,1
+NSCH,8400457,Bad Nieuweschans,bad-nieuweschans,53.184400,7.199370,Groningen,Oldambt,knooppuntStoptreinstation,1
+BF,8400089,Baflo,baflo,53.360897,6.518558,Groningen,Het Hogeland,stoptreinstation,1
+BRD,8400090,Barendrecht,barendrecht,51.854721,4.553333,Zuid-Holland,Barendrecht,stoptreinstation,1
+BNC,8400091,Barneveld Centrum,barneveld-centrum,52.139999,5.590278,Gelderland,Barneveld,stoptreinstation,1
+BNN,8400092,Barneveld Noord,barneveld-noord,52.161388,5.598055,Gelderland,Barneveld,stoptreinstation,1
+BNZ,8400115,Barneveld Zuid,barneveld-zuid,52.128853,5.602460,Gelderland,Barneveld,stoptreinstation,1
+BDM,8400094,Bedum,bedum,53.306886,6.593054,Groningen,Het Hogeland,stoptreinstation,1
+BK,8400096,Beek-Elsloo,beek-elsloo,50.947498,5.786667,Limburg,Stein (L.),stoptreinstation,1
+BSD,8400097,Beesd,beesd,51.899445,5.194445,Gelderland,West Betuwe,stoptreinstation,1
+BL,8400100,Beilen,beilen,52.854721,6.521111,Drenthe,Midden-Drenthe,stoptreinstation,1
+BGN,8400108,Bergen op Zoom,bergen-op-zoom,51.493889,4.296111,Noord-Brabant,Bergen op Zoom,stoptreinstation,1
+BET,8400112,Best,best,51.509998,5.389167,Noord-Brabant,Best,stoptreinstation,1
+BV,8400113,Beverwijk,beverwijk,52.478333,4.656667,Noord-Holland,Beverwijk,stoptreinstation,1
+BHV,8400114,Bilthoven,bilthoven,52.130001,5.203889,Utrecht,De Bilt,stoptreinstation,1
+BR,8400117,Blerick,blerick,51.372501,6.155000,Limburg,Venlo,stoptreinstation,1
+BLL,8400118,Bloemendaal,bloemendaal,52.404167,4.627500,Noord-Holland,Bloemendaal,stoptreinstation,1
+BDG,8400121,Bodegraven,bodegraven,52.081390,4.746111,Zuid-Holland,Bodegraven-Reeuwijk,stoptreinstation,1
+BN,8400124,Borne,borne,52.298889,6.748055,Overijssel,Borne,stoptreinstation,1
+BSK,8400125,Boskoop,boskoop,52.077778,4.646945,Zuid-Holland,Alphen aan den Rijn,stoptreinstation,1
+BSKS,8400126,Boskoop Snijdelwijk,boskoop-snijdelwijk,52.067658,4.646186,Zuid-Holland,Waddinxveen,stoptreinstation,1
+BHDV,8400236,Boven-Hardinxveld,boven-hardinxveld,51.832222,4.878056,Zuid-Holland,Hardinxveld-Giessendam,stoptreinstation,1
+BKF,8400230,Bovenkarspel Flora,bovenkarspel-flora,52.696110,5.252778,Noord-Holland,Stede Broec,stoptreinstation,1
+BKG,8400127,Bovenkarspel-Grootebroek,bovenkarspel-grootebroek,52.695000,5.237778,Noord-Holland,Stede Broec,stoptreinstation,1
+BMR,8400128,Boxmeer,boxmeer,51.644522,5.939033,Noord-Brabant,Land van Cuijk,knooppuntStoptreinstation,1
+BTL,8400129,Boxtel,boxtel,51.584330,5.319120,Noord-Brabant,Boxtel,knooppuntStoptreinstation,1
+BD,8400131,Breda,breda,51.595554,4.780000,Noord-Brabant,Breda,knooppuntIntercitystation,1
+BDPB,8400132,Breda-Prinsenbeek,breda-prinsenbeek,51.606388,4.720833,Noord-Brabant,Breda,stoptreinstation,1
+BKL,8400133,Breukelen,breukelen,52.171490,4.990600,Utrecht,Stichtse Vecht,knooppuntStoptreinstation,1
+BMN,8400136,Brummen,brummen,52.091110,6.146945,Gelderland,Brummen,stoptreinstation,1
+BP,8400139,Buitenpost,buitenpost,53.256455,6.144650,Fryslân,Achtkarspelen,knooppuntSneltreinstation,1
+BDE,8400140,Bunde,bunde,50.896946,5.736667,Limburg,Meerssen,stoptreinstation,1
+BNK,8400141,Bunnik,bunnik,52.063057,5.194445,Utrecht,Bunnik,stoptreinstation,1
+BSMZ,8400145,Bussum Zuid,bussum-zuid,52.265835,5.163055,Noord-Holland,Gooise Meren,stoptreinstation,1
+CPS,8400147,Capelle Schollevaar,capelle-schollevaar,51.954166,4.584167,Zuid-Holland,Capelle aan den IJssel,stoptreinstation,1
+CAS,8400151,Castricum,castricum,52.545834,4.658611,Noord-Holland,Castricum,intercitystation,1
+CVM,8400152,Chevremont,chevremont,50.876110,6.059722,Limburg,Kerkrade,stoptreinstation,1
+CO,8400153,Coevorden,coevorden,52.663612,6.735556,Drenthe,Coevorden,knooppuntSneltreinstation,1
+CK,8400155,Cuijk,cuijk,51.726683,5.874295,Noord-Brabant,Land van Cuijk,stoptreinstation,1
+CL,8400154,Culemborg,culemborg,51.946667,5.226944,Gelderland,Culemborg,stoptreinstation,1
+DA,8400164,Daarlerveen,daarlerveen,52.440770,6.575995,Overijssel,Hellendoorn,stoptreinstation,1
+DLN,8400161,Dalen,dalen,52.694168,6.758056,Drenthe,Coevorden,stoptreinstation,1
+DL,8400167,Dalfsen,dalfsen,52.498333,6.258611,Overijssel,Dalfsen,sneltreinstation,1
+DVNK,8400188,De Vink,de-vink,52.147221,4.456389,Zuid-Holland,Voorschoten,stoptreinstation,1
+DWE,8400745,De Westereen,de-westereen,53.248170,6.034630,Fryslân,Dantumadiel,stoptreinstation,1
+DEI,8400168,Deinum,deinum,53.188811,5.728157,Fryslân,Waadhoeke,stoptreinstation,1
+DDN,8400169,Delden,delden,52.259998,6.716111,Overijssel,Hof van Twente,stoptreinstation,1
+DT,8400170,Delft,delft,52.006668,4.356389,Zuid-Holland,Delft,knooppuntIntercitystation,1
+DTCP,8400166,Delft Campus,delft-campus,51.990833,4.364722,Zuid-Holland,Delft,stoptreinstation,1
+DZ,8400171,Delfzijl,delfzijl,53.333663,6.924080,Groningen,Eemsdelta,stoptreinstation,1
+DZW,8400175,Delfzijl West,delfzijl-west,53.332083,6.906909,Groningen,Eemsdelta,stoptreinstation,1
+DLD,8400179,Den Dolder,den-dolder,52.140278,5.242778,Utrecht,Zeist,knooppuntStoptreinstation,1
+GVC,8400282,Den Haag Centraal,den-haag-centraal,52.080276,4.325000,Zuid-Holland,'s-Gravenhage,megastation,1
+GV,8400280,Den Haag HS,den-haag-hs,52.069721,4.322500,Zuid-Holland,'s-Gravenhage,knooppuntIntercitystation,1
+LAA,8400380,Den Haag Laan v NOI,den-haag-laan-v-noi,52.078609,4.342778,Zuid-Holland,Leidschendam-Voorburg,knooppuntStoptreinstation,1
+GVM,8400278,Den Haag Mariahoeve,den-haag-mariahoeve,52.090557,4.369444,Zuid-Holland,Leidschendam-Voorburg,stoptreinstation,1
+GVMW,8400279,Den Haag Moerwijk,den-haag-moerwijk,52.053890,4.308611,Zuid-Holland,'s-Gravenhage,stoptreinstation,1
+YPB,8400379,Den Haag Ypenburg,den-haag-ypenburg,52.055279,4.392222,Zuid-Holland,'s-Gravenhage,stoptreinstation,1
+HDR,8400311,Den Helder,den-helder,52.955276,4.761111,Noord-Holland,Den Helder,intercitystation,1
+HDRZ,8400303,Den Helder Zuid,den-helder-zuid,52.932499,4.764167,Noord-Holland,Den Helder,stoptreinstation,1
+DN,8400172,Deurne,deurne,51.455833,5.788889,Noord-Brabant,Deurne,stoptreinstation,1
+DV,8400173,Deventer,deventer,52.257500,6.160555,Overijssel,Deventer,knooppuntIntercitystation,1
+DVC,8400185,Deventer Colmschate,deventer-colmschate,52.250278,6.214445,Overijssel,Deventer,stoptreinstation,1
+DID,8400174,Didam,didam,51.933502,6.132411,Gelderland,Montferland,stoptreinstation,1
+DMN,8400165,Diemen,diemen,52.345150,4.967566,Noord-Holland,Diemen,stoptreinstation,1
+DMNZ,8400163,Diemen Zuid,diemen-zuid,52.330276,4.955833,Noord-Holland,Diemen,stoptreinstation,1
+DR,8400176,Dieren,dieren,52.044998,6.103055,Gelderland,Rheden,intercitystation,1
+DTC,8400177,Doetinchem,doetinchem,51.958596,6.296215,Gelderland,Doetinchem,knooppuntStoptreinstation,1
+DTCH,8400184,Doetinchem De Huet,doetinchem-de-huet,51.959141,6.259852,Gelderland,Doetinchem,stoptreinstation,1
+DDR,8400180,Dordrecht,dordrecht,51.807220,4.668334,Zuid-Holland,Dordrecht,knooppuntIntercitystation,1
+DDRS,8400186,Dordrecht Stadspolders,dordrecht-stadspolders,51.801945,4.716667,Zuid-Holland,Dordrecht,stoptreinstation,1
+DDZD,8400181,Dordrecht Zuid,dordrecht-zuid,51.790001,4.671389,Zuid-Holland,Dordrecht,stoptreinstation,1
+DB,8400182,Driebergen-Zeist,driebergen-zeist,52.065277,5.258611,Utrecht,Utrechtse Heuvelrug,knooppuntStoptreinstation,1
+DRH,8400183,Driehuis,driehuis,52.442501,4.638055,Noord-Holland,Velsen,stoptreinstation,1
+DRP,8400192,Dronryp,dronryp,53.177809,5.634741,Fryslân,Waadhoeke,stoptreinstation,1
+DRON,8400198,Dronten,dronten,52.534400,5.720890,Flevoland,Dronten,stoptreinstation,1
+DVN,8400193,Duiven,duiven,51.943333,6.014722,Gelderland,Duiven,stoptreinstation,1
+DVD,8400194,Duivendrecht,duivendrecht,52.323334,4.936389,Noord-Holland,Ouder-Amstel,knooppuntStoptreinstation,1
+EC,8400195,Echt,echt,51.100555,5.878889,Limburg,Echt-Susteren,stoptreinstation,1
+EDC,8400201,Ede Centrum,ede-centrum,52.043610,5.668334,Gelderland,Ede,stoptreinstation,1
+ED,8400200,Ede-Wageningen,ede-wageningen,52.027779,5.673056,Gelderland,Ede,knooppuntIntercitystation,1
+EEM,8400202,Eemshaven,eemshaven,53.458419,6.832000,Groningen,Het Hogeland,stoptreinstation,1
+EDN,8400219,Eijsden,eijsden,50.771946,5.710000,Limburg,Eijsden-Margraten,stoptreinstation,1
+EHV,8400206,Eindhoven Centraal,eindhoven-centraal,51.443333,5.481389,Noord-Brabant,Eindhoven,megastation,1
+EHS,8400196,Eindhoven Strijp-S,eindhoven-strijp-s,51.451111,5.455833,Noord-Brabant,Eindhoven,stoptreinstation,1
+EST,8400207,Elst,elst,51.916943,5.855000,Gelderland,Overbetuwe,knooppuntStoptreinstation,1
+EMN,8400208,Emmen,emmen,52.790001,6.899445,Drenthe,Emmen,sneltreinstation,1
+EMNZ,8400407,Emmen Zuid,emmen-zuid,52.748866,6.874781,Drenthe,Emmen,sneltreinstation,1
+EKZ,8400210,Enkhuizen,enkhuizen,52.699165,5.286389,Noord-Holland,Enkhuizen,stoptreinstation,1
+ES,8400212,Enschede,enschede,52.222500,6.890000,Overijssel,Enschede,knooppuntIntercitystation,1
+ESE,8400217,Enschede De Eschmarke,enschede-de-eschmarke,52.221390,6.951111,Overijssel,Enschede,stoptreinstation,1
+ESK,8400221,Enschede Kennispark,enschede-kennispark,52.237499,6.838889,Overijssel,Enschede,stoptreinstation,1
+EML,8400216,Ermelo,ermelo,52.301666,5.614722,Gelderland,Ermelo,stoptreinstation,1
+ETN,8400218,Etten-Leur,etten-leur,51.575001,4.635833,Noord-Brabant,Etten-Leur,intercitystation,1
+EGH,8400338,Eygelshoven,eygelshoven,50.890556,6.045000,Limburg,Kerkrade,stoptreinstation,1
+EGHM,8400234,Eygelshoven Markt,eygelshoven-markt,50.896050,6.060247,Limburg,Kerkrade,stoptreinstation,1
+FWD,8400638,Feanwâlden,feanwalden,53.235183,5.988662,Fryslân,Dantumadiel,stoptreinstation,1
+FN,8400232,Franeker,franeker,53.182449,5.548309,Fryslân,Waadhoeke,stoptreinstation,1
+GDR,8400241,Gaanderen,gaanderen,51.930740,6.348600,Gelderland,Doetinchem,stoptreinstation,1
+GDM,8400244,Geldermalsen,geldermalsen,51.883010,5.271270,Gelderland,West Betuwe,knooppuntStoptreinstation,1
+GP,8400245,Geldrop,geldrop,51.419724,5.550556,Noord-Brabant,Geldrop-Mierlo,knooppuntStoptreinstation,1
+GLN,8400246,Geleen Oost,geleen-oost,50.966946,5.843056,Limburg,Sittard-Geleen,stoptreinstation,1
+LUT,8400248,Geleen-Lutterade,geleen-lutterade,50.975555,5.824722,Limburg,Sittard-Geleen,stoptreinstation,1
+GZ,8400251,Gilze-Rijen,gilze-rijen,51.583611,4.926111,Noord-Brabant,Gilze en Rijen,stoptreinstation,1
+GBR,8400262,Glanerbrug,glanerbrug,52.218613,6.974444,Overijssel,Enschede,stoptreinstation,1
+GS,8400253,Goes,goes,51.498055,3.890556,Zeeland,Goes,stoptreinstation,1
+GO,8400254,Goor,goor,52.230278,6.584445,Overijssel,Hof van Twente,stoptreinstation,1
+GR,8400256,Gorinchem,gorinchem,51.833889,4.968333,Zuid-Holland,Gorinchem,knooppuntStoptreinstation,1
+GD,8400258,Gouda,gouda,52.017502,4.704444,Zuid-Holland,Gouda,knooppuntIntercitystation,1
+GDG,8400257,Gouda Goverwelle,gouda-goverwelle,52.014999,4.740833,Zuid-Holland,Gouda,stoptreinstation,1
+GBG,8400259,Gramsbergen,gramsbergen,52.609165,6.675833,Overijssel,Hardenberg,stoptreinstation,1
+GK,8400267,Grijpskerk,grijpskerk,53.255740,6.309779,Groningen,Westerkwartier,stoptreinstation,1
+GN,8400263,Groningen,groningen,53.210556,6.564722,Groningen,Groningen,knooppuntIntercitystation,1
+GERP,8400238,Groningen Europapark,groningen-europapark,53.204800,6.585418,Groningen,Groningen,stoptreinstation,1
+GNN,8400264,Groningen Noord,groningen-noord,53.230147,6.556317,Groningen,Groningen,stoptreinstation,1
+GW,8400266,Grou-Jirnsum,grou-jirnsum,53.088890,5.822500,Fryslân,Leeuwarden,stoptreinstation,1
+HLM,8400285,Haarlem,haarlem,52.387779,4.638333,Noord-Holland,Haarlem,knooppuntIntercitystation,1
+HLMS,8400270,Haarlem Spaarnwoude,haarlem-spaarnwoude,52.382778,4.673056,Noord-Holland,Haarlem,stoptreinstation,1
+HWZB,8400400,Halfweg-Zwanenburg,halfweg-zwanenburg,52.385935,4.747165,Noord-Holland,Haarlemmermeer,stoptreinstation,1
+HDB,8400293,Hardenberg,hardenberg,52.572777,6.628611,Overijssel,Hardenberg,sneltreinstation,1
+HD,8400294,Harderwijk,harderwijk,52.337502,5.619722,Gelderland,Harderwijk,knooppuntStoptreinstation,1
+HBZM,8400438,Hardinxveld Blauwe Zoom,hardinxveld-blauwe-zoom,51.829440,4.815560,Zuid-Holland,Hardinxveld-Giessendam,stoptreinstation,1
+GND,8400295,Hardinxveld-Giessendam,hardinxveld-giessendam,51.830555,4.835834,Zuid-Holland,Hardinxveld-Giessendam,stoptreinstation,1
+HRN,8400297,Haren,haren,53.176109,6.617222,Groningen,Groningen,stoptreinstation,1
+HLG,8400296,Harlingen,harlingen,53.170420,5.425193,Fryslân,Harlingen,stoptreinstation,1
+HLGH,8400298,Harlingen Haven,harlingen-haven,53.174917,5.411289,Fryslân,Harlingen,stoptreinstation,1
+HK,8400317,Heemskerk,heemskerk,52.495277,4.686944,Noord-Holland,Heemskerk,stoptreinstation,1
+HAD,8400302,Heemstede-Aerdenhout,heemstede-aerdenhout,52.359165,4.606667,Noord-Holland,Heemstede,intercitystation,1
+HR,8400305,Heerenveen,heerenveen,52.961388,5.914166,Fryslân,Heerenveen,intercitystation,1
+HRY,8400301,Heerenveen IJsstadion,heerenveen-ijsstadion,52.935276,5.943889,Fryslân,Heerenveen,facultatiefStation,0
+HWD,8400306,Heerhugowaard,heerhugowaard,52.669724,4.822778,Noord-Holland,Dijk en Waard,knooppuntStoptreinstation,1
+HRL,8400307,Heerlen,heerlen,50.890835,5.975000,Limburg,Heerlen,knooppuntIntercitystation,1
+HRLW,8400404,Heerlen Woonboulevard,heerlen-woonboulevard,50.896667,5.952222,Limburg,Heerlen,stoptreinstation,1
+HZE,8400308,Heeze,heeze,51.384998,5.569445,Noord-Brabant,Heeze-Leende,stoptreinstation,1
+HLO,8400309,Heiloo,heiloo,52.599445,4.700555,Noord-Holland,Heiloo,stoptreinstation,1
+HNO,8400310,Heino,heino,52.427223,6.221111,Overijssel,Raalte,stoptreinstation,1
+HM,8400313,Helmond,helmond,51.475555,5.661944,Noord-Brabant,Helmond,knooppuntIntercitystation,1
+HMH,8400300,Helmond 't Hout,helmond-t-hout,51.467940,5.630850,Noord-Brabant,Helmond,stoptreinstation,1
+HMBV,8400242,Helmond Brandevoort,helmond-brandevoort,51.462223,5.607222,Noord-Brabant,Helmond,stoptreinstation,1
+HMBH,8400299,Helmond Brouwhuis,helmond-brouwhuis,51.470680,5.701770,Noord-Brabant,Helmond,stoptreinstation,1
+HMN,8400315,Hemmen-Dodewaard,hemmen-dodewaard,51.922213,5.673725,Gelderland,Neder-Betuwe,stoptreinstation,1
+HGL,8400316,Hengelo,hengelo,52.261665,6.793889,Overijssel,Hengelo (O.),knooppuntIntercitystation,1
+HGLG,8400433,Hengelo Gezondheidspark,hengelo-gezondheidspark,52.261667,6.767778,Overijssel,Hengelo (O.),stoptreinstation,1
+HGLO,8400312,Hengelo Oost,hengelo-oost,52.268890,6.819445,Overijssel,Hengelo (O.),stoptreinstation,1
+HIL,8400329,Hillegom,hillegom,52.302502,4.565556,Zuid-Holland,Hillegom,stoptreinstation,1
+HVS,8400322,Hilversum,hilversum,52.225834,5.181944,Noord-Holland,Hilversum,knooppuntIntercitystation,1
+HVSM,8400324,Hilversum Media Park,hilversum-media-park,52.238056,5.173889,Noord-Holland,Hilversum,stoptreinstation,1
+HVSP,8400570,Hilversum Sportpark,hilversum-sportpark,52.216110,5.187222,Noord-Holland,Hilversum,stoptreinstation,1
+HNP,8400323,Hindeloopen,hindeloopen,52.946490,5.423063,Fryslân,Súdwest-Fryslân,stoptreinstation,1
+HB,8400326,Hoensbroek,hoensbroek,50.905556,5.930555,Limburg,Heerlen,stoptreinstation,1
+HVL,8400490,Hoevelaken,hoevelaken,52.166520,5.457180,Utrecht,Amersfoort,stoptreinstation,1
+HOR,8400327,Hollandsche Rading,hollandsche-rading,52.177776,5.179167,Utrecht,De Bilt,stoptreinstation,1
+HON,8400328,Holten,holten,52.283890,6.420278,Overijssel,Rijssen-Holten,stoptreinstation,1
+HFD,8400332,Hoofddorp,hoofddorp,52.293335,4.700555,Noord-Holland,Haarlemmermeer,stoptreinstation,1
+HGV,8400330,Hoogeveen,hoogeveen,52.733891,6.473611,Drenthe,Hoogeveen,stoptreinstation,1
+HGZ,8400331,Hoogezand-Sappemeer,hoogezand-sappemeer,53.159818,6.770754,Groningen,Midden-Groningen,knooppuntStoptreinstation,1
+HKS,8400334,Hoogkarspel,hoogkarspel,52.690556,5.183889,Noord-Holland,Drechterland,stoptreinstation,1
+HN,8400337,Hoorn,hoorn,52.644722,5.055555,Noord-Holland,Hoorn,knooppuntIntercitystation,1
+HNK,8400336,Hoorn Kersenboogerd,hoorn-kersenboogerd,52.653610,5.085556,Noord-Holland,Hoorn,stoptreinstation,1
+HRT,8400339,Horst-Sevenum,horst-sevenum,51.426388,6.042222,Limburg,Horst aan de Maas,stoptreinstation,1
+HTN,8400340,Houten,houten,52.034020,5.168210,Utrecht,Houten,knooppuntStoptreinstation,1
+HTNC,8400335,Houten Castellum,houten-castellum,52.017010,5.179490,Utrecht,Houten,stoptreinstation,1
+SGL,8400341,Houthem-St. Gerlach,houthem-st-gerlach,50.873333,5.797222,Limburg,Valkenburg aan de Geul,stoptreinstation,1
+HDG,8400292,Hurdegaryp,hurdegaryp,53.218778,5.934543,Fryslân,Tytsjerksteradiel,stoptreinstation,1
+IJT,8400722,IJlst,ijlst,53.014661,5.616080,Fryslân,Súdwest-Fryslân,stoptreinstation,1
+KPN,8400353,Kampen,kampen,52.559723,5.921667,Overijssel,Kampen,stoptreinstation,1
+KPNZ,8400360,Kampen Zuid,kampen-zuid,52.533100,5.913090,Overijssel,Kampen,stoptreinstation,1
+BZL,8400354,Kapelle-Biezelinge,kapelle-biezelinge,51.480835,3.956111,Zeeland,Kapelle,stoptreinstation,1
+KRD,8400355,Kerkrade Centrum,kerkrade-centrum,50.861668,6.057500,Limburg,Kerkrade,knooppuntStoptreinstation,1
+KTR,8400359,Kesteren,kesteren,51.931387,5.583347,Gelderland,Neder-Betuwe,stoptreinstation,1
+KBK,8400361,Klarenbeek,klarenbeek,52.178055,6.083611,Gelderland,Voorst,stoptreinstation,1
+KMR,8400362,Klimmen-Ransdaal,klimmen-ransdaal,50.866390,5.890555,Limburg,Voerendaal,stoptreinstation,1
+KZ,8400363,Koog aan de Zaan,koog-aan-de-zaan,52.458611,4.805555,Noord-Holland,Zaanstad,stoptreinstation,1
+KMW,8400366,Koudum-Molkwerum,koudum-molkwerum,52.902820,5.410691,Fryslân,Súdwest-Fryslân,stoptreinstation,1
+KBD,8400367,Krabbendijke,krabbendijke,51.433334,4.116944,Zeeland,Reimerswaal,stoptreinstation,1
+KMA,8400368,Krommenie-Assendelft,krommenie-assendelft,52.495110,4.754170,Noord-Holland,Zaanstad,stoptreinstation,1
+KW,8400369,Kropswolde,kropswolde,53.161736,6.722088,Groningen,Midden-Groningen,stoptreinstation,1
+KRG,8400370,Kruiningen-Yerseke,kruiningen-yerseke,51.465000,4.037222,Zeeland,Reimerswaal,stoptreinstation,1
+ZLW,8400382,Lage Zwaluwe,lage-zwaluwe,51.691113,4.663055,Noord-Brabant,Moerdijk,knooppuntStoptreinstation,1
+LG,8400548,Landgraaf,landgraaf,50.896389,6.019166,Limburg,Landgraaf,knooppuntStoptreinstation,1
+LLZM,8400135,Lansingerland-Zoetermeer,lansingerland-zoetermeer,52.042222,4.517222,Zuid-Holland,Zoetermeer,stoptreinstation,1
+LDM,8400386,Leerdam,leerdam,51.894722,5.091389,Utrecht,Vijfheerenlanden,stoptreinstation,1
+LW,8400387,Leeuwarden,leeuwarden,53.195835,5.792222,Fryslân,Leeuwarden,knooppuntIntercitystation,1
+LWC,8400389,Leeuwarden Camminghaburen,leeuwarden-camminghaburen,53.202181,5.842297,Fryslân,Leeuwarden,stoptreinstation,1
+LEDN,8400390,Leiden Centraal,leiden-centraal,52.166111,4.481667,Zuid-Holland,Leiden,knooppuntIntercitystation,1
+LDL,8400384,Leiden Lammenschans,leiden-lammenschans,52.146946,4.492500,Zuid-Holland,Leiden,stoptreinstation,1
+LLS,8400394,Lelystad Centrum,lelystad-centrum,52.507778,5.472778,Flevoland,Lelystad,knooppuntIntercitystation,1
+LTV,8400395,Lichtenvoorde-Groenlo,lichtenvoorde-groenlo,52.011880,6.596410,Gelderland,Oost Gelre,stoptreinstation,1
+LC,8400399,Lochem,lochem,52.166668,6.426389,Gelderland,Lochem,stoptreinstation,1
+LP,8400403,Loppersum,loppersum,53.334714,6.747262,Groningen,Eemsdelta,stoptreinstation,1
+LTN,8400405,Lunteren,lunteren,52.085278,5.624444,Gelderland,Ede,stoptreinstation,1
+MZ,8400432,Maarheeze,maarheeze,51.304986,5.629796,Noord-Brabant,Cranendonck,stoptreinstation,1
+MRN,8400417,Maarn,maarn,52.064167,5.370000,Utrecht,Utrechtse Heuvelrug,knooppuntStoptreinstation,1
+MAS,8400419,Maarssen,maarssen,52.135277,5.033611,Utrecht,Stichtse Vecht,stoptreinstation,1
+MT,8400424,Maastricht,maastricht,50.850277,5.705555,Limburg,Maastricht,knooppuntIntercitystation,1
+MTN,8400449,Maastricht Noord,maastricht-noord,50.870870,5.717740,Limburg,Maastricht,stoptreinstation,1
+MTR,8400426,Maastricht Randwyck,maastricht-randwyck,50.838612,5.717222,Limburg,Maastricht,knooppuntStoptreinstation,1
+MG,8400427,Mantgum,mantgum,53.129637,5.713200,Fryslân,Leeuwarden,stoptreinstation,1
+MRB,8400428,Mariënberg,marienberg,52.509445,6.575278,Overijssel,Hardenberg,knooppuntSneltreinstation,1
+MTH,8400430,Martenshoek,martenshoek,53.160723,6.740299,Groningen,Midden-Groningen,stoptreinstation,1
+MES,8400434,Meerssen,meerssen,50.882879,5.750999,Limburg,Meerssen,sneltreinstation,1
+MP,8400435,Meppel,meppel,52.690834,6.197500,Drenthe,Meppel,knooppuntStoptreinstation,1
+MDB,8400436,Middelburg,middelburg,51.494720,3.617222,Zeeland,Middelburg (Z.),stoptreinstation,1
+MMLH,8400446,Mook-Molenhoek,mook-molenhoek,51.766262,5.879133,Limburg,Mook en Middelaar,stoptreinstation,1
+NDB,8400452,Naarden-Bussum,naarden-bussum,52.280277,5.156944,Noord-Holland,Gooise Meren,knooppuntStoptreinstation,1
+NA,8400454,Nieuw Amsterdam,nieuw-amsterdam,52.718613,6.848611,Drenthe,Emmen,sneltreinstation,1
+NVP,8400460,Nieuw Vennep,nieuw-vennep,52.258888,4.645555,Noord-Holland,Haarlemmermeer,stoptreinstation,1
+NWK,8400455,Nieuwerkerk a/d IJssel,nieuwerkerk-a-d-ijssel,51.965279,4.616944,Zuid-Holland,Zuidplas,stoptreinstation,1
+NKK,8400469,Nijkerk,nijkerk,52.222221,5.493889,Gelderland,Nijkerk,stoptreinstation,1
+NM,8400470,Nijmegen,nijmegen,51.843613,5.852222,Gelderland,Nijmegen,knooppuntIntercitystation,1
+NMD,8400475,Nijmegen Dukenburg,nijmegen-dukenburg,51.824165,5.795556,Gelderland,Nijmegen,stoptreinstation,1
+NMGO,8400477,Nijmegen Goffert,nijmegen-goffert,51.827300,5.822722,Gelderland,Nijmegen,stoptreinstation,1
+NMH,8400468,Nijmegen Heyendaal,nijmegen-heyendaal,51.826946,5.867500,Gelderland,Nijmegen,stoptreinstation,1
+NML,8400451,Nijmegen Lent,nijmegen-lent,51.863154,5.859625,Gelderland,Nijmegen,stoptreinstation,1
+NVD,8400472,Nijverdal,nijverdal,52.366111,6.462000,Overijssel,Hellendoorn,stoptreinstation,1
+NS,8400466,Nunspeet,nunspeet,52.370834,5.785278,Gelderland,Nunspeet,stoptreinstation,1
+NH,8400467,Nuth,nuth,50.919445,5.892778,Limburg,Beekdaelen,stoptreinstation,1
+OBD,8400480,Obdam,obdam,52.678055,4.907222,Noord-Holland,Koggenland,stoptreinstation,1
+OT,8400482,Oisterwijk,oisterwijk,51.582222,5.194167,Noord-Brabant,Oisterwijk,stoptreinstation,1
+ODZ,8400483,Oldenzaal,oldenzaal,52.306389,6.934722,Overijssel,Oldenzaal,stoptreinstation,1
+OST,8400486,Olst,olst,52.334721,6.113056,Overijssel,Olst-Wijhe,intercitystation,1
+OMN,8400487,Ommen,ommen,52.509445,6.415833,Overijssel,Ommen,knooppuntSneltreinstation,1
+OTB,8400489,Oosterbeek,oosterbeek,51.994999,5.840000,Gelderland,Renkum,stoptreinstation,1
+OP,8400494,Opheusden,opheusden,51.926161,5.637115,Gelderland,Neder-Betuwe,stoptreinstation,1
+O,8400495,Oss,oss,51.765556,5.532222,Noord-Brabant,Oss,knooppuntIntercitystation,1
+OW,8400496,Oss West,oss-west,51.758057,5.505556,Noord-Brabant,Oss,stoptreinstation,1
+ODB,8400498,Oudenbosch,oudenbosch,51.587776,4.533333,Noord-Brabant,Halderberge,stoptreinstation,1
+OVN,8400501,Overveen,overveen,52.391109,4.606111,Noord-Holland,Bloemendaal,stoptreinstation,1
+PMR,8400508,Purmerend,purmerend,52.503056,4.953611,Noord-Holland,Purmerend,knooppuntStoptreinstation,1
+PMO,8400506,Purmerend Overwhere,purmerend-overwhere,52.511391,4.968333,Noord-Holland,Purmerend,stoptreinstation,1
+PMW,8400499,Purmerend Weidevenne,purmerend-weidevenne,52.496591,4.935629,Noord-Holland,Purmerend,stoptreinstation,1
+PT,8400509,Putten,putten,52.264999,5.575278,Gelderland,Putten,stoptreinstation,1
+RAT,8400513,Raalte,raalte,52.391666,6.277500,Overijssel,Raalte,stoptreinstation,1
+RVS,8400515,Ravenstein,ravenstein,51.794167,5.635833,Noord-Brabant,Oss,stoptreinstation,1
+RV,8400518,Reuver,reuver,51.283219,6.078959,Limburg,Beesel,stoptreinstation,1
+RH,8400519,Rheden,rheden,52.010100,6.031400,Gelderland,Rheden,stoptreinstation,1
+RHN,8400517,Rhenen,rhenen,51.958611,5.578333,Utrecht,Rhenen,knooppuntStoptreinstation,1
+RSN,8400538,Rijssen,rijssen,52.312222,6.520278,Overijssel,Rijssen-Holten,stoptreinstation,1
+RSW,8400505,Rijswijk,rijswijk,52.039722,4.319167,Zuid-Holland,Rijswijk (ZH.),stoptreinstation,1
+RB,8400521,Rilland-Bath,rilland-bath,51.422779,4.161111,Zeeland,Reimerswaal,stoptreinstation,1
+RM,8400523,Roermond,roermond,51.193054,5.994167,Limburg,Roermond,knooppuntIntercitystation,1
+RD,8400525,Roodeschool,roodeschool,53.421262,6.758700,Groningen,Het Hogeland,stoptreinstation,1
+RSD,8400526,Roosendaal,roosendaal,51.540279,4.458333,Noord-Brabant,Roosendaal,knooppuntIntercitystation,1
+RS,8400524,Rosmalen,rosmalen,51.714722,5.368055,Noord-Brabant,'s-Hertogenbosch,stoptreinstation,1
+RTA,8400507,Rotterdam Alexander,rotterdam-alexander,51.951946,4.553611,Zuid-Holland,Rotterdam,intercitystation,1
+RTB,8400529,Rotterdam Blaak,rotterdam-blaak,51.920277,4.488889,Zuid-Holland,Rotterdam,stoptreinstation,1
+RTD,8400530,Rotterdam Centraal,rotterdam-centraal,51.924999,4.468889,Zuid-Holland,Rotterdam,megastation,1
+RLB,8400542,Rotterdam Lombardijen,rotterdam-lombardijen,51.880001,4.531389,Zuid-Holland,Rotterdam,stoptreinstation,1
+RTN,8400531,Rotterdam Noord,rotterdam-noord,51.942223,4.481667,Zuid-Holland,Rotterdam,stoptreinstation,1
+RTST,8400534,Rotterdam Stadion,rotterdam-stadion,51.893890,4.519722,Zuid-Holland,Rotterdam,facultatiefStation,0
+RTZ,8400533,Rotterdam Zuid,rotterdam-zuid,51.904446,4.510278,Zuid-Holland,Rotterdam,stoptreinstation,1
+RL,8400537,Ruurlo,ruurlo,52.081089,6.449266,Gelderland,Berkelland,stoptreinstation,1
+SPTN,8400543,Santpoort Noord,santpoort-noord,52.433887,4.632500,Noord-Holland,Velsen,stoptreinstation,1
+SPTZ,8400544,Santpoort Zuid,santpoort-zuid,52.419724,4.631389,Noord-Holland,Velsen,stoptreinstation,1
+SSH,8400603,Sassenheim,sassenheim,52.215278,4.517222,Zuid-Holland,Teylingen,stoptreinstation,1
+SWD,8400547,Sauwerd,sauwerd,53.291130,6.540400,Groningen,Het Hogeland,stoptreinstation,1
+SGN,8400549,Schagen,schagen,52.784443,4.805278,Noord-Holland,Schagen,stoptreinstation,1
+SDA,8400551,Scheemda,scheemda,53.165536,6.977778,Groningen,Oldambt,stoptreinstation,1
+SDM,8400553,Schiedam Centrum,schiedam-centrum,51.921244,4.408994,Zuid-Holland,Schiedam,stoptreinstation,1
+SOG,8400555,Schin op Geul,schin-op-geul,50.856388,5.872222,Limburg,Valkenburg aan de Geul,stoptreinstation,1
+SN,8400554,Schinnen,schinnen,50.939167,5.874444,Limburg,Beekdaelen,stoptreinstation,1
+SHL,8400561,Schiphol Airport,schiphol-airport,52.309444,4.761944,Noord-Holland,Haarlemmermeer,megastation,1
+STD,8400564,Sittard,sittard,51.001667,5.858611,Limburg,Sittard-Geleen,knooppuntIntercitystation,1
+SDT,8400565,Sliedrecht,sliedrecht,51.829723,4.778333,Zuid-Holland,Sliedrecht,stoptreinstation,1
+SDTB,8400497,Sliedrecht Baanhoek,sliedrecht-baanhoek,51.829722,4.743333,Zuid-Holland,Sliedrecht,stoptreinstation,1
+SK,8400566,Sneek,sneek,53.032869,5.652397,Fryslân,Súdwest-Fryslân,knooppuntStoptreinstation,1
+SKND,8400574,Sneek Noord,sneek-noord,53.040932,5.663181,Fryslân,Súdwest-Fryslân,stoptreinstation,1
+ST,8400567,Soest,soest,52.173332,5.310000,Utrecht,Soest,knooppuntStoptreinstation,1
+STZ,8400571,Soest Zuid,soest-zuid,52.165279,5.303056,Utrecht,Soest,stoptreinstation,1
+SD,8400569,Soestdijk,soestdijk,52.183613,5.300000,Utrecht,Soest,stoptreinstation,1
+SBK,8400572,Spaubeek,spaubeek,50.943270,5.850529,Limburg,Beek (L.),stoptreinstation,1
+STV,8400575,Stavoren,stavoren,52.886553,5.360021,Fryslân,Súdwest-Fryslân,stoptreinstation,1
+STM,8400576,Stedum,stedum,53.326209,6.687555,Groningen,Eemsdelta,stoptreinstation,1
+SWK,8400578,Steenwijk,steenwijk,52.791511,6.114556,Overijssel,Steenwijkerland,intercitystation,1
+SRN,8400582,Susteren,susteren,51.061390,5.863056,Limburg,Echt-Susteren,stoptreinstation,1
+SM,8400583,Swalmen,swalmen,51.235820,6.032280,Limburg,Roermond,stoptreinstation,1
+TG,8400591,Tegelen,tegelen,51.338940,6.142530,Limburg,Venlo,stoptreinstation,1
+TBG,8400592,Terborg,terborg,51.922455,6.364247,Gelderland,Oude IJsselstreek,stoptreinstation,1
+TL,8400596,Tiel,tiel,51.889446,5.422222,Gelderland,Tiel,knooppuntStoptreinstation,1
+TPSW,8400600,Tiel Passewaaij,tiel-passewaaij,51.873890,5.392222,Gelderland,Tiel,stoptreinstation,1
+TB,8400597,Tilburg,tilburg,51.560555,5.083611,Noord-Brabant,Tilburg,knooppuntIntercitystation,1
+TBR,8400598,Tilburg Reeshof,tilburg-reeshof,51.573612,4.994444,Noord-Brabant,Tilburg,stoptreinstation,1
+TBU,8400594,Tilburg Universiteit,tilburg-universiteit,51.564985,5.051778,Noord-Brabant,Tilburg,stoptreinstation,1
+TWL,8400599,Twello,twello,52.237778,6.098611,Gelderland,Voorst,stoptreinstation,1
+UTG,8400615,Uitgeest,uitgeest,52.521667,4.701667,Noord-Holland,Uitgeest,knooppuntStoptreinstation,1
+UHZ,8400617,Uithuizen,uithuizen,53.409957,6.674887,Groningen,Het Hogeland,stoptreinstation,1
+UHM,8400618,Uithuizermeeden,uithuizermeeden,53.414584,6.720298,Groningen,Het Hogeland,stoptreinstation,1
+UST,8400619,Usquert,usquert,53.401474,6.609378,Groningen,Het Hogeland,stoptreinstation,1
+UT,8400621,Utrecht Centraal,utrecht-centraal,52.088890,5.110278,Utrecht,Utrecht,megastation,1
+UTLR,8400607,Utrecht Leidsche Rijn,utrecht-leidsche-rijn,52.098960,5.065230,Utrecht,Utrecht,stoptreinstation,1
+UTLN,8400623,Utrecht Lunetten,utrecht-lunetten,52.065556,5.144166,Utrecht,Utrecht,stoptreinstation,1
+UTM,8400624,Utrecht Maliebaan,utrecht-maliebaan,52.087776,5.131389,Utrecht,Utrecht,stoptreinstation,1
+UTO,8400620,Utrecht Overvecht,utrecht-overvecht,52.110001,5.124722,Utrecht,Utrecht,knooppuntStoptreinstation,1
+UTT,8400614,Utrecht Terwijde,utrecht-terwijde,52.100075,5.043955,Utrecht,Utrecht,stoptreinstation,1
+UTVR,8400606,Utrecht Vaartsche Rijn,utrecht-vaartsche-rijn,52.078889,5.121667,Utrecht,Utrecht,knooppuntStoptreinstation,1
+UTZL,8400613,Utrecht Zuilen,utrecht-zuilen,52.103055,5.090000,Utrecht,Utrecht,stoptreinstation,1
+VK,8400632,Valkenburg,valkenburg,50.869720,5.832222,Limburg,Valkenburg aan de Geul,knooppuntSneltreinstation,1
+VSV,8400635,Varsseveld,varsseveld,51.937257,6.458839,Gelderland,Oude IJsselstreek,stoptreinstation,1
+VDM,8400636,Veendam,veendam,53.103240,6.884750,Groningen,Veendam,knooppuntStoptreinstation,1
+VNDC,8400627,Veenendaal Centrum,veenendaal-centrum,52.020000,5.548611,Utrecht,Veenendaal,knooppuntStoptreinstation,1
+VNDW,8400628,Veenendaal West,veenendaal-west,52.028057,5.531389,Utrecht,Veenendaal,stoptreinstation,1
+KLP,8400637,Veenendaal-De Klomp,veenendaal-de-klomp,52.045834,5.573889,Gelderland,Ede,stoptreinstation,1
+VP,8400640,Velp,velp,51.994720,5.980278,Gelderland,Rheden,stoptreinstation,1
+VL,8400644,Venlo,venlo,51.363609,6.172778,Limburg,Venlo,knooppuntIntercitystation,1
+VRY,8400646,Venray,venray,51.526568,6.014178,Limburg,Venray,knooppuntStoptreinstation,1
+VLB,8400647,Vierlingsbeek,vierlingsbeek,51.591930,5.997140,Noord-Brabant,Land van Cuijk,stoptreinstation,1
+VTN,8400651,Vleuten,vleuten,52.103056,5.007404,Utrecht,Utrecht,stoptreinstation,1
+VS,8400652,Vlissingen,vlissingen,51.445835,3.595278,Zeeland,Vlissingen,knooppuntIntercitystation,1
+VSS,8400653,Vlissingen Souburg,vlissingen-souburg,51.464722,3.595278,Zeeland,Vlissingen,stoptreinstation,1
+VDL,8400656,Voerendaal,voerendaal,50.887222,5.930278,Limburg,Voerendaal,stoptreinstation,1
+VB,8400658,Voorburg,voorburg,52.066666,4.359445,Zuid-Holland,'s-Gravenhage,stoptreinstation,1
+VH,8400655,Voorhout,voorhout,52.224445,4.484445,Zuid-Holland,Teylingen,stoptreinstation,1
+VST,8400659,Voorschoten,voorschoten,52.125278,4.432500,Zuid-Holland,Voorschoten,stoptreinstation,1
+VEM,8400668,Voorst-Empe,voorst-empe,52.157501,6.143611,Gelderland,Brummen,stoptreinstation,1
+VD,8400661,Vorden,vorden,52.107195,6.317046,Gelderland,Bronckhorst,stoptreinstation,1
+VZ,8400664,Vriezenveen,vriezenveen,52.402030,6.600410,Overijssel,Twenterand,stoptreinstation,1
+VHP,8400666,Vroomshoop,vroomshoop,52.457192,6.569668,Overijssel,Twenterand,stoptreinstation,1
+VG,8400667,Vught,vught,51.655556,5.291945,Noord-Brabant,Vught,stoptreinstation,1
+WAD,8400675,Waddinxveen,waddinxveen,52.044167,4.649722,Zuid-Holland,Waddinxveen,stoptreinstation,1
+WADN,8400674,Waddinxveen Noord,waddinxveen-noord,52.055000,4.648334,Zuid-Holland,Waddinxveen,stoptreinstation,1
+WADT,8400677,Waddinxveen Triangel,waddinxveen-triangel,52.027250,4.649100,Zuid-Holland,Waddinxveen,stoptreinstation,1
+WFM,8400679,Warffum,warffum,53.390843,6.567136,Groningen,Het Hogeland,stoptreinstation,1
+WT,8400684,Weert,weert,51.248611,5.703611,Limburg,Weert,intercitystation,1
+WP,8400685,Weesp,weesp,52.312778,5.043056,Noord-Holland,Amsterdam,knooppuntStoptreinstation,1
+WL,8400686,Wehl,wehl,51.957806,6.213844,Gelderland,Doetinchem,stoptreinstation,1
+WTV,8400688,Westervoort,westervoort,51.962860,5.969500,Gelderland,Westervoort,stoptreinstation,1
+WZ,8400690,Wezep,wezep,52.454166,6.002500,Gelderland,Oldebroek,stoptreinstation,1
+WDN,8400691,Wierden,wierden,52.361389,6.591667,Overijssel,Wierden,knooppuntStoptreinstation,1
+WC,8400710,Wijchen,wijchen,51.811668,5.730834,Gelderland,Wijchen,stoptreinstation,1
+WH,8400711,Wijhe,wijhe,52.390278,6.140555,Overijssel,Olst-Wijhe,intercitystation,1
+WS,8400696,Winschoten,winschoten,53.139238,7.035101,Groningen,Oldambt,knooppuntStoptreinstation,1
+WSM,8400697,Winsum,winsum,53.330099,6.520290,Groningen,Het Hogeland,stoptreinstation,1
+WW,8400698,Winterswijk,winterswijk,51.967731,6.715518,Gelderland,Winterswijk,knooppuntStoptreinstation,1
+WWW,8400700,Winterswijk West,winterswijk-west,51.974530,6.704170,Gelderland,Winterswijk,stoptreinstation,1
+WD,8400702,Woerden,woerden,52.084999,4.893611,Utrecht,Woerden,knooppuntStoptreinstation,1
+WF,8400704,Wolfheze,wolfheze,52.005554,5.793611,Gelderland,Renkum,stoptreinstation,1
+WV,8400705,Wolvega,wolvega,52.880833,6.003611,Fryslân,Weststellingwerf,stoptreinstation,1
+WK,8400706,Workum,workum,52.972486,5.456429,Fryslân,Súdwest-Fryslân,stoptreinstation,1
+WM,8400707,Wormerveer,wormerveer,52.489166,4.792222,Noord-Holland,Zaanstad,stoptreinstation,1
+ZD,8400731,Zaandam,zaandam,52.438889,4.813611,Noord-Holland,Zaanstad,knooppuntIntercitystation,1
+ZDK,8400728,Zaandam Kogerveld,zaandam-kogerveld,52.456665,4.820278,Noord-Holland,Zaanstad,stoptreinstation,1
+ZZS,8400364,Zaandijk Zaanse Schans,zaandijk-zaanse-schans,52.469166,4.805000,Noord-Holland,Zaanstad,knooppuntStoptreinstation,1
+ZBM,8400732,Zaltbommel,zaltbommel,51.808887,5.263333,Gelderland,Zaltbommel,stoptreinstation,1
+ZVT,8400733,Zandvoort aan Zee,zandvoort-aan-zee,52.375278,4.532778,Noord-Holland,Zandvoort,stoptreinstation,1
+ZA,8400734,Zetten-Andelst,zetten-andelst,51.920056,5.722841,Gelderland,Overbetuwe,stoptreinstation,1
+ZV,8400735,Zevenaar,zevenaar,51.923054,6.071944,Gelderland,Zevenaar,knooppuntStoptreinstation,1
+ZVB,8400737,Zevenbergen,zevenbergen,51.640420,4.609040,Noord-Brabant,Moerdijk,stoptreinstation,1
+ZTM,8400741,Zoetermeer,zoetermeer,52.047501,4.477222,Zuid-Holland,Zoetermeer,knooppuntStoptreinstation,1
+ZTMO,8400740,Zoetermeer Oost,zoetermeer-oost,52.046391,4.492778,Zuid-Holland,Zoetermeer,stoptreinstation,1
+ZB,8400742,Zuidbroek,zuidbroek,53.159612,6.867914,Groningen,Midden-Groningen,knooppuntStoptreinstation,1
+ZH,8400743,Zuidhorn,zuidhorn,53.248629,6.406236,Groningen,Westerkwartier,stoptreinstation,1
+ZP,8400744,Zutphen,zutphen,52.145279,6.194167,Gelderland,Zutphen,knooppuntIntercitystation,1
+ZWD,8400752,Zwijndrecht,zwijndrecht,51.814999,4.641667,Zuid-Holland,Zwijndrecht,stoptreinstation,1
+ZL,8400747,Zwolle,zwolle,52.504723,6.091944,Overijssel,Zwolle,knooppuntIntercitystation,1
+ZLSH,8400746,Zwolle Stadshagen,zwolle-stadshagen,52.527640,6.051460,Overijssel,Zwolle,stoptreinstation,1

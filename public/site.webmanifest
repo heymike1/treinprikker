@@ -1,0 +1,14 @@
+{
+    "name": "Treinprikker",
+    "short_name": "Treinprikker",
+    "description": "Elke dag vijf Nederlandse treinstations. Prik ze op de kaart.",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#f6f1e8",
+    "theme_color": "#1d3f8f",
+    "lang": "nl",
+    "icons": [
+        { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
+        { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+    ]
+}
