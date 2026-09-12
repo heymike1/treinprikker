@@ -69,7 +69,7 @@ class PlayGame extends Component
 
         $this->gameId = $game->id;
 
-        $this->loadState($game, $gameService->startOrResume($game, $currentPlayer->findOrCreate()));
+        $this->loadState($game, $gameService->find($game, $currentPlayer->find()));
     }
 
     /**
@@ -123,7 +123,7 @@ class PlayGame extends Component
             return;
         }
 
-        $this->loadState($game, $gameService->startOrResume($game, $currentPlayer->findOrCreate()));
+        $this->loadState($game, $gameService->find($game, $currentPlayer->find()));
 
         match ($this->phase) {
             'guessing' => $this->dispatch('round-started'),
@@ -139,8 +139,8 @@ class PlayGame extends Component
             return;
         }
 
-        $session = $gameService->startOrResume($game, $currentPlayer->findOrCreate());
-        if ($session->isCompleted()) {
+        $session = $gameService->find($game, $currentPlayer->find());
+        if ($session?->isCompleted()) {
             ShareClicked::dispatch($session, in_array($method, ['native', 'clipboard'], true) ? $method : 'unknown');
         }
     }
@@ -154,19 +154,22 @@ class PlayGame extends Component
     }
 
     /**
-     * Rebuilds all public state from the database (used on mount, refresh and after errors).
+     * Rebuilds all public state from the database (used on mount, refresh and
+     * after errors). Without a session the player simply starts at round 1.
      */
-    private function loadState(DailyGame $game, GameSession $session): void
+    private function loadState(DailyGame $game, ?GameSession $session): void
     {
         $rounds = $game->stations()->with('station:id,name,slug,province')->get();
-        $guesses = $session->guesses()->with('station:id,name,slug,province')->get()->keyBy('round_number');
+        $guesses = $session
+            ? $session->guesses()->with('station:id,name,slug,province')->get()
+            : collect();
 
         $this->totalRounds = $rounds->count();
-        $this->completedRounds = $guesses->values()->map(fn (Guess $guess) => $this->roundResult($guess))->all();
+        $this->completedRounds = $guesses->map(fn (Guess $guess) => $this->roundResult($guess))->values()->all();
         $this->lastResult = null;
         $this->summary = null;
 
-        if ($session->isCompleted()) {
+        if ($session?->isCompleted()) {
             $this->phase = 'finished';
             $this->currentRound = $this->totalRounds;
             $this->currentStationName = null;
@@ -175,7 +178,7 @@ class PlayGame extends Component
             return;
         }
 
-        $this->currentRound = $session->rounds_completed + 1;
+        $this->currentRound = ($session?->rounds_completed ?? 0) + 1;
         $current = $rounds->firstWhere('round_number', $this->currentRound);
         $this->currentStationName = $current?->station?->name;
         $this->phase = $this->currentStationName ? 'guessing' : 'unavailable';

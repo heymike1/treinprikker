@@ -154,8 +154,24 @@ class GamePlayTest extends TestCase
         $second = $this->withUnencryptedCookie(config('treinprikker.player_cookie.name'), $cookie->getValue())->get('/');
         $second->assertOk();
 
+        $this->assertSame(0, GameSession::count(), 'Opening the page never creates a session');
+
+        // The first guess creates player and session; a refresh resumes them.
+        $player = Player::create(['anonymous_id' => $first->getCookie(config('treinprikker.player_cookie.name'))->getValue()]);
+        app(GameService::class)->submitGuess(app(GameService::class)->startOrResume($this->game, $player), 1, 52.0, 5.0);
+        $this->withUnencryptedCookie(config('treinprikker.player_cookie.name'), $cookie->getValue())->get('/')->assertOk()->assertSee('2 van 5');
+
         $this->assertSame(1, Player::count());
         $this->assertSame(1, GameSession::count());
+    }
+
+    public function test_visiting_the_homepage_creates_no_player_or_session(): void
+    {
+        $this->get('/')->assertOk();
+        $this->get('/')->assertOk();
+
+        $this->assertSame(0, Player::count());
+        $this->assertSame(0, GameSession::count());
     }
 
     public function test_livewire_component_plays_a_full_game_and_resumes_after_refresh(): void

@@ -25,15 +25,25 @@ class GameService
     public function __construct(private readonly ScoreCalculator $scores) {}
 
     /**
-     * Returns the player's session for the game, creating it on first visit.
+     * The player's existing session for the game, if they have started guessing.
+     */
+    public function find(DailyGame $game, ?Player $player): ?GameSession
+    {
+        if (! $player) {
+            return null;
+        }
+
+        return GameSession::where('daily_game_id', $game->id)->where('player_id', $player->id)->first();
+    }
+
+    /**
+     * Returns the player's session for the game, creating it on the first guess.
+     * Merely opening the page never creates a session, so crawlers and bounced
+     * visitors don't count as played games.
      */
     public function startOrResume(DailyGame $game, Player $player): GameSession
     {
-        $session = GameSession::where('daily_game_id', $game->id)
-            ->where('player_id', $player->id)
-            ->first();
-
-        if ($session) {
+        if ($session = $this->find($game, $player)) {
             return $session;
         }
 
