@@ -64,10 +64,33 @@
     </main>
 
     @unless($fullscreen)
-        <footer class="shrink-0 border-t border-line">
-            <div class="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-2 px-4 py-4 text-xs text-muted">
-                <span>Treinprikker · elke dag een nieuwe rit</span>
-                <a href="{{ route('how-it-works') }}" class="hover:text-ink">Hoe werkt het?</a>
+        <footer class="shrink-0 border-t border-line bg-paper-deep">
+            <div class="mx-auto max-w-5xl px-4 pt-8 pb-6 sm:pt-10">
+                <div class="grid gap-6 sm:grid-cols-[1.2fr_0.8fr_1.6fr] sm:gap-10">
+                    <div>
+                        <a href="{{ route('home') }}" class="flex items-center gap-2 font-bold">
+                            <x-icon.train class="h-5 w-5 text-rail" />
+                            <span>Treinprikker</span>
+                        </a>
+                        <p class="mt-2 text-sm text-muted">Elke dag vijf stations. Hoe goed ken jij het Nederlandse spoor?</p>
+                    </div>
+                    <div>
+                        <p class="text-[11px] font-semibold tracking-[0.1em] text-muted uppercase">Spelen</p>
+                        <nav aria-label="Voettekst" class="mt-2 flex gap-4 text-sm font-semibold text-rail sm:flex-col sm:gap-1.5">
+                            <a href="{{ route('home') }}" class="hover:underline">Vandaag</a>
+                            <a href="{{ route('statistics') }}" class="hover:underline">Statistieken</a>
+                            <a href="{{ route('how-it-works') }}" class="hover:underline">Hoe werkt het?</a>
+                        </nav>
+                    </div>
+                    <div>
+                        <p class="text-[11px] font-semibold tracking-[0.1em] text-muted uppercase">Onafhankelijk</p>
+                        <p class="mt-2 text-[13px] leading-relaxed text-muted">
+                            Treinprikker is een onafhankelijk spel en is niet verbonden aan NS, ProRail of andere vervoerders.
+                            Stationsnamen worden alleen gebruikt om het spel te spelen.
+                        </p>
+                    </div>
+                </div>
+                <p class="mt-6 border-t border-line pt-4 text-xs text-muted">© {{ date('Y') }} Treinprikker</p>
             </div>
         </footer>
     @endunless
