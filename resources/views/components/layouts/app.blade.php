@@ -80,6 +80,7 @@
                             <a href="{{ route('home') }}" class="hover:underline">Vandaag</a>
                             <a href="{{ route('statistics') }}" class="hover:underline">Statistieken</a>
                             <a href="{{ route('how-it-works') }}" class="hover:underline">Hoe werkt het?</a>
+                            <a href="{{ route('feedback.create') }}" class="hover:underline">Feedback</a>
                         </nav>
                     </div>
                     <div>

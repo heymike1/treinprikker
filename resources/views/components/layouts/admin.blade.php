@@ -6,6 +6,7 @@
             <a href="{{ route('admin.games.index') }}" class="nav-link" @if(request()->routeIs('admin.games.*')) aria-current="page" @endif>Dagen</a>
             <a href="{{ route('admin.stations.index') }}" class="nav-link" @if(request()->routeIs('admin.stations.*')) aria-current="page" @endif>Stations</a>
             <a href="{{ route('admin.statistics') }}" class="nav-link" @if(request()->routeIs('admin.statistics')) aria-current="page" @endif>Statistieken</a>
+            <a href="{{ route('admin.feedback.index') }}" class="nav-link" @if(request()->routeIs('admin.feedback.*')) aria-current="page" @endif>Feedback</a>
         </nav>
 
         @if(session('status'))

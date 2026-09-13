@@ -146,7 +146,8 @@ client-side verwijderd en labels gebruiken `name:nl`. Wil je zelf tiles hosten, 
 | `/mijn-statistieken` | Persoonlijke statistieken en streaks |
 | `/station/{slug}` | Statistieken per station |
 | `/hoe-werkt-het` | Uitleg |
-| `/admin`, `/admin/dagen`, `/admin/stations`, `/admin/statistieken` | Beheer (basic auth, `is_admin`) |
+| `/feedback` | Feedbackformulier (naam optioneel, categorie, bericht); honeypot + 5 per 10 min per IP |
+| `/admin`, `/admin/dagen`, `/admin/stations`, `/admin/statistieken`, `/admin/feedback` | Beheer (basic auth, `is_admin`) |
 
 ## Analytics
 
