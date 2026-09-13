@@ -25,12 +25,14 @@
     <meta property="og:title" content="{{ $pageTitle }}">
     <meta property="og:description" content="{{ $description }}">
     <meta property="og:url" content="{{ url()->current() }}">
-    <meta property="og:image" content="{{ asset('images/og.png') }}">
+    <meta property="og:image" content="{{ asset('images/og.jpg') }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
     <meta property="og:locale" content="nl_NL">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{{ $pageTitle }}">
     <meta name="twitter:description" content="{{ $description }}">
-    <meta name="twitter:image" content="{{ asset('images/og.png') }}">
+    <meta name="twitter:image" content="{{ asset('images/og.jpg') }}">
 
     <link rel="icon" href="{{ asset('logo.svg') }}" type="image/svg+xml">
     <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="any">

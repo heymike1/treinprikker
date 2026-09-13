@@ -152,6 +152,11 @@ client-side verwijderd en labels gebruiken `name:nl`. Wil je zelf tiles hosten, 
 | `/feedback` | Feedbackformulier (naam optioneel, categorie, bericht); honeypot + 5 per 10 min per IP |
 | `/admin`, `/admin/dagen`, `/admin/stations`, `/admin/statistieken`, `/admin/feedback` | Beheer (basic auth, `is_admin`) |
 
+## Huisstijl
+
+Het logo staat als vector in `public/logo.svg` (en als Blade-component `<x-logo>`). De originelen staan in `resources/brand/`;
+`php scripts/brand-assets.php` maakt daaruit `favicon.ico`, `apple-touch-icon.png`, `icon-512.png` en `images/og.jpg`.
+
 ## Analytics
 
 Eerste-partij events (`analytics_events`): `game_started`, `guess_submitted`, `game_completed`, `share_clicked`, `stats_viewed`.
