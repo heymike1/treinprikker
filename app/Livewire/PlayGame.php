@@ -155,7 +155,7 @@ class PlayGame extends Component
         $session = $game ? $gameService->find($game, $currentPlayer->find()) : null;
 
         if ($session?->isCompleted()) {
-            ShareClicked::dispatch($session, in_array($method, ['native', 'clipboard'], true) ? $method : 'unknown');
+            ShareClicked::dispatch($session, in_array($method, ['native', 'clipboard', 'download'], true) ? $method : 'unknown');
         }
     }
 
@@ -334,13 +334,15 @@ class PlayGame extends Component
             'better_than_percentage' => $ranking['better_than_percentage'],
             'average_score_today' => $ranking['average_score'],
             'share_text' => ShareResult::text($session),
-            // Everything the share image needs; spoiler-free like the text.
+            // Everything the share image needs (unlike the text, the image does name the stations).
             'share_image' => [
                 'title' => $session->dailyGame->label(),
                 'modeLabel' => $session->mode === Mode::DEFAULT ? null : Mode::label($session->mode),
                 'totalScore' => $session->total_score,
                 'maximumScore' => $session->maximumScore(),
                 'rounds' => $guesses->map(fn (Guess $guess) => [
+                    'station' => $guess->station->name,
+                    'distance' => $guess->timed_out ? 'geen prik gezet' : format_distance($guess->distance_meters).' ernaast',
                     'score' => $guess->score,
                     'timedOut' => $guess->timed_out,
                     'bucket' => $guess->timed_out ? 'ver' : ResultPhrase::bucketKeyForScore($guess->score),

@@ -1,18 +1,34 @@
 import { renderShareImage } from './share-image';
 
 /**
- * Share button: renders the result card, then the native share sheet with
- * image + text where available; otherwise a panel with copy buttons.
+ * Result sharing: the card is rendered as soon as the summary shows. The
+ * share button opens the native share sheet with image + text where the
+ * browser has one, otherwise it copies the image (or downloads it).
  */
 export default function shareResult({ text, image }) {
+    let blob = null;
+
     return {
         text,
         feedback: null,
         timer: null,
         busy: false,
-        panelOpen: false,
         imageUrl: null,
-        canCopyImage: typeof ClipboardItem !== 'undefined' && !!navigator.clipboard?.write,
+        imageFailed: false,
+
+        async init() {
+            try {
+                blob = await renderShareImage(image);
+                this.imageUrl = URL.createObjectURL(blob);
+            } catch (error) {
+                console.error(error);
+                this.imageFailed = true;
+            }
+        },
+
+        get canCopyImage() {
+            return typeof ClipboardItem !== 'undefined' && !!navigator.clipboard?.write;
+        },
 
         async share() {
             if (this.busy) {
@@ -20,58 +36,57 @@ export default function shareResult({ text, image }) {
             }
             this.busy = true;
             try {
-                const blob = await this.imageBlob();
-                const file = new File([blob], 'treinprikker.png', { type: 'image/png' });
-
-                if (navigator.share && navigator.canShare?.({ files: [file] })) {
-                    try {
-                        await navigator.share({ files: [file], text: this.text });
-                        this.$wire?.shareClicked('native');
-                        return;
-                    } catch (error) {
-                        if (error?.name === 'AbortError') {
+                if (blob) {
+                    const file = new File([blob], 'treinprikker.png', { type: 'image/png' });
+                    if (navigator.share && navigator.canShare?.({ files: [file] })) {
+                        try {
+                            await navigator.share({ files: [file], text: this.text });
+                            this.$wire?.shareClicked('native');
                             return;
+                        } catch (error) {
+                            if (error?.name === 'AbortError') {
+                                return;
+                            }
                         }
                     }
+
+                    if (this.canCopyImage) {
+                        await this.copyImage();
+                        return;
+                    }
+
+                    this.download();
+                    return;
                 }
 
-                this.openPanel(blob);
-            } catch (error) {
-                console.error(error);
-                this.openPanel(null);
+                await this.copyText();
             } finally {
                 this.busy = false;
             }
         },
 
-        openPanel(blob) {
-            if (blob) {
-                this.imageUrl = URL.createObjectURL(blob);
-                this._blob = blob;
-            }
-            this.panelOpen = true;
-        },
-
-        closePanel() {
-            this.panelOpen = false;
-        },
-
-        async imageBlob() {
-            if (!this._blob) {
-                this._blob = await renderShareImage(image);
-            }
-            return this._blob;
-        },
-
         async copyImage() {
             try {
-                const blob = await this.imageBlob();
                 await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
                 this.flash('Afbeelding gekopieerd');
                 this.$wire?.shareClicked('clipboard');
             } catch {
-                this.flash('Kopiëren lukte niet. Houd de afbeelding ingedrukt om op te slaan.');
+                this.download();
             }
+        },
+
+        download() {
+            if (!this.imageUrl) {
+                return;
+            }
+            const link = document.createElement('a');
+            link.href = this.imageUrl;
+            link.download = 'treinprikker.png';
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            this.flash('Afbeelding gedownload');
+            this.$wire?.shareClicked('download');
         },
 
         async copyText() {
@@ -110,7 +125,7 @@ export default function shareResult({ text, image }) {
         flash(message) {
             this.feedback = message;
             clearTimeout(this.timer);
-            this.timer = setTimeout(() => (this.feedback = null), 2500);
+            this.timer = setTimeout(() => (this.feedback = null), 3500);
         },
     };
 }

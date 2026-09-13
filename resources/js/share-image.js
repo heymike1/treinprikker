@@ -1,6 +1,6 @@
 /**
- * Draws the shareable result card (1080x1080) on a canvas. Spoiler-free on
- * purpose: scores and colours only, never station names or pin positions.
+ * Draws the shareable result card (1080x1080) on a canvas: score, the five
+ * stations with distance and points, level, streak and comparison.
  */
 const COLORS = {
     paper: '#f6f1e8',
@@ -47,41 +47,46 @@ export async function renderShareImage(data) {
     ctx.font = `500 30px ${SANS}`;
     drawTracked(ctx, `VAN ${data.maximumScore} PUNTEN`, 72, 350, 3);
 
-    // Route strip: one stop per station, coloured by score.
-    const rounds = data.rounds;
-    const left = 120;
-    const right = size - 120;
-    const y = 560;
-    ctx.strokeStyle = COLORS.line;
-    ctx.lineWidth = 8;
-    ctx.lineCap = 'round';
-    ctx.beginPath();
-    ctx.moveTo(left, y);
-    ctx.lineTo(right, y);
-    ctx.stroke();
-
-    rounds.forEach((round, index) => {
-        const x = rounds.length === 1 ? (left + right) / 2 : left + ((right - left) * index) / (rounds.length - 1);
+    // One row per station: coloured stop, name, distance and points.
+    const rows = data.rounds;
+    const rowTop = 440;
+    const rowHeight = 82;
+    rows.forEach((round, index) => {
+        const y = rowTop + index * rowHeight;
         const color = round.timedOut ? COLORS.muted : COLORS.buckets[round.bucket] ?? COLORS.muted;
 
+        if (index > 0) {
+            ctx.strokeStyle = COLORS.line;
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(72, y - rowHeight / 2 + 4);
+            ctx.lineTo(size - 72, y - rowHeight / 2 + 4);
+            ctx.stroke();
+        }
+
         ctx.beginPath();
-        ctx.arc(x, y, 34, 0, Math.PI * 2);
-        ctx.fillStyle = COLORS.paper;
-        ctx.fill();
-        ctx.beginPath();
-        ctx.arc(x, y, 26, 0, Math.PI * 2);
+        ctx.arc(96, y, 16, 0, Math.PI * 2);
         ctx.fillStyle = color;
         ctx.fill();
 
         ctx.fillStyle = COLORS.ink;
-        ctx.font = `600 44px ${MONO}`;
-        ctx.textAlign = 'center';
-        ctx.fillText(String(round.score), x, y + 100);
+        ctx.font = `700 34px ${SANS}`;
+        ctx.textBaseline = 'middle';
+        ctx.fillText(fit(ctx, round.station, 560), 136, y - 14);
 
         ctx.fillStyle = COLORS.muted;
+        ctx.font = `500 24px ${SANS}`;
+        ctx.fillText(round.distance, 136, y + 20);
+
+        ctx.fillStyle = COLORS.ink;
+        ctx.font = `600 44px ${MONO}`;
+        ctx.textAlign = 'right';
+        ctx.fillText(String(round.score), size - 72, y - 6);
         ctx.font = `500 22px ${SANS}`;
-        ctx.fillText(round.label, x, y + 138);
+        ctx.fillStyle = COLORS.muted;
+        ctx.fillText(round.label, size - 72, y + 24);
         ctx.textAlign = 'left';
+        ctx.textBaseline = 'alphabetic';
     });
 
     // Footer facts.
@@ -96,8 +101,8 @@ export async function renderShareImage(data) {
         facts.push('Hoe goed ken jij het Nederlandse spoor?');
     }
     ctx.fillStyle = COLORS.ink;
-    ctx.font = `600 34px ${SANS}`;
-    facts.forEach((fact, index) => ctx.fillText(fact, 72, 820 + index * 52));
+    ctx.font = `600 30px ${SANS}`;
+    ctx.fillText(facts.join('   ·   '), 72, 910);
 
     // Brand line with a small pin.
     drawPin(ctx, 84, 1000, 0.9);
@@ -111,6 +116,18 @@ export async function renderShareImage(data) {
     ctx.textAlign = 'left';
 
     return new Promise((resolve) => canvas.toBlob(resolve, 'image/png'));
+}
+
+// Shortens a label with an ellipsis so it fits the given width.
+function fit(ctx, text, maxWidth) {
+    if (ctx.measureText(text).width <= maxWidth) {
+        return text;
+    }
+    let shortened = text;
+    while (shortened.length > 1 && ctx.measureText(shortened + '…').width > maxWidth) {
+        shortened = shortened.slice(0, -1);
+    }
+    return shortened.trimEnd() + '…';
 }
 
 function drawTracked(ctx, text, x, y, spacing) {
