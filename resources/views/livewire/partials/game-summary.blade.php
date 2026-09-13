@@ -14,11 +14,26 @@
         @endif
     </div>
 
-    <div x-data="shareResult(@js($summary['share_text']))" class="mt-6">
-        <button type="button" class="btn-primary" x-on:click="share()">
-            <span aria-hidden="true">📣</span> Deel je resultaat
+    <div x-data="shareResult(@js(['text' => $summary['share_text'], 'image' => $summary['share_image']]))" class="mt-6">
+        <button type="button" class="btn-primary" x-on:click="share()" x-bind:disabled="busy">
+            <span x-show="!busy">Deel je resultaat</span>
+            <span x-show="busy" x-cloak>Afbeelding maken…</span>
         </button>
         <p x-show="feedback" x-cloak x-text="feedback" class="mt-2 text-center text-sm font-medium" role="status" aria-live="polite"></p>
+
+        {{-- Fallback when the browser has no share sheet: show the card with copy buttons. --}}
+        <div x-show="panelOpen" x-cloak class="fixed inset-0 z-30 flex items-end justify-center bg-ink/60 p-4 sm:items-center" x-on:click.self="closePanel()" x-on:keydown.escape.window="closePanel()">
+            <div class="w-full max-w-md overflow-hidden rounded-2xl bg-card shadow-2xl" role="dialog" aria-modal="true" aria-label="Je resultaat delen">
+                <img x-show="imageUrl" x-bind:src="imageUrl" alt="Jouw Treinprikker-resultaat als afbeelding" class="block w-full">
+                <div class="flex flex-col gap-2 p-4">
+                    <button type="button" class="btn-primary" x-show="imageUrl && canCopyImage" x-on:click="copyImage()">Kopieer afbeelding</button>
+                    <a x-show="imageUrl" x-bind:href="imageUrl" download="treinprikker.png" class="btn-secondary">Afbeelding opslaan</a>
+                    <button type="button" class="btn-secondary" x-on:click="copyText()">Kopieer tekst</button>
+                    <button type="button" class="mt-1 text-sm text-muted hover:text-ink" x-on:click="closePanel()">Sluiten</button>
+                </div>
+            </div>
+        </div>
+
         <details class="mt-2 text-center text-xs text-muted">
             <summary class="cursor-pointer">Bekijk de deeltekst</summary>
             <pre class="mt-2 rounded-lg bg-paper-deep p-3 text-left font-mono text-xs whitespace-pre-wrap">{{ $summary['share_text'] }}</pre>
