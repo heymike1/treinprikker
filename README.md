@@ -52,6 +52,9 @@ composer install --no-dev --optimize-autoloader && npm ci && npm run build && ph
 
 Draai je geen queue-worker, zet dan `QUEUE_CONNECTION=sync` in `.env`; anders blijven de statistieken na een potje wachten op de worker.
 
+Foutmeldingen gaan naar Sentry zodra `SENTRY_LARAVEL_DSN` is gezet. Houd `SENTRY_SEND_DEFAULT_PII=false` (geen IP-adressen of cookies
+meesturen) en een lage `SENTRY_TRACES_SAMPLE_RATE` (bijv. `0.1`) om binnen het quotum te blijven.
+
 ## Artisan-commando's
 
 | Commando | Doel |
