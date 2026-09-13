@@ -1,7 +1,7 @@
 <div class="flex min-h-0 flex-1 flex-col">
     @if($phase === 'unavailable')
         <div class="mx-auto w-full max-w-md px-4 py-16 text-center">
-            <x-icon.train class="mx-auto h-10 w-10 text-rail" />
+            <x-logo class="mx-auto h-14 w-auto" />
             <h1 class="mt-4 text-xl font-bold">Even geduld op het perron</h1>
             <p class="mt-2 text-muted">{{ $errorMessage }}</p>
             <a href="{{ route('home') }}" class="btn-secondary mt-6">Opnieuw proberen</a>

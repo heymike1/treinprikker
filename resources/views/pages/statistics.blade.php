@@ -27,7 +27,7 @@
 
         @if($stats['is_building'])
             <div class="card mt-6 flex items-start gap-3 px-4 py-3">
-                <x-icon.train class="mt-0.5 h-5 w-5 shrink-0 text-rail" />
+                <x-logo class="mt-0.5 h-6 w-auto shrink-0" />
                 <p class="text-sm">
                     <strong>De statistieken worden nog opgebouwd.</strong>
                     Een station wordt pas officieel gerangschikt na {{ format_number($stats['minimum_station_guesses']) }} prikken.

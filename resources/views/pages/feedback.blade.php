@@ -5,7 +5,7 @@
 
         @if(session('status'))
             <div class="card mt-6 flex items-start gap-3 border-good/30 bg-good-soft p-4" role="status">
-                <x-icon.train class="mt-0.5 h-5 w-5 shrink-0 text-[#1f6b41]" />
+                <x-logo class="mt-0.5 h-6 w-auto shrink-0" />
                 <p class="text-sm font-semibold text-[#1f6b41]">{{ session('status') }}</p>
             </div>
         @endif

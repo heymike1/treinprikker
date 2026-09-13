@@ -32,7 +32,7 @@
     <meta name="twitter:description" content="{{ $description }}">
     <meta name="twitter:image" content="{{ asset('images/og.png') }}">
 
-    <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
+    <link rel="icon" href="{{ asset('logo.svg') }}" type="image/svg+xml">
     <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="any">
     <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}">
     <link rel="manifest" href="{{ asset('site.webmanifest') }}">
@@ -48,7 +48,7 @@
     <header class="shrink-0 border-b border-line bg-paper">
         <div class="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-2.5 sm:py-3">
             <a href="{{ route('home') }}" class="flex items-center gap-1.5 text-base font-bold tracking-tight sm:gap-2 sm:text-lg">
-                <x-icon.train class="h-5 w-5 text-rail" />
+                <x-logo class="h-7 w-auto sm:h-8" />
                 <span>Treinprikker</span>
             </a>
             <nav aria-label="Hoofdmenu" class="flex items-center gap-0.5 sm:gap-1">
@@ -69,7 +69,7 @@
                 <div class="grid gap-6 sm:grid-cols-[1.2fr_0.8fr_1.6fr] sm:gap-10">
                     <div>
                         <a href="{{ route('home') }}" class="flex items-center gap-2 font-bold">
-                            <x-icon.train class="h-5 w-5 text-rail" />
+                            <x-logo class="h-6 w-auto" />
                             <span>Treinprikker</span>
                         </a>
                         <p class="mt-2 text-sm text-muted">Elke dag vijf stations. Hoe goed ken jij het Nederlandse spoor?</p>
