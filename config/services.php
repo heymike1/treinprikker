@@ -28,6 +28,14 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'datafast' => [
+        'website_id' => env('DATAFAST_WEBSITE_ID', 'dfid_ptn1lUVSeioDs7nnO9l1e'),
+        'domain' => env('DATAFAST_DOMAIN', 'treinprikker.nl'),
+        // Server-side reporting of AI crawlers and search bots; on by default in production.
+        'bot_tracking' => env('DATAFAST_BOT_TRACKING', env('APP_ENV') === 'production'),
+        'bot_token' => env('DATAFAST_BOT_TOKEN'),
+    ],
+
     'slack' => [
         'notifications' => [
             'bot_user_oauth_token' => env('SLACK_BOT_USER_OAUTH_TOKEN'),

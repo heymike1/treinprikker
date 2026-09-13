@@ -40,7 +40,7 @@
     <link rel="manifest" href="{{ asset('site.webmanifest') }}">
 
     @production
-        <script defer data-website-id="dfid_ptn1lUVSeioDs7nnO9l1e" data-domain="treinprikker.nl" src="https://datafa.st/js/script.js"></script>
+        <script defer data-website-id="{{ config('services.datafast.website_id') }}" data-domain="{{ config('services.datafast.domain') }}" src="https://datafa.st/js/script.js"></script>
     @endproduction
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])

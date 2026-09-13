@@ -158,6 +158,13 @@ client-side verwijderd en labels gebruiken `name:nl`. Wil je zelf tiles hosten, 
 1080×1080 PNG, in de browser getekend), de "zo werkt het"-carousel (3 slides) en teksten voor een dagelijkse teaser en het
 meest verkeerd geplaatste station. Bijschriften zijn te kopiëren, afbeeldingen te downloaden.
 
+## Analytics
+
+DataFast draait alleen in productie (`@production`). Naast het frontend-script meldt de middleware `TrackAiCrawlers`
+bezoeken van AI-assistenten, zoekmachines en trainingscrawlers server-side aan DataFast (die laden geen JavaScript).
+Staat standaard aan in productie; uit te zetten met `DATAFAST_BOT_TRACKING=false`, optioneel te beveiligen met een
+`DATAFAST_BOT_TOKEN` (`dfbot_…`) uit de DataFast-instellingen.
+
 ## Huisstijl
 
 Het logo staat als vector in `public/logo.svg` (en als Blade-component `<x-logo>`). De originelen staan in `resources/brand/`;
