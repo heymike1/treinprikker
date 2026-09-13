@@ -108,9 +108,7 @@ export async function renderShareImage(data) {
 
     // Footer: comparison chip and brand.
     const footerY = SIZE - PADDING.bottom - 20;
-    const fact = data.betterThan !== null && data.betterThan !== undefined
-        ? `Beter dan ${data.betterThan}% vandaag`
-        : 'Hoe goed ken jij het Nederlandse spoor?';
+    const fact = data.rankingLabel ?? 'Hoe goed ken jij het Nederlandse spoor?';
     ctx.font = `600 24px ${SANS}`;
     const factWidth = ctx.measureText(fact).width;
     roundedRect(ctx, left, footerY - 30, factWidth + 36, 50, 25);

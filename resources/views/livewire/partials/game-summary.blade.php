@@ -1,8 +1,8 @@
 <div class="mx-auto w-full max-w-md px-4 py-6 sm:py-10" wire:key="game-summary">
     <div class="text-center">
         <p class="text-[11px] font-semibold tracking-[0.12em] text-muted uppercase">Klaar voor vandaag · {{ $summary['mode_label'] }}</p>
-        @if($summary['better_than_percentage'] !== null)
-            <h1 class="mt-1 text-2xl font-bold tracking-tight sm:text-3xl">Beter dan {{ $summary['better_than_percentage'] }}% van de spelers</h1>
+        @if($summary['ranking_label'])
+            <h1 class="mt-1 text-2xl font-bold tracking-tight sm:text-3xl">{{ Str::replaceLast(' vandaag', '', $summary['ranking_label']) }}</h1>
             <p class="mt-1 text-sm text-muted">Vandaag gemiddeld {{ format_number($summary['average_score_today']) }} punten op {{ $summary['mode_label'] }} · {{ format_number($summary['players']) }} {{ $summary['players'] === 1 ? 'speler' : 'spelers' }}</p>
         @else
             <h1 class="mt-1 text-2xl font-bold tracking-tight sm:text-3xl">{{ format_number($summary['total_score']) }} van {{ format_number($summary['maximum_score']) }} punten</h1>

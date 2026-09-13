@@ -11,8 +11,11 @@ use Illuminate\Support\Facades\DB;
  */
 class DailyGameRanking
 {
+    // Below this many players a rank ("plek 3 van 8") reads better than a percentage.
+    public const RANK_UP_TO = 20;
+
     /**
-     * @return array{players: int, better_than_percentage: int|null, average_score: int|null}
+     * @return array{players: int, rank: int|null, better_than_percentage: int|null, average_score: int|null, label: string|null}
      */
     public function for(GameSession $session): array
     {
@@ -25,17 +28,25 @@ class DailyGameRanking
         $minimum = (int) config('treinprikker.statistics.minimum_players_for_comparison');
 
         if (! $session->isCompleted() || $players < $minimum) {
-            return ['players' => $players, 'better_than_percentage' => null, 'average_score' => null];
+            return ['players' => $players, 'rank' => null, 'better_than_percentage' => null, 'average_score' => null, 'label' => null];
         }
 
         $others = $players - 1;
         $beaten = (clone $completed)->where('id', '!=', $session->id)->where('total_score', '<', $session->total_score)->count();
+        $ahead = (clone $completed)->where('id', '!=', $session->id)->where('total_score', '>', $session->total_score)->count();
         $average = (clone $completed)->avg('total_score');
+
+        $percentage = $others > 0 ? (int) round($beaten / $others * 100) : null;
+        $rank = $ahead + 1;
 
         return [
             'players' => $players,
-            'better_than_percentage' => $others > 0 ? (int) round($beaten / $others * 100) : null,
+            'rank' => $rank,
+            'better_than_percentage' => $percentage,
             'average_score' => (int) round($average),
+            'label' => $players < self::RANK_UP_TO || $percentage === null
+                ? "Plek {$rank} van {$players} vandaag"
+                : "Beter dan {$percentage}% van de spelers vandaag",
         ];
     }
 }

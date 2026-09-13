@@ -155,6 +155,17 @@ class StatisticsTest extends TestCase
 
         $this->assertSame(2, $ranking['players']);
         $this->assertSame(100, $ranking['better_than_percentage']);
+        $this->assertSame(1, $ranking['rank']);
+    }
+
+    public function test_ranking_uses_a_percentage_once_there_are_enough_players(): void
+    {
+        config(['treinprikker.statistics.minimum_players_for_comparison' => 3]);
+        $game = DailyGame::factory()->create();
+        $mine = GameSession::factory()->completed(4000)->create(['daily_game_id' => $game->id]);
+        GameSession::factory()->count(24)->completed(1000)->create(['daily_game_id' => $game->id]);
+
+        $this->assertSame('Beter dan 100% van de spelers vandaag', app(DailyGameRanking::class)->for($mine)['label']);
     }
 
     public function test_timed_out_rounds_are_not_counted_as_guesses(): void
@@ -190,6 +201,8 @@ class StatisticsTest extends TestCase
         $ranking = app(DailyGameRanking::class)->for($mine);
         $this->assertSame(4, $ranking['players']);
         $this->assertSame(67, $ranking['better_than_percentage']); // beat 2 of 3 others
+        $this->assertSame(2, $ranking['rank']);
+        $this->assertSame('Plek 2 van 4 vandaag', $ranking['label']);
         $this->assertSame(2625, $ranking['average_score']);
     }
 

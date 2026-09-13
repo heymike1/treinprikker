@@ -332,6 +332,7 @@ class PlayGame extends Component
             'longest_streak' => $streak['longest'],
             'players' => $ranking['players'],
             'better_than_percentage' => $ranking['better_than_percentage'],
+            'ranking_label' => $ranking['label'],
             'average_score_today' => $ranking['average_score'],
             'share_text' => ShareResult::text($session),
             // Everything the share image needs (unlike the text, the image does name the stations).
@@ -348,7 +349,7 @@ class PlayGame extends Component
                     'bucket' => $guess->timed_out ? 'ver' : ResultPhrase::bucketKeyForScore($guess->score),
                     'label' => $guess->timed_out ? 'Te laat' : ResultPhrase::labelForScore($guess->score),
                 ])->values()->all(),
-                'betterThan' => $ranking['better_than_percentage'],
+                'rankingLabel' => $ranking['label'],
                 'silhouetteUrl' => asset('data/nederland.json'),
             ],
         ];
