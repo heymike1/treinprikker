@@ -55,7 +55,7 @@ export default function shareResult({ text, image }) {
                         return;
                     }
 
-                    this.download();
+                    await this.saveImage();
                     return;
                 }
 
@@ -71,21 +71,61 @@ export default function shareResult({ text, image }) {
                 this.flash('Afbeelding gekopieerd');
                 this.$wire?.shareClicked('clipboard');
             } catch {
-                this.download();
+                await this.saveImage();
             }
         },
 
-        download() {
-            if (!this.imageUrl) {
+        get isAppleTouch() {
+            return /iPad|iPhone|iPod/.test(navigator.userAgent)
+                || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+        },
+
+        /**
+         * "Download" means different things per platform: a real download on
+         * desktop and Android, the share sheet (with "Bewaar afbeelding") on
+         * iOS where downloads land in the Files app, and a plain image tab
+         * where neither works (in-app browsers).
+         */
+        async download() {
+            if (!this.imageUrl || this.busy) {
                 return;
             }
-            const link = document.createElement('a');
-            link.href = this.imageUrl;
-            link.download = 'treinprikker.png';
-            document.body.appendChild(link);
-            link.click();
-            link.remove();
-            this.flash('Afbeelding gedownload');
+            this.busy = true;
+            try {
+                await this.saveImage();
+            } finally {
+                this.busy = false;
+            }
+        },
+
+        async saveImage() {
+            const file = new File([blob], 'treinprikker.png', { type: 'image/png' });
+            if (this.isAppleTouch && navigator.share && navigator.canShare?.({ files: [file] })) {
+                try {
+                    await navigator.share({ files: [file] });
+                    this.$wire?.shareClicked('download');
+                    return;
+                } catch (error) {
+                    if (error?.name === 'AbortError') {
+                        return;
+                    }
+                }
+            }
+
+            if ('download' in HTMLAnchorElement.prototype && !this.isAppleTouch) {
+                const link = document.createElement('a');
+                link.href = this.imageUrl;
+                link.download = 'treinprikker.png';
+                document.body.appendChild(link);
+                link.click();
+                link.remove();
+                this.flash('Afbeelding gedownload');
+                this.$wire?.shareClicked('download');
+                return;
+            }
+
+            window.open(this.imageUrl, '_blank');
+            this.flash('Houd de afbeelding ingedrukt om op te slaan');
             this.$wire?.shareClicked('download');
         },
 

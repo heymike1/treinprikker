@@ -19,10 +19,8 @@
 
         <div class="mt-4 flex flex-col gap-2">
             <button type="button" class="btn-primary" data-fast-goal="share_result" data-fast-goal-level="{{ $summary['mode'] }}" x-on:click="share()" x-bind:disabled="busy || !imageUrl">Deel je resultaat</button>
-            <div class="grid grid-cols-2 gap-2">
-                <button type="button" class="btn-secondary" data-fast-goal="download_image" data-fast-goal-level="{{ $summary['mode'] }}" x-on:click="download()" x-bind:disabled="!imageUrl">Download als afbeelding</button>
-                <button type="button" class="btn-secondary" data-fast-goal="copy_text" data-fast-goal-level="{{ $summary['mode'] }}" x-on:click="copyText()">Kopieer tekst</button>
-            </div>
+            <button type="button" class="btn-secondary" data-fast-goal="download_image" data-fast-goal-level="{{ $summary['mode'] }}" x-on:click="download()" x-bind:disabled="busy || !imageUrl">Download resultaat als afbeelding</button>
+            <button type="button" class="btn-secondary" data-fast-goal="copy_text" data-fast-goal-level="{{ $summary['mode'] }}" x-on:click="copyText()">Kopieer tekst</button>
         </div>
         <p x-show="feedback" x-cloak x-text="feedback" class="mt-2 text-center text-sm font-medium" role="status" aria-live="polite"></p>
         <a href="https://www.instagram.com/treinprikker" target="_blank" rel="noopener" class="mt-3 flex items-center justify-center gap-2 text-sm text-muted hover:text-ink">
