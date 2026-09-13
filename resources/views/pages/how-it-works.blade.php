@@ -77,7 +77,7 @@
                 <section class="card border-rail/20 bg-rail/5 p-5">
                     <h2 class="text-lg font-bold">Geïnspireerd door Polderprikker</h2>
                     <p class="mt-1 text-sm leading-relaxed text-muted">
-                        Treinprikker is gemaakt uit bewondering voor Polderprikker, het dagelijkse prikspel over Nederlandse plaatsen.
+                        Treinprikker is gemaakt uit bewondering voor <a href="https://polderprikker.nl" target="_blank" rel="noopener" class="font-semibold text-rail hover:underline">Polderprikker</a>, het dagelijkse prikspel over Nederlandse plaatsen.
                         Wij hebben er het spoor van gemaakt: zelfde eenvoud, andere kaart. Alle lof voor het originele idee gaat naar hen.
                     </p>
                 </section>
