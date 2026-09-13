@@ -32,3 +32,9 @@ php artisan stations:import --deactivate-missing
 De importer werkt bestaande stations bij op code/uic/slug, voegt nieuwe toe en laat ID's,
 prikken en statistieken intact. Datagedreven moeilijkheidsratings blijven staan;
 gebruik `--reset-difficulty` om heuristische ratings opnieuw te berekenen.
+
+## Spoornet (Expert-kaart)
+
+`public/data/spoornet.json` is het Nederlandse spoornet als één MultiLineString, gebruikt op de kale Expert-kaart.
+Bron: OpenStreetMap (ODbL), Overpass-query `way["railway"="rail"]["usage"~"^(main|branch)$"]["service"!~"."]` binnen Nederland,
+vereenvoudigd met Douglas-Peucker (~50 m) en afgerond op 4 decimalen. Het bevat alleen lijnen, geen stations.

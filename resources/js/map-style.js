@@ -7,7 +7,8 @@ const ANSWER_LAYERS = /^(railway|airport|poi|transit)/i;
 // Country/state labels, water names and road shields (A2, N33) stay for orientation.
 const PLACE_LAYERS = /^(label_(city|town|village|other)|highway-name)/i;
 
-// The "blank" expert map keeps only these: land, water and administrative borders.
+// The "blank" expert map keeps only these: land, water and administrative borders,
+// plus the railway lines (without stations) added below.
 const BLANK_LAYERS = /^(background|water|waterway|boundary_2|boundary_3)$/;
 
 /**
@@ -28,6 +29,20 @@ export async function loadCleanStyle(styleUrl, { hidePlaces = false, blank = fal
         .map((layer) => dutchLabels(layer));
     if (blank) {
         style.layers = style.layers.map((layer) => blankPaint(layer));
+        // The vector tiles only carry railways from zoom ~9, so the blank map
+        // brings its own simplified network (public/data/spoornet.json).
+        style.sources.spoornet = { type: 'geojson', data: '/data/spoornet.json' };
+        style.layers.push({
+            id: 'spoornet',
+            type: 'line',
+            source: 'spoornet',
+            layout: { 'line-cap': 'round', 'line-join': 'round' },
+            paint: {
+                'line-color': '#4a4540',
+                'line-width': ['interpolate', ['linear'], ['zoom'], 6, 0.9, 9, 1.5, 12, 2.4],
+                'line-opacity': 0.85,
+            },
+        });
     }
     return style;
 }
@@ -44,7 +59,14 @@ function blankPaint(layer) {
         boundary_3: { 'line-color': '#a39a8e', 'line-width': 1, 'line-dasharray': [3, 2] },
     }[layer.id];
 
-    return paint ? { ...layer, paint } : layer;
+    if (!paint) {
+        return layer;
+    }
+
+    // Province borders help orientation, so show them from the overview zoom.
+    const minzoom = layer.id === 'boundary_3' ? 5 : layer.minzoom;
+
+    return { ...layer, paint, ...(minzoom !== undefined ? { minzoom } : {}) };
 }
 
 /**
