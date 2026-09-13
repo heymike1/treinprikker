@@ -91,7 +91,6 @@
                     <h2 class="text-lg font-bold">Onafhankelijk</h2>
                     <p class="mt-1 text-sm leading-relaxed text-muted">
                         Treinprikker is een onafhankelijk spel en is niet verbonden aan NS, ProRail of andere vervoerders.
-                        Stationsnamen en -codes worden alleen gebruikt om het spel te spelen.
                     </p>
                 </section>
 
