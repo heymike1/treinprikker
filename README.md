@@ -38,6 +38,20 @@ Geplande taken (Europe/Amsterdam):
 
 Ontbreekt de Treinprikker van vandaag toch (scheduler nooit gedraaid), dan wordt hij bij het eerste bezoek achter een lock gegenereerd.
 
+## Deployen
+
+Eerste keer op de server: `.env` invullen (`APP_ENV=production`, `APP_DEBUG=false`, database), `php artisan key:generate`,
+daarna het update-commando hieronder plus `php artisan db:seed --force` en `php artisan treinprikker:admin jij@voorbeeld.nl`.
+Zet de webroot op `public/` en de cron uit het hoofdstuk Installatie.
+
+Elke update, na `git pull` — de stappen zijn onschadelijk als er niets te doen is, dus altijd het hele commando draaien:
+
+```bash
+composer install --no-dev --optimize-autoloader && npm ci && npm run build && php artisan migrate --force && php artisan optimize
+```
+
+Draai je geen queue-worker, zet dan `QUEUE_CONNECTION=sync` in `.env`; anders blijven de statistieken na een potje wachten op de worker.
+
 ## Artisan-commando's
 
 | Commando | Doel |
