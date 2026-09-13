@@ -10,7 +10,7 @@ class NotFoundPageTest extends TestCase
     {
         $this->get('/deze-pagina-bestaat-niet')
             ->assertNotFound()
-            ->assertSee('Dit station bestaat niet')
+            ->assertSee('Deze bestemming staat niet op de kaart')
             ->assertSee(route('home'));
     }
 }
