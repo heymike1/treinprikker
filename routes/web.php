@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdminDailyGameController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminFeedbackController;
+use App\Http\Controllers\Admin\AdminMarketingController;
 use App\Http\Controllers\Admin\AdminStationController;
 use App\Http\Controllers\Admin\AdminStatisticsController;
 use App\Http\Controllers\FeedbackController;
@@ -38,6 +39,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth.basic', 'admin'])->gro
 
     Route::get('/feedback', [AdminFeedbackController::class, 'index'])->name('feedback.index');
     Route::post('/feedback/{feedback}/gelezen', [AdminFeedbackController::class, 'markRead'])->name('feedback.read');
+
+    Route::get('/marketing', AdminMarketingController::class)->name('marketing');
 
     Route::get('/statistieken', [AdminStatisticsController::class, 'index'])->name('statistics');
     Route::post('/statistieken/herbereken', [AdminStatisticsController::class, 'recalculate'])->name('statistics.recalculate');

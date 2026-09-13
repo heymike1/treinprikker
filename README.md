@@ -150,7 +150,13 @@ client-side verwijderd en labels gebruiken `name:nl`. Wil je zelf tiles hosten, 
 | `/station/{slug}` | Statistieken per station |
 | `/hoe-werkt-het` | Uitleg |
 | `/feedback` | Feedbackformulier (naam optioneel, categorie, bericht); honeypot + 5 per 10 min per IP |
-| `/admin`, `/admin/dagen`, `/admin/stations`, `/admin/statistieken`, `/admin/feedback` | Beheer (basic auth, `is_admin`) |
+| `/admin`, `/admin/dagen`, `/admin/stations`, `/admin/statistieken`, `/admin/feedback`, `/admin/marketing` | Beheer (basic auth, `is_admin`) |
+
+## Marketing
+
+`/admin/marketing` maakt postideeën uit de data van de afgelopen 7 dagen: ranglijsten (moeilijkste/makkelijkste stations,
+1080×1080 PNG, in de browser getekend), de "zo werkt het"-carousel (3 slides) en teksten voor een dagelijkse teaser en het
+meest verkeerd geplaatste station. Bijschriften zijn te kopiëren, afbeeldingen te downloaden.
 
 ## Huisstijl
 

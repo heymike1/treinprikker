@@ -3,10 +3,12 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 import gameMap from './game-map';
 import stationsMap from './stations-map';
 import shareResult from './share-result';
+import marketingPosts from './marketing';
 
 Alpine.data('gameMap', gameMap);
 Alpine.data('stationsMap', stationsMap);
 Alpine.data('shareResult', shareResult);
+Alpine.data('marketingPosts', marketingPosts);
 
 // The game screen locks body scrolling; release it once the result screen shows.
 window.addEventListener('game-finished', (event) => {
