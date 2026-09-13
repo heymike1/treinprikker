@@ -75,6 +75,10 @@
                             <span>Treinprikker</span>
                         </a>
                         <p class="mt-2 text-sm text-muted">Elke dag vijf stations. Hoe goed ken jij het Nederlandse spoor?</p>
+                        <a href="https://www.instagram.com/treinprikker" target="_blank" rel="noopener" class="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-ink hover:underline">
+                            <x-icon.instagram class="h-5 w-5" />
+                            @treinprikker op Instagram
+                        </a>
                     </div>
                     <div>
                         <p class="text-[11px] font-semibold tracking-[0.1em] text-muted uppercase">Spelen</p>

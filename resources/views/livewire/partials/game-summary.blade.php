@@ -25,6 +25,10 @@
             </div>
         </div>
         <p x-show="feedback" x-cloak x-text="feedback" class="mt-2 text-center text-sm font-medium" role="status" aria-live="polite"></p>
+        <a href="https://www.instagram.com/treinprikker" target="_blank" rel="noopener" class="mt-3 flex items-center justify-center gap-2 text-sm text-muted hover:text-ink">
+            <x-icon.instagram class="h-5 w-5 shrink-0" />
+            <span>Deel je resultaat op Instagram en tag <span class="font-semibold text-ink">@treinprikker</span></span>
+        </a>
     </div>
 
     <dl class="mt-4 grid grid-cols-2 gap-2">
