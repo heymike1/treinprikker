@@ -113,7 +113,7 @@ return [
         'daily_mix' => ['easy', 'medium', 'medium', 'hard', 'wildcard'],
 
         // Guesses needed before the data-driven difficulty replaces the heuristic.
-        'minimum_guesses' => 100,
+        'minimum_guesses' => 40,
 
         // Distances (meters) that map to the maximum difficulty contribution.
         'median_distance_ceiling_meters' => 60000,
@@ -129,10 +129,10 @@ return [
 
     'statistics' => [
         // Minimum guesses before a station is ranked as easiest/hardest.
-        'minimum_station_guesses' => 100,
+        'minimum_station_guesses' => 25,
 
         // Minimum completed sessions before a Daily Game is ranked.
-        'minimum_daily_game_completions' => 25,
+        'minimum_daily_game_completions' => 10,
 
         // Minimum completed sessions today before "beter dan X%" is shown.
         'minimum_players_for_comparison' => 3,
