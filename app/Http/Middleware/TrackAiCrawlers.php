@@ -22,6 +22,9 @@ class TrackAiCrawlers
 
     private const IGNORED_EXTENSIONS = ['avif', 'bmp', 'br', 'css', 'csv', 'gif', 'gz', 'ico', 'jpeg', 'jpg', 'js', 'json', 'map', 'mjs', 'mp4', 'pdf', 'png', 'svg', 'ttf', 'txt', 'wasm', 'webmanifest', 'webp', 'woff', 'woff2', 'xml', 'zip'];
 
+    /** Anything that smells like a bot is reported too; DataFast classifies what we don't recognise. */
+    private const GENERIC_HINTS = ['bot', 'crawler', 'spider', 'fetch', 'scrape'];
+
     /** Files bots fetch on purpose, tracked even though their extension is ignored above. */
     private const CRAWLER_FILES = ['/robots.txt', '/llms.txt', '/llms-full.txt', '/sitemap.xml'];
 
@@ -44,8 +47,9 @@ class TrackAiCrawlers
             return;
         }
 
-        $crawler = AiCrawlerDetector::classify($request->userAgent());
-        if ($crawler === null) {
+        $userAgent = (string) $request->userAgent();
+        $crawler = AiCrawlerDetector::classify($userAgent);
+        if ($crawler === null && ! self::looksLikeBot($userAgent)) {
             return;
         }
 
@@ -57,13 +61,26 @@ class TrackAiCrawlers
                 'href' => $request->url(),
                 'referrer' => $request->headers->get('referer'),
                 'ai' => [
-                    ...$crawler,
-                    'userAgent' => $request->userAgent(),
+                    ...($crawler ?? []),
+                    'userAgent' => $userAgent,
                     'ip' => $request->ip(),
                     'statusCode' => $response->getStatusCode(),
                     'source' => 'server_middleware',
                 ],
             ]), report: false);
+    }
+
+    public static function looksLikeBot(string $userAgent): bool
+    {
+        $needle = strtolower($userAgent);
+
+        foreach (self::GENERIC_HINTS as $hint) {
+            if (str_contains($needle, $hint)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public static function isTrackablePath(string $path): bool

@@ -74,6 +74,15 @@ class TrackAiCrawlersTest extends TestCase
         Http::assertSent(fn ($request) => $request->hasHeader('Authorization', 'Bearer dfbot_secret'));
     }
 
+    public function test_reports_unknown_bots_without_a_category(): void
+    {
+        $this->withHeaders(['User-Agent' => 'Mozilla/5.0 (compatible; SomeNewCrawler/0.1)'])->get('/');
+
+        Http::assertSent(fn ($request) => $request['ai']['userAgent'] === 'Mozilla/5.0 (compatible; SomeNewCrawler/0.1)'
+            && ! isset($request['ai']['agent'])
+            && ! isset($request['ai']['category']));
+    }
+
     public function test_ignores_ordinary_visitors_and_admin_pages(): void
     {
         $this->withHeaders(['User-Agent' => 'Mozilla/5.0 (Macintosh) Safari/605.1.15'])->get('/');
