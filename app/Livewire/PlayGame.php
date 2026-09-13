@@ -336,8 +336,8 @@ class PlayGame extends Component
             'share_text' => ShareResult::text($session),
             // Everything the share image needs (unlike the text, the image does name the stations).
             'share_image' => [
-                'title' => $session->dailyGame->label(),
                 'modeLabel' => $session->mode === Mode::DEFAULT ? null : Mode::label($session->mode),
+                'date' => $session->dailyGame->date->translatedFormat('j M'),
                 'totalScore' => $session->total_score,
                 'maximumScore' => $session->maximumScore(),
                 'rounds' => $guesses->map(fn (Guess $guess) => [
@@ -349,7 +349,6 @@ class PlayGame extends Component
                     'label' => $guess->timed_out ? 'Te laat' : ResultPhrase::labelForScore($guess->score),
                 ])->values()->all(),
                 'betterThan' => $ranking['better_than_percentage'],
-                'streak' => $streak['current'],
                 'silhouetteUrl' => asset('data/nederland.json'),
             ],
         ];
