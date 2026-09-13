@@ -161,7 +161,8 @@ meest verkeerd geplaatste station. Bijschriften zijn te kopiëren, afbeeldingen 
 ## Analytics
 
 DataFast draait alleen in productie (`@production`). Naast het frontend-script meldt de middleware `TrackAiCrawlers`
-bezoeken van AI-assistenten, zoekmachines en trainingscrawlers server-side aan DataFast (die laden geen JavaScript).
+bezoeken van AI-assistenten, zoekmachines en trainingscrawlers server-side aan DataFast (die laden geen JavaScript);
+dit volgt het PHP-voorbeeld uit hun docs, DataFast classificeert de bots zelf.
 Staat standaard aan in productie; uit te zetten met `DATAFAST_BOT_TRACKING=false`, optioneel te beveiligen met een
 `DATAFAST_BOT_TOKEN` (`dfbot_…`) uit de DataFast-instellingen.
 

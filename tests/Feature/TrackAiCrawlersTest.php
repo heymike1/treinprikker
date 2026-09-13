@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Analytics\AiCrawlerDetector;
 use App\Http\Middleware\TrackAiCrawlers;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
@@ -19,47 +18,40 @@ class TrackAiCrawlersTest extends TestCase
 
         config()->set('services.datafast.bot_tracking', true);
         config()->set('services.datafast.website_id', 'dfid_test');
-        config()->set('services.datafast.domain', 'treinprikker.nl');
         Http::fake();
     }
 
     #[DataProvider('userAgents')]
-    public function test_classifies_known_crawlers(string $userAgent, ?string $agent, ?string $category): void
+    public function test_recognises_crawlers(string $userAgent, bool $expected): void
     {
-        $result = AiCrawlerDetector::classify($userAgent);
-
-        $this->assertSame($agent, $result['agent'] ?? null);
-        $this->assertSame($category, $result['category'] ?? null);
+        $this->assertSame($expected, TrackAiCrawlers::looksLikeCrawler($userAgent));
     }
 
     public static function userAgents(): array
     {
         return [
-            'gptbot' => ['Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; GPTBot/1.2; +https://openai.com/gptbot)', 'GPTBot', 'training'],
-            'chatgpt user' => ['Mozilla/5.0 ChatGPT-User/1.0; +https://openai.com/bot', 'ChatGPT-User', 'answer_fetch'],
-            'claudebot' => ['Mozilla/5.0 (compatible; ClaudeBot/1.0; +claudebot@anthropic.com)', 'ClaudeBot', 'training'],
-            'googlebot' => ['Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)', 'Googlebot', 'search_index'],
-            'perplexity' => ['Mozilla/5.0 (compatible; PerplexityBot/1.0; +https://perplexity.ai/perplexitybot)', 'PerplexityBot', 'search_index'],
-            'alias only' => ['some-new-anthropic-fetcher/2.0', 'Anthropic', 'ai_crawler'],
-            'safari' => ['Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 Version/17.0 Mobile/15E148 Safari/604.1', null, null],
-            'empty' => ['', null, null],
+            'gptbot' => ['Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; GPTBot/1.2; +https://openai.com/gptbot)', true],
+            'chatgpt user' => ['Mozilla/5.0 ChatGPT-User/1.0; +https://openai.com/bot', true],
+            'claudebot' => ['Mozilla/5.0 (compatible; ClaudeBot/1.0; +claudebot@anthropic.com)', true],
+            'googlebot' => ['Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)', true],
+            'perplexity' => ['Mozilla/5.0 (compatible; PerplexityBot/1.0; +https://perplexity.ai/perplexitybot)', true],
+            'unknown crawler' => ['SomeNewCrawler/0.1', true],
+            'safari' => ['Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 Version/17.0 Mobile/15E148 Safari/604.1', false],
+            'empty' => ['', false],
         ];
     }
 
     public function test_reports_crawler_page_views_to_datafast(): void
     {
-        $this->withHeaders(['User-Agent' => 'Mozilla/5.0 (compatible; GPTBot/1.2)', 'Referer' => 'https://chat.openai.com/'])
-            ->get('/hoe-werkt-het')
+        $this->withHeaders(['User-Agent' => 'Mozilla/5.0 (compatible; GPTBot/1.2)'])
+            ->get('/hoe-werkt-het?utm_source=x')
             ->assertOk();
 
         Http::assertSent(fn ($request) => $request->url() === 'https://datafa.st/api/ai-crawls'
             && $request['websiteId'] === 'dfid_test'
-            && $request['domain'] === 'treinprikker.nl'
-            && str_ends_with($request['href'], '/hoe-werkt-het')
-            && $request['referrer'] === 'https://chat.openai.com/'
-            && $request['ai']['agent'] === 'GPTBot'
-            && $request['ai']['provider'] === 'OpenAI'
-            && $request['ai']['category'] === 'training'
+            && $request['domain'] === parse_url(config('app.url'), PHP_URL_HOST)
+            && $request['href'] === rtrim(config('app.url'), '/').'/hoe-werkt-het'
+            && $request['ai']['userAgent'] === 'Mozilla/5.0 (compatible; GPTBot/1.2)'
             && $request['ai']['statusCode'] === 200
             && $request['ai']['source'] === 'server_middleware'
             && ! $request->hasHeader('Authorization'));
@@ -74,19 +66,9 @@ class TrackAiCrawlersTest extends TestCase
         Http::assertSent(fn ($request) => $request->hasHeader('Authorization', 'Bearer dfbot_secret'));
     }
 
-    public function test_reports_unknown_bots_without_a_category(): void
-    {
-        $this->withHeaders(['User-Agent' => 'Mozilla/5.0 (compatible; SomeNewCrawler/0.1)'])->get('/');
-
-        Http::assertSent(fn ($request) => $request['ai']['userAgent'] === 'Mozilla/5.0 (compatible; SomeNewCrawler/0.1)'
-            && ! isset($request['ai']['agent'])
-            && ! isset($request['ai']['category']));
-    }
-
-    public function test_ignores_ordinary_visitors_and_admin_pages(): void
+    public function test_ignores_ordinary_visitors_and_non_get_requests(): void
     {
         $this->withHeaders(['User-Agent' => 'Mozilla/5.0 (Macintosh) Safari/605.1.15'])->get('/');
-        $this->withHeaders(['User-Agent' => 'GPTBot/1.2'])->get('/admin');
         $this->withHeaders(['User-Agent' => 'GPTBot/1.2'])->post('/feedback', []);
 
         Http::assertNothingSent();
@@ -106,31 +88,5 @@ class TrackAiCrawlersTest extends TestCase
         Http::fake(fn () => throw new \RuntimeException('down'));
 
         $this->withHeaders(['User-Agent' => 'GPTBot/1.2'])->get('/')->assertOk();
-    }
-
-    #[DataProvider('paths')]
-    public function test_trackable_paths(string $path, bool $expected): void
-    {
-        $this->assertSame($expected, TrackAiCrawlers::isTrackablePath($path));
-    }
-
-    public static function paths(): array
-    {
-        return [
-            ['/', true],
-            ['/statistieken', true],
-            ['/station/kropswolde', true],
-            ['/robots.txt', true],
-            ['/sitemap.xml', true],
-            ['/sitemap-stations.xml', true],
-            ['/llms.txt', true],
-            ['/admin', false],
-            ['/admin/marketing', false],
-            ['/livewire/update', false],
-            ['/build/assets/app.js', false],
-            ['/data/spoornet.json', false],
-            ['/images/og.jpg', false],
-            ['/logo.svg', false],
-        ];
     }
 }
