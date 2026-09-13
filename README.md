@@ -56,6 +56,21 @@ Ontbreekt de Treinprikker van vandaag toch (scheduler nooit gedraaid), dan wordt
 - Eén `GameSession` per speler per dag (unieke index), dus verversen maakt nooit een dubbel potje en het spel gaat verder waar je was.
 - Elke individuele `Guess` wordt permanent bewaard (inclusief een snapshot van de stationscoördinaten) en is de bron voor alle statistieken.
 
+### Niveaus
+
+Vóór station 1 kiest de speler een niveau (`config/treinprikker.php` → `modes`); het niveau staat op `game_sessions.mode` en ligt daarna vast.
+
+| Niveau | Kaart | Vraag | Tijd |
+| --- | --- | --- | --- |
+| Makkelijk | luchtfoto | stationsnaam | onbeperkt |
+| Moeilijk | luchtfoto | stationsnaam | 20 s per station |
+| Expert | kale kaart (land, water, grenzen) | NS-code + stationstype als hint | 20 s per station |
+
+De tijd wordt server-side bewaakt via `game_sessions.round_started_at` (plus `time_limit_grace_seconds`): een te late prik telt als
+`timed_out` met 0 punten en zonder coördinaten. Zonder pin bij het aflopen wordt de ronde als timed out vastgelegd en het station
+getoond. Timed-out rondes tellen niet mee als prik in de statistieken. Alle niveaus scoren gelijk; "beter dan X%" vergelijkt alleen
+binnen hetzelfde niveau en de deeltekst vermeldt het niveau (behalve Makkelijk).
+
 ### Anti-cheat
 
 De Livewire-component (`App\Livewire\PlayGame`) stuurt alleen de naam van het huidige station naar de browser.

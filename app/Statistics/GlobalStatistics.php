@@ -32,7 +32,7 @@ class GlobalStatistics
         $minimumCompletions = (int) config('treinprikker.statistics.minimum_daily_game_completions');
         $listSize = (int) config('treinprikker.statistics.list_size');
 
-        $guessAggregate = DB::table('guesses')->selectRaw('COUNT(*) as guess_count, AVG(distance_meters) as avg_distance, AVG(score) as avg_score, COUNT(DISTINCT station_id) as unique_stations')->first();
+        $guessAggregate = DB::table('guesses')->whereNotNull('distance_meters')->selectRaw('COUNT(*) as guess_count, AVG(distance_meters) as avg_distance, AVG(score) as avg_score, COUNT(DISTINCT station_id) as unique_stations')->first();
         $sessionCount = DB::table('game_sessions')->count();
         $sessionAggregate = DB::table('game_sessions')->whereNotNull('completed_at')->selectRaw('COUNT(*) as completed_count, AVG(total_score) as avg_score')->first();
 

@@ -17,15 +17,15 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 /**
- * Starting/resuming sessions and processing guesses. This is the only place
- * that reads a station's real coordinates during play.
+ * Starting sessions and processing guesses. This is the only place that reads
+ * a station's real coordinates during play.
  */
 class GameService
 {
     public function __construct(private readonly ScoreCalculator $scores) {}
 
     /**
-     * The player's existing session for the game, if they have started guessing.
+     * The player's existing session for the game, if they have started.
      */
     public function find(DailyGame $game, ?Player $player): ?GameSession
     {
@@ -37,14 +37,17 @@ class GameService
     }
 
     /**
-     * Returns the player's session for the game, creating it on the first guess.
-     * Merely opening the page never creates a session, so crawlers and bounced
-     * visitors don't count as played games.
+     * Starts today's game in the chosen mode. Merely opening the page never
+     * creates a session; pressing start does, and the mode is then fixed.
      */
-    public function startOrResume(DailyGame $game, Player $player): GameSession
+    public function start(DailyGame $game, Player $player, string $mode): GameSession
     {
         if ($session = $this->find($game, $player)) {
             return $session;
+        }
+
+        if (! Mode::exists($mode)) {
+            throw new GameException('Kies een geldig niveau.');
         }
 
         try {
@@ -52,11 +55,13 @@ class GameService
                 'public_uuid' => (string) Str::uuid(),
                 'daily_game_id' => $game->id,
                 'player_id' => $player->id,
+                'mode' => $mode,
                 'started_at' => now(),
+                'round_started_at' => now(),
             ]);
         } catch (UniqueConstraintViolationException) {
-            // Two tabs opened at once: reuse the session the other request created.
-            return GameSession::where('daily_game_id', $game->id)->where('player_id', $player->id)->firstOrFail();
+            // Two tabs pressed start at once: reuse the session the other request created.
+            return $this->find($game, $player);
         }
 
         $player->forceFill(['last_played_at' => now()])->save();
@@ -67,7 +72,20 @@ class GameService
     }
 
     /**
+     * Marks the current round as visible, which starts its clock in timed modes.
+     */
+    public function ensureRoundStarted(GameSession $session): GameSession
+    {
+        if (! $session->isCompleted() && $session->round_started_at === null) {
+            $session->forceFill(['round_started_at' => now()])->save();
+        }
+
+        return $session;
+    }
+
+    /**
      * Records a guess for the given round and returns it (with the answer).
+     * A guess that arrives after the round's time limit counts as timed out.
      *
      * @throws GameException
      */
@@ -77,6 +95,21 @@ class GameService
             throw new GameException('Die prik ligt niet op de kaart. Probeer het opnieuw.');
         }
 
+        return $this->record($session, $roundNumber, $latitude, $longitude);
+    }
+
+    /**
+     * Records a round on which the player placed no pin before time ran out.
+     *
+     * @throws GameException
+     */
+    public function timeOut(GameSession $session, int $roundNumber): Guess
+    {
+        return $this->record($session, $roundNumber, null, null);
+    }
+
+    private function record(GameSession $session, int $roundNumber, ?float $latitude, ?float $longitude): Guess
+    {
         return DB::transaction(function () use ($session, $roundNumber, $latitude, $longitude) {
             $session = GameSession::whereKey($session->id)->lockForUpdate()->firstOrFail();
 
@@ -99,8 +132,10 @@ class GameService
             }
 
             $station = $round->station;
-            $distance = DistanceCalculator::meters($latitude, $longitude, $station->latitude, $station->longitude);
-            $score = $this->scores->score($distance);
+            $timedOut = $latitude === null || $this->isPastDeadline($session);
+
+            $distance = $timedOut ? null : DistanceCalculator::meters($latitude, $longitude, $station->latitude, $station->longitude);
+            $score = $timedOut ? 0 : $this->scores->score($distance);
 
             try {
                 $guess = Guess::create([
@@ -108,12 +143,13 @@ class GameService
                     'daily_game_station_id' => $round->id,
                     'station_id' => $station->id,
                     'round_number' => $roundNumber,
-                    'guessed_latitude' => $latitude,
-                    'guessed_longitude' => $longitude,
+                    'guessed_latitude' => $timedOut ? null : $latitude,
+                    'guessed_longitude' => $timedOut ? null : $longitude,
                     'actual_latitude' => $station->latitude,
                     'actual_longitude' => $station->longitude,
                     'distance_meters' => $distance,
                     'score' => $score,
+                    'timed_out' => $timedOut,
                     'created_at' => now(),
                 ]);
             } catch (UniqueConstraintViolationException) {
@@ -126,7 +162,9 @@ class GameService
             $session->forceFill([
                 'rounds_completed' => $roundNumber,
                 'total_score' => $session->total_score + $score,
-                'total_distance_meters' => $session->total_distance_meters + $distance,
+                'total_distance_meters' => $session->total_distance_meters + ($distance ?? 0),
+                // The next round's clock starts when the player moves on, not now.
+                'round_started_at' => null,
                 'completed_at' => $completed ? now() : null,
             ])->save();
 
@@ -143,5 +181,16 @@ class GameService
 
             return $guess;
         });
+    }
+
+    private function isPastDeadline(GameSession $session): bool
+    {
+        $deadline = $session->roundDeadline();
+
+        if ($deadline === null) {
+            return false;
+        }
+
+        return now()->getTimestamp() > $deadline + (int) config('treinprikker.time_limit_grace_seconds');
     }
 }

@@ -21,6 +21,7 @@ class GameSessionFactory extends Factory
             'public_uuid' => (string) Str::uuid(),
             'daily_game_id' => DailyGame::factory(),
             'player_id' => Player::factory(),
+            'mode' => 'easy',
             'started_at' => now(),
         ];
     }

@@ -142,6 +142,39 @@ class StatisticsTest extends TestCase
         $this->assertSame(2000, $stat->lowest_score);
     }
 
+    public function test_ranking_only_compares_players_on_the_same_level(): void
+    {
+        config(['treinprikker.statistics.minimum_players_for_comparison' => 2]);
+        $game = DailyGame::factory()->create();
+        $mine = GameSession::factory()->completed(3000)->create(['daily_game_id' => $game->id, 'mode' => 'expert']);
+        GameSession::factory()->completed(1000)->create(['daily_game_id' => $game->id, 'mode' => 'expert']);
+        GameSession::factory()->completed(4500)->create(['daily_game_id' => $game->id, 'mode' => 'easy']);
+        GameSession::factory()->completed(4600)->create(['daily_game_id' => $game->id, 'mode' => 'easy']);
+
+        $ranking = app(DailyGameRanking::class)->for($mine);
+
+        $this->assertSame(2, $ranking['players']);
+        $this->assertSame(100, $ranking['better_than_percentage']);
+    }
+
+    public function test_timed_out_rounds_are_not_counted_as_guesses(): void
+    {
+        $station = Station::factory()->create();
+        $this->guessesFor($station, [1000, 3000]);
+        $session = GameSession::factory()->completed()->create();
+        $round = $session->dailyGame->stations()->create(['station_id' => $station->id, 'round_number' => 1]);
+        Guess::create([
+            'game_session_id' => $session->id, 'daily_game_station_id' => $round->id, 'station_id' => $station->id,
+            'round_number' => 1, 'actual_latitude' => 52, 'actual_longitude' => 5, 'score' => 0, 'timed_out' => true, 'created_at' => now(),
+        ]);
+
+        $stat = app(StationStatisticsCalculator::class)->recalculate($station);
+
+        $this->assertSame(2, $stat->guess_count);
+        $this->assertSame(2000, $stat->median_distance_meters);
+        $this->assertSame(2, app(GlobalStatistics::class)->get()['totals']['guesses']);
+    }
+
     public function test_ranking_is_hidden_until_enough_players_completed(): void
     {
         config(['treinprikker.statistics.minimum_players_for_comparison' => 3]);

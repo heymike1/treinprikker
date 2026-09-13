@@ -7,11 +7,15 @@ const ANSWER_LAYERS = /^(railway|airport|poi|transit)/i;
 // Country/state labels, water names and road shields (A2, N33) stay for orientation.
 const PLACE_LAYERS = /^(label_(city|town|village|other)|highway-name)/i;
 
+// The "blank" expert map keeps only these: land, water and administrative borders.
+const BLANK_LAYERS = /^(background|water|waterway|boundary_2|boundary_3)$/;
+
 /**
  * Loads the configured MapLibre style and strips every layer that could give
- * the answer away. With `hidePlaces` the map also loses city and street names.
+ * the answer away. With `hidePlaces` the map also loses city and street names;
+ * with `blank` nothing but land, water and borders is left.
  */
-export async function loadCleanStyle(styleUrl, { hidePlaces = false } = {}) {
+export async function loadCleanStyle(styleUrl, { hidePlaces = false, blank = false } = {}) {
     const response = await fetch(styleUrl);
     if (!response.ok) {
         throw new Error(`Kaartstijl niet beschikbaar (${response.status})`);
@@ -20,8 +24,27 @@ export async function loadCleanStyle(styleUrl, { hidePlaces = false } = {}) {
     style.layers = style.layers
         .filter((layer) => !ANSWER_LAYERS.test(layer.id))
         .filter((layer) => !(hidePlaces && PLACE_LAYERS.test(layer.id)))
+        .filter((layer) => !blank || BLANK_LAYERS.test(layer.id))
         .map((layer) => dutchLabels(layer));
+    if (blank) {
+        style.layers = style.layers.map((layer) => blankPaint(layer));
+    }
     return style;
+}
+
+/**
+ * Warm paper land, soft blue water and grey borders for the blank map.
+ */
+function blankPaint(layer) {
+    const paint = {
+        background: { 'background-color': '#ede6d9' },
+        water: { 'fill-color': '#b9cfe0' },
+        waterway: { 'line-color': '#b9cfe0', 'line-width': 1 },
+        boundary_2: { 'line-color': '#6d655b', 'line-width': 1.5 },
+        boundary_3: { 'line-color': '#a39a8e', 'line-width': 1, 'line-dasharray': [3, 2] },
+    }[layer.id];
+
+    return paint ? { ...layer, paint } : layer;
 }
 
 /**

@@ -12,13 +12,14 @@ class ShareResult
     public static function text(GameSession $session): string
     {
         $game = $session->dailyGame;
+        $level = $session->mode === Mode::DEFAULT ? '' : ' · '.Mode::label($session->mode);
         $lines = [
-            $game->label().' 🚆',
+            $game->label().' 🚆'.$level,
             format_number($session->total_score).' / '.format_number($session->maximumScore()),
         ];
 
         foreach ($session->guesses as $guess) {
-            $lines[] = ResultPhrase::emojiForScore($guess->score).' '.$guess->score;
+            $lines[] = ($guess->timed_out ? '⏱' : ResultPhrase::emojiForScore($guess->score)).' '.$guess->score;
         }
 
         $lines[] = config('treinprikker.share_url');

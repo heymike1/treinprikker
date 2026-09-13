@@ -6,7 +6,8 @@ use App\Models\GameSession;
 use Illuminate\Support\Facades\DB;
 
 /**
- * How a completed session compares with the other players of the same day.
+ * How a completed session compares with the other players of the same day
+ * on the same difficulty level.
  */
 class DailyGameRanking
 {
@@ -17,6 +18,7 @@ class DailyGameRanking
     {
         $completed = DB::table('game_sessions')
             ->where('daily_game_id', $session->daily_game_id)
+            ->where('mode', $session->mode)
             ->whereNotNull('completed_at');
 
         $players = (clone $completed)->count();

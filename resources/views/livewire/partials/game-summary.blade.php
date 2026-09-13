@@ -1,13 +1,13 @@
 <div class="mx-auto w-full max-w-2xl px-4 py-6 sm:py-10" wire:key="game-summary">
     <div class="text-center">
-        <p class="text-xs font-semibold tracking-wide text-muted uppercase">Klaar voor vandaag</p>
+        <p class="text-xs font-semibold tracking-wide text-muted uppercase">Klaar voor vandaag · {{ $summary['mode_label'] }}</p>
         <div class="board mx-auto mt-3 inline-block min-w-56 px-6 py-4">
             <div class="board-number text-5xl">{{ format_number($summary['total_score']) }}</div>
             <div class="mt-1 text-xs font-medium tracking-wider text-paper/80 uppercase">van {{ format_number($summary['maximum_score']) }} punten</div>
         </div>
 
         @if($summary['better_than_percentage'] !== null)
-            <p class="mt-4 text-base font-semibold">Beter dan {{ $summary['better_than_percentage'] }}% van de spelers vandaag</p>
+            <p class="mt-4 text-base font-semibold">Beter dan {{ $summary['better_than_percentage'] }}% van de spelers op {{ $summary['mode_label'] }} vandaag</p>
             <p class="text-sm text-muted">Vandaag gemiddeld: {{ format_number($summary['average_score_today']) }} punten · {{ format_number($summary['players']) }} spelers</p>
         @else
             <p class="mt-4 text-sm text-muted">Zodra genoeg mensen hebben gespeeld zie je hier hoe je het deed vergeleken met de rest.</p>
@@ -31,7 +31,7 @@
                 <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-ink font-mono text-xs font-semibold text-paper">{{ $round['round'] }}</span>
                 <div class="min-w-0 flex-1">
                     <a href="{{ route('station.show', $round['slug']) }}" class="block truncate font-semibold hover:underline">{{ $round['station'] }}</a>
-                    <p class="text-sm text-muted">{{ $round['distance'] }} ernaast · {{ $round['province'] }}</p>
+                    <p class="text-sm text-muted">{{ $round['timed_out'] ? 'geen prik gezet' : $round['distance'].' ernaast' }} · {{ $round['province'] }}</p>
                 </div>
                 <div class="text-right">
                     <div class="font-mono text-lg font-semibold">{{ $round['score'] }}</div>

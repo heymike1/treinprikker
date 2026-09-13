@@ -28,6 +28,7 @@ class StationController extends Controller
         $distribution = array_map(function (array $bucket) use ($station, $total) {
             $count = $total === 0 ? 0 : DB::table('guesses')
                 ->where('station_id', $station->id)
+                ->whereNotNull('distance_meters')
                 ->when($bucket['from'] !== null, fn ($q) => $q->where('distance_meters', '>', $bucket['from']))
                 ->when($bucket['to'] !== null, fn ($q) => $q->where('distance_meters', '<=', $bucket['to']))
                 ->count();

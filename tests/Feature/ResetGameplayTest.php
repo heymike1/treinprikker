@@ -19,7 +19,7 @@ class ResetGameplayTest extends TestCase
         Station::factory()->count(9)->create();
         $game = app(DailyGameGenerator::class)->generateFor(DailyGame::currentDate());
         $service = app(GameService::class);
-        $session = $service->startOrResume($game, Player::factory()->create());
+        $session = $service->start($game, Player::factory()->create(), 'easy');
         for ($round = 1; $round <= 5; $round++) {
             $service->submitGuess($session, $round, 52.0, 5.0);
         }

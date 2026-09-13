@@ -25,7 +25,8 @@ class StationStatisticsCalculator
 
     public function recalculate(Station $station): StationStatistic
     {
-        $base = DB::table('guesses')->where('station_id', $station->id);
+        // Timed-out rounds have no pin and are not guesses.
+        $base = DB::table('guesses')->where('station_id', $station->id)->whereNotNull('distance_meters');
         $count = (clone $base)->count();
 
         if ($count === 0) {

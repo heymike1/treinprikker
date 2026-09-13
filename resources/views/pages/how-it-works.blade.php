@@ -35,6 +35,19 @@
 
             <div class="flex flex-col gap-5">
                 <section class="card p-5">
+                    <h2 class="text-lg font-bold">Drie niveaus</h2>
+                    <p class="text-sm text-muted">Je kiest elke dag vóór het eerste station. Elk niveau telt 1000 punten per station; je wordt vergeleken met spelers op hetzelfde niveau.</p>
+                    <dl class="mt-3 divide-y divide-line">
+                        @foreach(\App\Game\Mode::all() as $level)
+                            <div class="py-2.5">
+                                <dt class="font-semibold">{{ $level['label'] }}</dt>
+                                <dd class="text-sm text-muted">{{ $level['description'] }}</dd>
+                            </div>
+                        @endforeach
+                    </dl>
+                </section>
+
+                <section class="card p-5">
                     <h2 class="text-lg font-bold">Punten</h2>
                     <p class="text-sm text-muted">De score loopt vloeiend af met de afstand tot het station.</p>
                     <svg viewBox="0 0 340 190" class="mt-3 h-auto w-full overflow-visible" role="img" aria-label="Grafiek: {{ collect($curve['markers'])->map(fn ($m) => $m['km'].' km is '.$m['score'].' punten')->join(', ') }}">

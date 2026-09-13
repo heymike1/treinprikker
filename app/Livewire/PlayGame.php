@@ -7,6 +7,7 @@ use App\Exceptions\GameException;
 use App\Game\CurrentPlayer;
 use App\Game\DailyGameProvider;
 use App\Game\GameService;
+use App\Game\Mode;
 use App\Game\ResultPhrase;
 use App\Game\ShareResult;
 use App\Models\DailyGame;
@@ -31,15 +32,28 @@ class PlayGame extends Component
     #[Locked]
     public int $totalRounds = 5;
 
-    /** guessing | result | finished | unavailable */
+    /** choose | guessing | result | finished | unavailable */
     #[Locked]
     public string $phase = 'unavailable';
+
+    /** easy | hard | expert, null until chosen */
+    #[Locked]
+    public ?string $mode = null;
 
     #[Locked]
     public int $currentRound = 1;
 
+    /** Station name, or the NS code in expert mode. */
     #[Locked]
-    public ?string $currentStationName = null;
+    public ?string $currentStationLabel = null;
+
+    /** Station type hint, expert mode only. */
+    #[Locked]
+    public ?string $currentStationHint = null;
+
+    /** Unix timestamp at which the current round ends, null without a time limit. */
+    #[Locked]
+    public ?float $roundDeadline = null;
 
     /** @var array<int, array<string, mixed>> */
     #[Locked]
@@ -69,7 +83,30 @@ class PlayGame extends Component
 
         $this->gameId = $game->id;
 
-        $this->loadState($game, $gameService->find($game, $currentPlayer->find()));
+        $session = $gameService->find($game, $currentPlayer->find());
+        $this->loadState($game, $session ? $gameService->ensureRoundStarted($session) : null);
+    }
+
+    /**
+     * "Start" on the level picker: creates today's session in the chosen mode.
+     */
+    public function startGame(string $mode, GameService $gameService, CurrentPlayer $currentPlayer): void
+    {
+        $game = DailyGame::find($this->gameId);
+        if (! $game) {
+            return;
+        }
+
+        try {
+            $session = $gameService->start($game, $currentPlayer->findOrCreate(), $mode);
+        } catch (GameException $e) {
+            $this->errorMessage = $e->getMessage();
+
+            return;
+        }
+
+        $this->loadState($game, $gameService->ensureRoundStarted($session));
+        $this->dispatch('game-started', mode: $this->mode, map: Mode::map($this->mode), deadline: $this->roundDeadline);
     }
 
     /**
@@ -78,6 +115,63 @@ class PlayGame extends Component
      * @return array<string, mixed>
      */
     public function submitGuess(float $latitude, float $longitude, GameService $gameService, CurrentPlayer $currentPlayer): array
+    {
+        return $this->recordRound(fn (GameSession $session) => $gameService->submitGuess($session, $this->currentRound, $latitude, $longitude), $gameService, $currentPlayer);
+    }
+
+    /**
+     * Called when the clock runs out without a pin.
+     *
+     * @return array<string, mixed>
+     */
+    public function timeOut(GameService $gameService, CurrentPlayer $currentPlayer): array
+    {
+        return $this->recordRound(fn (GameSession $session) => $gameService->timeOut($session, $this->currentRound), $gameService, $currentPlayer);
+    }
+
+    /**
+     * "Volgende station" / "Bekijk resultaat": continue from the result view.
+     */
+    public function advance(GameService $gameService, CurrentPlayer $currentPlayer): void
+    {
+        $game = DailyGame::find($this->gameId);
+        $session = $game ? $gameService->find($game, $currentPlayer->find()) : null;
+        if (! $game || ! $session) {
+            return;
+        }
+
+        $this->loadState($game, $gameService->ensureRoundStarted($session));
+
+        match ($this->phase) {
+            'guessing' => $this->dispatch('round-started', deadline: $this->roundDeadline),
+            'finished' => $this->dispatch('game-finished'),
+            default => null,
+        };
+    }
+
+    public function shareClicked(string $method, GameService $gameService, CurrentPlayer $currentPlayer): void
+    {
+        $game = DailyGame::find($this->gameId);
+        $session = $game ? $gameService->find($game, $currentPlayer->find()) : null;
+
+        if ($session?->isCompleted()) {
+            ShareClicked::dispatch($session, in_array($method, ['native', 'clipboard'], true) ? $method : 'unknown');
+        }
+    }
+
+    public function render(): View
+    {
+        return view('livewire.play-game', ['modes' => Mode::all()])
+            ->layout('components.layouts.app', [
+                'fullscreen' => $this->phase !== 'finished' && $this->phase !== 'unavailable',
+            ]);
+    }
+
+    /**
+     * @param  callable(GameSession): Guess  $record
+     * @return array<string, mixed>
+     */
+    private function recordRound(callable $record, GameService $gameService, CurrentPlayer $currentPlayer): array
     {
         $this->errorMessage = null;
 
@@ -90,11 +184,18 @@ class PlayGame extends Component
             return ['ok' => false, 'reload' => true];
         }
 
-        $session = $gameService->startOrResume($game, $currentPlayer->findOrCreate());
+        $session = $gameService->find($game, $currentPlayer->find());
+        if (! $session) {
+            $this->errorMessage = 'Kies eerst een niveau.';
+            $this->loadState($game, null);
+
+            return ['ok' => false, 'reload' => true];
+        }
+
         $roundBefore = $this->currentRound;
 
         try {
-            $guess = $gameService->submitGuess($session, $this->currentRound, $latitude, $longitude);
+            $guess = $record($session);
         } catch (GameException $e) {
             $this->errorMessage = $e->getMessage();
             $this->loadState($game, $session->refresh());
@@ -109,82 +210,67 @@ class PlayGame extends Component
         $this->completedRounds[] = $result;
         $this->lastResult = $result;
         $this->phase = 'result';
+        $this->roundDeadline = null;
 
         return ['ok' => true] + $result;
     }
 
     /**
-     * "Volgende station" / "Bekijk resultaat": continue from the result view.
-     */
-    public function advance(GameService $gameService, CurrentPlayer $currentPlayer): void
-    {
-        $game = DailyGame::find($this->gameId);
-        if (! $game) {
-            return;
-        }
-
-        $this->loadState($game, $gameService->find($game, $currentPlayer->find()));
-
-        match ($this->phase) {
-            'guessing' => $this->dispatch('round-started'),
-            'finished' => $this->dispatch('game-finished'),
-            default => null,
-        };
-    }
-
-    public function shareClicked(string $method, GameService $gameService, CurrentPlayer $currentPlayer): void
-    {
-        $game = DailyGame::find($this->gameId);
-        if (! $game) {
-            return;
-        }
-
-        $session = $gameService->find($game, $currentPlayer->find());
-        if ($session?->isCompleted()) {
-            ShareClicked::dispatch($session, in_array($method, ['native', 'clipboard'], true) ? $method : 'unknown');
-        }
-    }
-
-    public function render(): View
-    {
-        return view('livewire.play-game')
-            ->layout('components.layouts.app', [
-                'fullscreen' => $this->phase !== 'finished' && $this->phase !== 'unavailable',
-            ]);
-    }
-
-    /**
-     * Rebuilds all public state from the database (used on mount, refresh and
-     * after errors). Without a session the player simply starts at round 1.
+     * Rebuilds all public state from the database. Without a session the
+     * player still has to pick a level.
      */
     private function loadState(DailyGame $game, ?GameSession $session): void
     {
-        $rounds = $game->stations()->with('station:id,name,slug,province')->get();
+        $rounds = $game->stations()->with('station:id,name,slug,province,code,station_type')->get();
         $guesses = $session
-            ? $session->guesses()->with('station:id,name,slug,province')->get()
+            ? $session->guesses()->with('station:id,name,slug,province,code,station_type')->get()
             : collect();
 
         $this->totalRounds = $rounds->count();
+        $this->mode = $session?->mode;
         $this->completedRounds = $guesses->map(fn (Guess $guess) => $this->roundResult($guess))->values()->all();
         $this->lastResult = null;
         $this->summary = null;
+        $this->roundDeadline = null;
 
-        if ($session?->isCompleted()) {
+        if (! $session) {
+            $this->phase = 'choose';
+            $this->currentRound = 1;
+            $this->currentStationLabel = null;
+            $this->currentStationHint = null;
+
+            return;
+        }
+
+        if ($session->isCompleted()) {
             $this->phase = 'finished';
             $this->currentRound = $this->totalRounds;
-            $this->currentStationName = null;
+            $this->currentStationLabel = null;
+            $this->currentStationHint = null;
             $this->summary = $this->buildSummary($session);
 
             return;
         }
 
-        $this->currentRound = ($session?->rounds_completed ?? 0) + 1;
-        $current = $rounds->firstWhere('round_number', $this->currentRound);
-        $this->currentStationName = $current?->station?->name;
-        $this->phase = $this->currentStationName ? 'guessing' : 'unavailable';
+        $this->currentRound = $session->rounds_completed + 1;
+        $current = $rounds->firstWhere('round_number', $this->currentRound)?->station;
 
-        if ($this->phase === 'unavailable') {
+        if (! $current) {
+            $this->phase = 'unavailable';
             $this->errorMessage = 'Dit station is niet meer beschikbaar. Probeer het later opnieuw.';
+
+            return;
+        }
+
+        $this->phase = 'guessing';
+        $this->roundDeadline = $session->roundDeadline();
+
+        if (Mode::revealsCodeOnly($session->mode)) {
+            $this->currentStationLabel = $current->code ?? $current->name;
+            $this->currentStationHint = $current->typeLabel();
+        } else {
+            $this->currentStationLabel = $current->name;
+            $this->currentStationHint = null;
         }
     }
 
@@ -193,20 +279,24 @@ class PlayGame extends Component
      */
     private function roundResult(Guess $guess): array
     {
+        $timedOut = $guess->timed_out;
+
         return [
             'round' => $guess->round_number,
             'station' => $guess->station->name,
+            'code' => $guess->station->code,
             'slug' => $guess->station->slug,
             'province' => $guess->station->province,
             'score' => $guess->score,
+            'timed_out' => $timedOut,
             'distance_meters' => $guess->distance_meters,
-            'distance' => format_distance($guess->distance_meters),
-            'distance_sentence' => ResultPhrase::distanceSentence($guess->distance_meters),
-            'phrase' => ResultPhrase::for($guess->distance_meters),
-            'emoji' => ResultPhrase::emojiForScore($guess->score),
-            'label' => ResultPhrase::labelForScore($guess->score),
-            'bucket' => ResultPhrase::bucketKeyForScore($guess->score),
-            'guessed' => ['lat' => $guess->guessed_latitude, 'lng' => $guess->guessed_longitude],
+            'distance' => $timedOut ? null : format_distance($guess->distance_meters),
+            'distance_sentence' => $timedOut ? 'geen prik gezet' : ResultPhrase::distanceSentence($guess->distance_meters),
+            'phrase' => $timedOut ? 'De tijd is om.' : ResultPhrase::for($guess->distance_meters),
+            'emoji' => $timedOut ? '⏱' : ResultPhrase::emojiForScore($guess->score),
+            'label' => $timedOut ? 'Te laat' : ResultPhrase::labelForScore($guess->score),
+            'bucket' => $timedOut ? 'ver' : ResultPhrase::bucketKeyForScore($guess->score),
+            'guessed' => $timedOut ? null : ['lat' => $guess->guessed_latitude, 'lng' => $guess->guessed_longitude],
             'actual' => ['lat' => $guess->actual_latitude, 'lng' => $guess->actual_longitude],
         ];
     }
@@ -218,9 +308,10 @@ class PlayGame extends Component
     {
         $session->loadMissing('dailyGame', 'guesses.station');
         $guesses = $session->guesses;
+        $placed = $guesses->where('timed_out', false);
 
-        $best = $guesses->sortBy('distance_meters')->first();
-        $worst = $guesses->sortByDesc('distance_meters')->first();
+        $best = $placed->sortBy('distance_meters')->first();
+        $worst = $placed->sortByDesc('distance_meters')->first();
 
         $completedDates = $session->player->gameSessions()->completed()
             ->join('daily_games', 'daily_games.id', '=', 'game_sessions.daily_game_id')
@@ -229,10 +320,12 @@ class PlayGame extends Component
         $ranking = app(DailyGameRanking::class)->for($session);
 
         return [
+            'mode' => $session->mode,
+            'mode_label' => Mode::label($session->mode),
             'total_score' => $session->total_score,
             'maximum_score' => $session->maximumScore(),
             'total_distance' => format_distance($session->total_distance_meters),
-            'average_distance' => format_distance($guesses->count() ? (int) round($session->total_distance_meters / $guesses->count()) : 0),
+            'average_distance' => format_distance($placed->count() ? (int) round($session->total_distance_meters / $placed->count()) : 0),
             'best' => $best ? ['station' => $best->station->name, 'distance' => format_distance($best->distance_meters), 'score' => $best->score] : null,
             'worst' => $worst ? ['station' => $worst->station->name, 'distance' => format_distance($worst->distance_meters), 'score' => $worst->score] : null,
             'current_streak' => $streak['current'],

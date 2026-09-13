@@ -37,7 +37,8 @@ class PlayerStatistics
 
         $guesses = DB::table('guesses')
             ->join('game_sessions', 'game_sessions.id', '=', 'guesses.game_session_id')
-            ->where('game_sessions.player_id', $player->id);
+            ->where('game_sessions.player_id', $player->id)
+            ->whereNotNull('guesses.distance_meters');
 
         $guessCount = (clone $guesses)->count();
         $guessAggregate = (clone $guesses)->selectRaw('AVG(guesses.distance_meters) as avg_distance, AVG(guesses.score) as avg_score')->first();

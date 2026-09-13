@@ -1,9 +1,13 @@
 import maplibregl from 'maplibre-gl';
-import { loadSatelliteStyle, createMap, pinElement } from './map-style';
+import { loadCleanStyle, loadSatelliteStyle, createMap, pinElement } from './map-style';
+
+const PREFERRED_MODE_KEY = 'treinprikker_niveau';
+const INTRO_SEEN_KEY = 'treinprikker_intro_gezien';
 
 /**
- * Alpine component that drives the guessing map. It never knows the answer
- * until the server returns it after a guess.
+ * Alpine component that drives the game board: the level picker, the
+ * guessing map and the countdown. It never knows the answer until the server
+ * returns it after a guess.
  *
  * The MapLibre map and markers live in closure variables on purpose: putting
  * them on the Alpine data object would wrap them in a deep reactive proxy,
@@ -13,6 +17,7 @@ export default function gameMap(config) {
     let map = null;
     let guessMarker = null;
     let actualMarker = null;
+    let ticker = null;
 
     return {
         ready: false,
@@ -22,24 +27,96 @@ export default function gameMap(config) {
         locked: false,
         error: null,
         intro: false,
+        choosing: true,
+        deadline: null,
+        remaining: 0,
 
         get hasGuess() {
             return this.pending !== null;
         },
 
+        get clock() {
+            const seconds = Math.max(0, Math.ceil(this.remaining));
+            return `0:${String(seconds).padStart(2, '0')}`;
+        },
+
         async init() {
+            try {
+                this.intro = !localStorage.getItem(INTRO_SEEN_KEY);
+            } catch {
+                this.intro = false;
+            }
+
+            // Read the live state from Livewire rather than from x-data: a changing
+            // x-data attribute would make Alpine re-initialise this component.
+            const mode = this.$wire.mode;
+            this.choosing = !mode;
+
+            if (mode) {
+                await this.createMap(config.mapStyles[mode]);
+                this.startClock(this.$wire.roundDeadline ?? null);
+            }
+        },
+
+        preferredMode() {
+            try {
+                const stored = localStorage.getItem(PREFERRED_MODE_KEY);
+                if (stored && document.querySelector(`[role="radio"][x-on\\:click*="'${stored}'"]`)) {
+                    return stored;
+                }
+            } catch {
+                // Private mode: fall through to the default.
+            }
+            return 'easy';
+        },
+
+        startGame() {
+            this.intro = false;
+            try {
+                localStorage.setItem(INTRO_SEEN_KEY, '1');
+            } catch {
+                // Private mode: the intro simply shows again next time.
+            }
+        },
+
+        async choose(mode) {
+            if (this.busy) {
+                return;
+            }
+            this.busy = true;
+            this.error = null;
+            try {
+                localStorage.setItem(PREFERRED_MODE_KEY, mode);
+            } catch {
+                // Not remembering the level is fine.
+            }
+            try {
+                await this.$wire.startGame(mode);
+            } catch (error) {
+                console.error(error);
+                this.error = 'Het spel kon niet worden gestart. Controleer je verbinding en probeer het opnieuw.';
+            } finally {
+                this.busy = false;
+            }
+        },
+
+        // Fired by the server once the session exists: build the right map, start the clock.
+        async start({ map: mapStyle, deadline }) {
+            this.choosing = false;
+            await this.createMap(mapStyle);
+            this.startClock(deadline ?? null);
+        },
+
+        async createMap(mapStyle) {
             if (map) {
                 return;
             }
 
             try {
-                this.intro = !localStorage.getItem('treinprikker_intro_gezien');
-            } catch {
-                this.intro = false;
-            }
-
-            try {
-                map = createMap(this.$refs.map, loadSatelliteStyle(config.satellite), config);
+                const style = mapStyle === 'blank'
+                    ? await loadCleanStyle(config.styleUrl, { blank: true })
+                    : loadSatelliteStyle(config.satellite);
+                map = createMap(this.$refs.map, style, config);
             } catch (error) {
                 console.error(error);
                 this.failed = true;
@@ -53,7 +130,11 @@ export default function gameMap(config) {
                     id: 'guess-line',
                     type: 'line',
                     source: 'guess-line',
-                    paint: { 'line-color': '#ffffff', 'line-width': 3, 'line-dasharray': [1.5, 1.5] },
+                    paint: {
+                        'line-color': mapStyle === 'blank' ? '#1d3f8f' : '#ffffff',
+                        'line-width': 3,
+                        'line-dasharray': [1.5, 1.5],
+                    },
                 });
                 this.ready = true;
             });
@@ -61,18 +142,55 @@ export default function gameMap(config) {
             map.on('click', (event) => this.place(event.lngLat));
         },
 
-        startGame() {
-            this.intro = false;
-            try {
-                localStorage.setItem('treinprikker_intro_gezien', '1');
-            } catch {
-                // Private mode: the intro simply shows again next time.
+        startClock(deadline) {
+            this.stopClock();
+            this.deadline = deadline;
+            if (deadline === null) {
+                return;
             }
-            map?.resize();
+
+            const tick = () => {
+                this.remaining = this.deadline - Date.now() / 1000;
+                if (this.remaining <= 0) {
+                    this.stopClock();
+                    this.remaining = 0;
+                    this.timeIsUp();
+                }
+            };
+            tick();
+            ticker = window.setInterval(tick, 250);
+        },
+
+        stopClock() {
+            if (ticker) {
+                window.clearInterval(ticker);
+                ticker = null;
+            }
+        },
+
+        async timeIsUp() {
+            if (this.locked || this.busy) {
+                return;
+            }
+            if (this.hasGuess) {
+                await this.submit();
+                return;
+            }
+
+            this.busy = true;
+            try {
+                const result = await this.$wire.timeOut();
+                await this.handleResult(result);
+            } catch (error) {
+                console.error(error);
+                this.error = 'De tijd was om, maar de ronde kon niet worden afgesloten. Ververs de pagina.';
+            } finally {
+                this.busy = false;
+            }
         },
 
         place(lngLat) {
-            if (this.intro || this.locked || this.busy || !this.ready) {
+            if (this.intro || this.choosing || this.locked || this.busy || !this.ready) {
                 return;
             }
 
@@ -98,13 +216,10 @@ export default function gameMap(config) {
 
             this.busy = true;
             this.error = null;
+            this.stopClock();
             try {
                 const result = await this.$wire.submitGuess(this.pending.lat, this.pending.lng);
-                if (result && result.ok) {
-                    await this.showResult(result);
-                } else if (result && result.reload) {
-                    window.setTimeout(() => window.location.reload(), 1500);
-                }
+                await this.handleResult(result);
             } catch (error) {
                 console.error(error);
                 this.error = 'De prik kon niet worden verstuurd. Controleer je verbinding en probeer het opnieuw.';
@@ -113,30 +228,41 @@ export default function gameMap(config) {
             }
         },
 
+        async handleResult(result) {
+            if (result && result.ok) {
+                await this.showResult(result);
+            } else if (result && result.reload) {
+                window.setTimeout(() => window.location.reload(), 1500);
+            }
+        },
+
         async showResult(result) {
             this.locked = true;
+            this.stopClock();
+            this.deadline = null;
             map.getCanvas().classList.add('cursor-default');
-            guessMarker?.setDraggable(false);
-            guessMarker?.setLngLat([result.guessed.lng, result.guessed.lat]);
 
+            const actual = [result.actual.lng, result.actual.lat];
             actualMarker = new maplibregl.Marker({ element: pinElement('station'), anchor: 'center' })
-                .setLngLat([result.actual.lng, result.actual.lat])
+                .setLngLat(actual)
                 .addTo(map);
 
-            map.getSource('guess-line')?.setData({
-                type: 'Feature',
-                geometry: {
-                    type: 'LineString',
-                    coordinates: [
-                        [result.guessed.lng, result.guessed.lat],
-                        [result.actual.lng, result.actual.lat],
-                    ],
-                },
-            });
+            const bounds = new maplibregl.LngLatBounds().extend(actual);
 
-            const bounds = new maplibregl.LngLatBounds()
-                .extend([result.guessed.lng, result.guessed.lat])
-                .extend([result.actual.lng, result.actual.lat]);
+            if (result.guessed) {
+                const guessed = [result.guessed.lng, result.guessed.lat];
+                guessMarker?.setDraggable(false);
+                guessMarker?.setLngLat(guessed);
+                map.getSource('guess-line')?.setData({
+                    type: 'Feature',
+                    geometry: { type: 'LineString', coordinates: [guessed, actual] },
+                });
+                bounds.extend(guessed);
+            } else {
+                // Timed out without a pin: only the station is shown.
+                guessMarker?.remove();
+                guessMarker = null;
+            }
 
             // The result bar changes the map height; let the layout settle before fitting.
             await this.$nextTick();
@@ -145,7 +271,7 @@ export default function gameMap(config) {
             map.fitBounds(bounds, { padding: { top: 60, bottom: 60, left: 50, right: 50 }, maxZoom: 12, duration: 700 });
         },
 
-        reset() {
+        reset(deadline = null) {
             this.locked = false;
             this.pending = null;
             map?.getCanvas().classList.remove('cursor-default');
@@ -155,6 +281,7 @@ export default function gameMap(config) {
             actualMarker = null;
             map?.getSource('guess-line')?.setData(emptyLine());
             map?.fitBounds(config.bounds, { padding: 12, duration: 500 });
+            this.startClock(deadline);
         },
     };
 }

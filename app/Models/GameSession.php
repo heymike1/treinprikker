@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Game\Mode;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,7 +14,7 @@ class GameSession extends Model
     use HasFactory;
 
     protected $fillable = [
-        'public_uuid', 'daily_game_id', 'player_id', 'started_at', 'completed_at',
+        'public_uuid', 'daily_game_id', 'player_id', 'mode', 'started_at', 'round_started_at', 'completed_at',
         'rounds_completed', 'total_score', 'total_distance_meters',
     ];
 
@@ -21,6 +22,7 @@ class GameSession extends Model
     {
         return [
             'started_at' => 'datetime',
+            'round_started_at' => 'datetime',
             'completed_at' => 'datetime',
             'rounds_completed' => 'integer',
             'total_score' => 'integer',
@@ -51,6 +53,24 @@ class GameSession extends Model
     public function isCompleted(): bool
     {
         return $this->completed_at !== null;
+    }
+
+    public function timeLimitSeconds(): ?int
+    {
+        return Mode::timeLimitSeconds($this->mode);
+    }
+
+    /**
+     * Unix timestamp (with fraction) at which the current round ends, or null without a limit.
+     */
+    public function roundDeadline(): ?float
+    {
+        $limit = $this->timeLimitSeconds();
+        if ($limit === null || ! $this->round_started_at) {
+            return null;
+        }
+
+        return $this->round_started_at->getTimestamp() + $limit;
     }
 
     public function maximumScore(): int

@@ -17,6 +17,39 @@ return [
 
     'stations_per_day' => 5,
 
+    /*
+    | Difficulty levels a player picks before the first guess of the day.
+    |   map:        satellite (aerial photo) or blank (land, water and borders only)
+    |   reveal:     name (station name) or code (NS code + station type as a hint)
+    |   time_limit: seconds per station, null for no limit
+    */
+    'modes' => [
+        'easy' => [
+            'label' => 'Makkelijk',
+            'description' => 'Luchtfoto, stationsnaam, alle tijd van de wereld.',
+            'map' => 'satellite',
+            'reveal' => 'name',
+            'time_limit_seconds' => null,
+        ],
+        'hard' => [
+            'label' => 'Moeilijk',
+            'description' => 'Zelfde kaart, maar je hebt 20 seconden per station.',
+            'map' => 'satellite',
+            'reveal' => 'name',
+            'time_limit_seconds' => 20,
+        ],
+        'expert' => [
+            'label' => 'Expert',
+            'description' => 'Kale kaart, alleen de stationscode en het type. En 20 seconden.',
+            'map' => 'blank',
+            'reveal' => 'code',
+            'time_limit_seconds' => 20,
+        ],
+    ],
+
+    // Extra seconds the server allows on top of a time limit, for network latency.
+    'time_limit_grace_seconds' => 3,
+
     // A station should preferably not be reused within this many days
     // (looking both backwards and forwards, since games are generated ahead).
     'station_repeat_cooldown_days' => 21,

@@ -15,7 +15,7 @@ class Guess extends Model
     protected $fillable = [
         'game_session_id', 'daily_game_station_id', 'station_id', 'round_number',
         'guessed_latitude', 'guessed_longitude', 'actual_latitude', 'actual_longitude',
-        'distance_meters', 'score',
+        'distance_meters', 'score', 'timed_out',
     ];
 
     protected function casts(): array
@@ -27,6 +27,7 @@ class Guess extends Model
             'actual_longitude' => 'float',
             'distance_meters' => 'integer',
             'score' => 'integer',
+            'timed_out' => 'boolean',
             'created_at' => 'datetime',
         ];
     }

@@ -56,6 +56,24 @@ class Station extends Model
         };
     }
 
+    /**
+     * Human label for the NS station type, used as the hint in expert mode.
+     */
+    public function typeLabel(): string
+    {
+        return match ($this->station_type) {
+            'megastation' => 'Megastation',
+            'knooppuntIntercitystation' => 'Intercity-knooppunt',
+            'intercitystation' => 'Intercitystation',
+            'knooppuntSneltreinstation' => 'Sneltrein-knooppunt',
+            'sneltreinstation' => 'Sneltreinstation',
+            'knooppuntStoptreinstation' => 'Stoptrein-knooppunt',
+            'stoptreinstation' => 'Stoptreinstation',
+            'facultatiefStation' => 'Evenementenstation',
+            default => 'Station',
+        };
+    }
+
     public function difficultyLabel(): string
     {
         return match ($this->difficultyBucket()) {
