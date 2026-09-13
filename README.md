@@ -155,7 +155,10 @@ client-side verwijderd en labels gebruiken `name:nl`. Wil je zelf tiles hosten, 
 ## Analytics
 
 Eerste-partij events (`analytics_events`): `game_started`, `guess_submitted`, `game_completed`, `share_clicked`, `stats_viewed`.
-Geen trackers van derden.
+
+Bezoekersstatistieken via DataFast (alleen in productie). Custom goals: `intro_start`, `level_selected` (+`level`),
+`game_start` (+`level`), `game_completed` (+`level`, via `window.datafast`), `share_result` / `download_image` / `copy_text` (+`level`),
+`feedback_send` (+`category`). Toevoegen = `data-fast-goal="..."` op een klikbaar element.
 
 ## Tests en code-stijl
 

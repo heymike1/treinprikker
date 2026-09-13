@@ -18,10 +18,10 @@
         </div>
 
         <div class="mt-4 flex flex-col gap-2">
-            <button type="button" class="btn-primary" x-on:click="share()" x-bind:disabled="busy || !imageUrl">Deel je resultaat</button>
+            <button type="button" class="btn-primary" data-fast-goal="share_result" data-fast-goal-level="{{ $summary['mode'] }}" x-on:click="share()" x-bind:disabled="busy || !imageUrl">Deel je resultaat</button>
             <div class="grid grid-cols-2 gap-2">
-                <button type="button" class="btn-secondary" x-on:click="download()" x-bind:disabled="!imageUrl">Download</button>
-                <button type="button" class="btn-secondary" x-on:click="copyText()">Kopieer tekst</button>
+                <button type="button" class="btn-secondary" data-fast-goal="download_image" data-fast-goal-level="{{ $summary['mode'] }}" x-on:click="download()" x-bind:disabled="!imageUrl">Download</button>
+                <button type="button" class="btn-secondary" data-fast-goal="copy_text" data-fast-goal-level="{{ $summary['mode'] }}" x-on:click="copyText()">Kopieer tekst</button>
             </div>
         </div>
         <p x-show="feedback" x-cloak x-text="feedback" class="mt-2 text-center text-sm font-medium" role="status" aria-live="polite"></p>

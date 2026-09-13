@@ -51,7 +51,7 @@
         </ol>
 
         <div class="p-5">
-            <button type="button" class="btn-primary" x-on:click="startGame()">
+            <button type="button" class="btn-primary" data-fast-goal="intro_start" x-on:click="startGame()">
                 Start Treinprikker
                 <x-icon.arrow-right class="h-4.5 w-4.5" />
             </button>

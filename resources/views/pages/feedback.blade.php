@@ -10,7 +10,7 @@
             </div>
         @endif
 
-        <form method="post" action="{{ route('feedback.store') }}" class="card mt-6 flex flex-col gap-5 p-5 sm:p-6">
+        <form method="post" action="{{ route('feedback.store') }}" class="card mt-6 flex flex-col gap-5 p-5 sm:p-6" x-data="{ category: '{{ old('category', 'idee') }}' }">
             @csrf
             <input type="hidden" name="page" value="{{ url()->previous() }}">
             <div class="hidden" aria-hidden="true">
@@ -29,7 +29,7 @@
                 <div class="mt-1.5 grid grid-cols-2 gap-2 sm:grid-cols-4">
                     @foreach($categories as $key => $label)
                         <label class="flex cursor-pointer items-center justify-center rounded-xl border-2 border-line px-3 py-2.5 text-sm font-semibold transition hover:border-muted/40 has-[:checked]:border-rail has-[:checked]:bg-rail/5 has-[:checked]:hover:border-rail">
-                            <input type="radio" name="category" value="{{ $key }}" class="sr-only" @checked(old('category', 'idee') === $key)>
+                            <input type="radio" name="category" value="{{ $key }}" class="sr-only" x-model="category" @checked(old('category', 'idee') === $key)>
                             {{ $label }}
                         </label>
                     @endforeach
@@ -45,7 +45,7 @@
                 @error('message')<p class="mt-1 text-sm text-bad">{{ $message }}</p>@enderror
             </label>
 
-            <button type="submit" class="btn-primary">
+            <button type="submit" class="btn-primary" data-fast-goal="feedback_send" x-bind:data-fast-goal-category="category">
                 Verstuur feedback
                 <x-icon.arrow-right class="h-4.5 w-4.5" />
             </button>

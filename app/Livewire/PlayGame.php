@@ -144,7 +144,7 @@ class PlayGame extends Component
 
         match ($this->phase) {
             'guessing' => $this->dispatch('round-started', deadline: $this->roundDeadline),
-            'finished' => $this->dispatch('game-finished'),
+            'finished' => $this->dispatch('game-finished', level: $this->mode),
             default => null,
         };
     }

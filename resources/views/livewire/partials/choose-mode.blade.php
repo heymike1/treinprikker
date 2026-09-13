@@ -10,6 +10,7 @@
         <div class="flex flex-col gap-2 px-5" role="radiogroup" aria-labelledby="choose-title">
             @foreach($modes as $key => $level)
                 <button type="button" role="radio"
+                        data-fast-goal="level_selected" data-fast-goal-level="{{ $key }}"
                         x-bind:aria-checked="picked === '{{ $key }}'"
                         x-on:click="picked = '{{ $key }}'"
                         class="flex items-start gap-3 rounded-xl border-2 px-4 py-3 text-left transition"
@@ -27,7 +28,7 @@
         </div>
 
         <div class="p-5">
-            <button type="button" class="btn-primary" x-on:click="choose(picked)" x-bind:disabled="busy">
+            <button type="button" class="btn-primary" data-fast-goal="game_start" x-bind:data-fast-goal-level="picked" x-on:click="choose(picked)" x-bind:disabled="busy">
                 <span x-show="!busy">Start</span>
                 <span x-show="busy" x-cloak>Even wachten…</span>
                 <x-icon.arrow-right class="h-4.5 w-4.5" />
