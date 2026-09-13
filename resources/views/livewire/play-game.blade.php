@@ -64,7 +64,7 @@
             <div class="relative min-h-0 flex-1 bg-[#1f2a33]" wire:ignore>
                 <div x-ref="map" class="map-fill" role="application" aria-label="Kaart van Nederland. Klik of tik om je prik te plaatsen."></div>
 
-                <div x-show="!ready && !failed && !choosing" class="pointer-events-none absolute inset-0 flex items-center justify-center text-sm text-paper/80">
+                <div x-show="!ready && !failed" class="pointer-events-none absolute inset-0 flex items-center justify-center text-sm text-paper/80">
                     Kaart laden…
                 </div>
                 <div x-show="failed" x-cloak class="absolute inset-0 flex items-center justify-center p-6 text-center text-sm text-paper/80">

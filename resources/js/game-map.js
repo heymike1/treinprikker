@@ -15,6 +15,7 @@ const INTRO_SEEN_KEY = 'treinprikker_intro_gezien';
  */
 export default function gameMap(config) {
     let map = null;
+    let currentMapStyle = null;
     let guessMarker = null;
     let actualMarker = null;
     let ticker = null;
@@ -52,8 +53,10 @@ export default function gameMap(config) {
             const mode = this.$wire.mode;
             this.choosing = !mode;
 
+            // Behind the level picker the default map already loads; a level
+            // with another map style swaps it in on start.
+            await this.createMap(mode ? config.mapStyles[mode] : config.mapStyles.easy);
             if (mode) {
-                await this.createMap(config.mapStyles[mode]);
                 this.startClock(this.$wire.roundDeadline ?? null);
             }
         },
@@ -100,7 +103,7 @@ export default function gameMap(config) {
             }
         },
 
-        // Fired by the server once the session exists: build the right map, start the clock.
+        // Fired by the server once the session exists: show the right map, start the clock.
         async start({ map: mapStyle, deadline }) {
             this.choosing = false;
             await this.createMap(mapStyle);
@@ -109,14 +112,13 @@ export default function gameMap(config) {
 
         async createMap(mapStyle) {
             if (map) {
+                await this.switchStyle(mapStyle);
                 return;
             }
 
             try {
-                const style = mapStyle === 'blank'
-                    ? await loadCleanStyle(config.styleUrl, { blank: true })
-                    : loadSatelliteStyle(config.satellite);
-                map = createMap(this.$refs.map, style, config);
+                map = createMap(this.$refs.map, await this.styleFor(mapStyle), config);
+                currentMapStyle = mapStyle;
             } catch (error) {
                 console.error(error);
                 this.failed = true;
@@ -125,21 +127,50 @@ export default function gameMap(config) {
 
             map.on('load', () => {
                 map.fitBounds(config.bounds, { padding: 12, duration: 0 });
-                map.addSource('guess-line', { type: 'geojson', data: emptyLine() });
-                map.addLayer({
-                    id: 'guess-line',
-                    type: 'line',
-                    source: 'guess-line',
-                    paint: {
-                        'line-color': mapStyle === 'blank' ? '#1d3f8f' : '#ffffff',
-                        'line-width': 3,
-                        'line-dasharray': [1.5, 1.5],
-                    },
-                });
+                this.addGuessLine();
                 this.ready = true;
             });
 
             map.on('click', (event) => this.place(event.lngLat));
+        },
+
+        async switchStyle(mapStyle) {
+            if (mapStyle === currentMapStyle) {
+                return;
+            }
+
+            const style = await this.styleFor(mapStyle);
+            currentMapStyle = mapStyle;
+            this.ready = false;
+            map.once('style.load', () => {
+                this.addGuessLine();
+                this.ready = true;
+            });
+            map.setStyle(style);
+        },
+
+        styleFor(mapStyle) {
+            return mapStyle === 'blank'
+                ? loadCleanStyle(config.styleUrl, { blank: true })
+                : loadSatelliteStyle(config.satellite);
+        },
+
+        // The dashed line between pin and station; re-added after every style change.
+        addGuessLine() {
+            if (map.getSource('guess-line')) {
+                return;
+            }
+            map.addSource('guess-line', { type: 'geojson', data: emptyLine() });
+            map.addLayer({
+                id: 'guess-line',
+                type: 'line',
+                source: 'guess-line',
+                paint: {
+                    'line-color': currentMapStyle === 'blank' ? '#1d3f8f' : '#ffffff',
+                    'line-width': 3,
+                    'line-dasharray': [1.5, 1.5],
+                },
+            });
         },
 
         startClock(deadline) {
