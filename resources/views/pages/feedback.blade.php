@@ -28,7 +28,7 @@
                 <legend class="text-sm font-semibold">Soort feedback</legend>
                 <div class="mt-1.5 grid grid-cols-2 gap-2 sm:grid-cols-4">
                     @foreach($categories as $key => $label)
-                        <label class="flex cursor-pointer items-center justify-center rounded-xl border-2 px-3 py-2.5 text-sm font-semibold transition has-[:checked]:border-rail has-[:checked]:bg-rail/5 {{ old('category', 'idee') === $key ? 'border-rail bg-rail/5' : 'border-line hover:border-muted/40' }}">
+                        <label class="flex cursor-pointer items-center justify-center rounded-xl border-2 border-line px-3 py-2.5 text-sm font-semibold transition hover:border-muted/40 has-[:checked]:border-rail has-[:checked]:bg-rail/5 has-[:checked]:hover:border-rail">
                             <input type="radio" name="category" value="{{ $key }}" class="sr-only" @checked(old('category', 'idee') === $key)>
                             {{ $label }}
                         </label>
