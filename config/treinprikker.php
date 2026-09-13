@@ -135,7 +135,7 @@ return [
         'minimum_daily_game_completions' => 25,
 
         // Minimum completed sessions today before "beter dan X%" is shown.
-        'minimum_players_for_comparison' => 10,
+        'minimum_players_for_comparison' => 3,
 
         // Minimum guesses in a province before it counts for a personal ranking.
         'minimum_province_guesses' => 3,
