@@ -334,7 +334,33 @@ class PlayGame extends Component
             'players' => $ranking['players'],
             'better_than_percentage' => $ranking['better_than_percentage'],
             'ranking_label' => $ranking['label'],
+            // Short form for the heading; the player count sits in the line below it.
+            'ranking_heading' => match (true) {
+                $ranking['label'] === null => null,
+                $ranking['players'] < DailyGameRanking::RANK_UP_TO || $ranking['better_than_percentage'] === null => "Plek {$ranking['rank']} van {$ranking['players']}",
+                default => "Beter dan {$ranking['better_than_percentage']}%",
+            },
             'average_score_today' => $ranking['average_score'],
+            // Everything the result map and station list need; coordinates are fine here, the game is over.
+            'rounds' => $guesses->map(fn (Guess $guess) => [
+                'round' => $guess->round_number,
+                'station' => $guess->station->name,
+                'slug' => $guess->station->slug,
+                'score' => $guess->score,
+                'timed_out' => $guess->timed_out,
+                'distance' => $guess->timed_out ? 'geen prik gezet' : ResultPhrase::distanceSentence($guess->distance_meters),
+                'bucket' => $guess->timed_out ? 'ver' : ResultPhrase::bucketKeyForDistance($guess->distance_meters),
+                'label' => $guess->timed_out ? 'Te laat' : ResultPhrase::labelForDistance($guess->distance_meters),
+            ])->values()->all(),
+            'map' => [
+                'silhouetteUrl' => asset('data/nederland.json'),
+                'rounds' => $guesses->map(fn (Guess $guess) => [
+                    'round' => $guess->round_number,
+                    'bucket' => $guess->timed_out ? 'ver' : ResultPhrase::bucketKeyForDistance($guess->distance_meters),
+                    'station' => ['lat' => (float) $guess->actual_latitude, 'lng' => (float) $guess->actual_longitude],
+                    'guess' => $guess->timed_out ? null : ['lat' => (float) $guess->guessed_latitude, 'lng' => (float) $guess->guessed_longitude],
+                ])->values()->all(),
+            ],
             'share_text' => ShareResult::text($session),
             // treinprikker_12_14september2026.png
             'share_filename' => 'treinprikker_'.$session->dailyGame->game_number.'_'.strtolower($session->dailyGame->date->translatedFormat('jFY')).'.png',
