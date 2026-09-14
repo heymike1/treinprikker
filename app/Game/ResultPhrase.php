@@ -19,12 +19,12 @@ class ResultPhrase
     }
 
     /**
-     * "op het perron" / "312 meter ernaast" / "12,4 km ernaast".
+     * "precies goed" / "312 meter ernaast" / "12,4 km ernaast".
      */
     public static function distanceSentence(int $distanceMeters): string
     {
         if ($distanceMeters === 0) {
-            return 'op het perron';
+            return 'precies goed';
         }
 
         if ($distanceMeters < 1000) {

@@ -346,7 +346,7 @@ class PlayGame extends Component
                 'maximumScore' => $session->maximumScore(),
                 'rounds' => $guesses->map(fn (Guess $guess) => [
                     'station' => $guess->station->name,
-                    'distance' => $guess->timed_out ? 'geen prik gezet' : format_distance($guess->distance_meters).' ernaast',
+                    'distance' => $guess->timed_out ? 'geen prik gezet' : ResultPhrase::distanceSentence($guess->distance_meters),
                     'score' => $guess->score,
                     'timedOut' => $guess->timed_out,
                     'bucket' => $guess->timed_out ? 'ver' : ResultPhrase::bucketKeyForDistance($guess->distance_meters),
