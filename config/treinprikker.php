@@ -33,8 +33,8 @@ return [
         ],
         'hard' => [
             'label' => 'Moeilijk',
-            'description' => 'Zelfde kaart, maar je hebt 20 seconden per station.',
-            'map' => 'satellite-borders',
+            'description' => 'Luchtfoto zonder landsgrens, en je hebt 20 seconden per station.',
+            'map' => 'satellite',
             'reveal' => 'name',
             'time_limit_seconds' => 20,
         ],
