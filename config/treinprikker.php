@@ -26,8 +26,8 @@ return [
     'modes' => [
         'easy' => [
             'label' => 'Makkelijk',
-            'description' => 'Luchtfoto, stationsnaam, alle tijd van de wereld.',
-            'map' => 'satellite',
+            'description' => 'Luchtfoto met landsgrenzen, stationsnaam, alle tijd van de wereld.',
+            'map' => 'satellite-borders',
             'reveal' => 'name',
             'time_limit_seconds' => null,
         ],
@@ -40,8 +40,8 @@ return [
         ],
         'expert' => [
             'label' => 'Expert',
-            'description' => 'Kale kaart, alleen de stationscode en het type. En 20 seconden.',
-            'map' => 'blank',
+            'description' => 'Luchtfoto, alleen de stationscode en het type. En 20 seconden.',
+            'map' => 'satellite',
             'reveal' => 'code',
             'time_limit_seconds' => 20,
         ],

@@ -84,9 +84,9 @@ Vóór station 1 kiest de speler een niveau (`config/treinprikker.php` → `mode
 
 | Niveau | Kaart | Vraag | Tijd |
 | --- | --- | --- | --- |
-| Makkelijk | luchtfoto | stationsnaam | onbeperkt |
+| Makkelijk | luchtfoto met lands- en provinciegrenzen | stationsnaam | onbeperkt |
 | Moeilijk | luchtfoto | stationsnaam | 20 s per station |
-| Expert | kale kaart (land, water, provinciegrenzen, spoornet) | NS-code + stationstype als hint | 20 s per station |
+| Expert | luchtfoto | NS-code + stationstype als hint | 20 s per station |
 
 De tijd wordt server-side bewaakt via `game_sessions.round_started_at` (plus `time_limit_grace_seconds`): een te late prik telt als
 `timed_out` met 0 punten en zonder coördinaten. Zonder pin bij het aflopen wordt de ronde als timed out vastgelegd en het station

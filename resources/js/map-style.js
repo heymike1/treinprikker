@@ -93,8 +93,13 @@ function dutchLabels(layer) {
     };
 }
 
-export function loadSatelliteStyle(satellite) {
-    return {
+/**
+ * Aerial imagery for the game map: nothing but the photo, which shows the
+ * landscape, the cities and the railway lines by itself. With `borders` the
+ * national and province borders from the vector tiles are drawn on top.
+ */
+export async function loadSatelliteStyle(satellite, { borders = false, styleUrl = null } = {}) {
+    const style = {
         version: 8,
         sources: {
             satellite: {
@@ -110,6 +115,50 @@ export function loadSatelliteStyle(satellite) {
             { id: 'satellite', type: 'raster', source: 'satellite', paint: { 'raster-saturation': -0.15 } },
         ],
     };
+
+    if (!borders || !styleUrl) {
+        return style;
+    }
+
+    const response = await fetch(styleUrl);
+    if (!response.ok) {
+        // Borders are a nicety; the photo alone is a complete map.
+        return style;
+    }
+    const vector = await response.json();
+    const boundary = vector.layers.find((layer) => layer.id === 'boundary_2');
+    if (!boundary || !vector.sources[boundary.source]) {
+        return style;
+    }
+
+    style.sources[boundary.source] = vector.sources[boundary.source];
+    const common = { type: 'line', source: boundary.source, 'source-layer': boundary['source-layer'], layout: { 'line-cap': 'round', 'line-join': 'round' } };
+    style.layers.push(
+        {
+            ...common,
+            id: 'border-province',
+            minzoom: 5,
+            filter: ['all', ['==', ['get', 'admin_level'], 4], ['!=', ['get', 'maritime'], 1]],
+            paint: {
+                'line-color': '#ffffff',
+                'line-opacity': 0.6,
+                'line-dasharray': [3, 2],
+                'line-width': ['interpolate', ['linear'], ['zoom'], 6, 0.8, 10, 1.4],
+            },
+        },
+        {
+            ...common,
+            id: 'border-country',
+            filter: ['all', ['==', ['get', 'admin_level'], 2], ['!=', ['get', 'maritime'], 1], ['!=', ['get', 'disputed'], 1]],
+            paint: {
+                'line-color': '#ffffff',
+                'line-opacity': 0.85,
+                'line-width': ['interpolate', ['linear'], ['zoom'], 5, 1.4, 10, 2.6],
+            },
+        },
+    );
+
+    return style;
 }
 
 export const DUTCH_LOCALE = {

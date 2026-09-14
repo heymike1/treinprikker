@@ -152,7 +152,7 @@ export default function gameMap(config) {
         styleFor(mapStyle) {
             return mapStyle === 'blank'
                 ? loadCleanStyle(config.styleUrl, { blank: true })
-                : loadSatelliteStyle(config.satellite);
+                : loadSatelliteStyle(config.satellite, { borders: mapStyle === 'satellite-borders', styleUrl: config.styleUrl });
         },
 
         // The dashed line between pin and station and the platform outlines
