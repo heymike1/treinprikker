@@ -53,9 +53,9 @@ export default function gameMap(config) {
             const mode = this.$wire.mode;
             this.choosing = !mode;
 
-            // Behind the level picker the default map already loads; a level
-            // with another map style swaps it in on start.
-            await this.createMap(mode ? config.mapStyles[mode] : config.mapStyles.easy);
+            // Behind the level picker the plain photo already loads (no borders,
+            // so nothing hints at a level); the chosen level swaps its style in on start.
+            await this.createMap(mode ? config.mapStyles[mode] : 'satellite');
             if (mode) {
                 this.startClock(this.$wire.roundDeadline ?? null);
             }
