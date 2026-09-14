@@ -96,12 +96,26 @@ return [
         PHP_INT_MAX => 'Oeps, verkeerde regio.',
     ],
 
-    // Share text emoji buckets keyed by minimum score (checked high to low).
-    'share_buckets' => [
-        900 => '🟢',
-        700 => '🟡',
-        400 => '🟠',
-        0 => '🔴',
+    // Result badge, colour and share emoji keyed by upper distance bound in
+    // meters (first match wins). Based on distance, not score: the scoring
+    // curve is deliberately generous, the badge should be honest.
+    'result_buckets' => [
+        500 => 'raak',
+        5000 => 'dichtbij',
+        25000 => 'buurt',
+        PHP_INT_MAX => 'ver',
+    ],
+    'bucket_labels' => [
+        'raak' => 'Raak',
+        'dichtbij' => 'Dichtbij',
+        'buurt' => 'In de buurt',
+        'ver' => 'Ver weg',
+    ],
+    'bucket_emoji' => [
+        'raak' => '🟢',
+        'dichtbij' => '🟡',
+        'buurt' => '🟠',
+        'ver' => '🔴',
     ],
 
     'share_url' => 'treinprikker.nl',

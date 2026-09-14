@@ -26,9 +26,21 @@ class ResultPhraseTest extends TestCase
 
     public function test_emoji_buckets(): void
     {
-        $this->assertSame('🟢', ResultPhrase::emojiForScore(997));
-        $this->assertSame('🟡', ResultPhrase::emojiForScore(812));
-        $this->assertSame('🟠', ResultPhrase::emojiForScore(641));
-        $this->assertSame('🔴', ResultPhrase::emojiForScore(120));
+        $this->assertSame('🟢', ResultPhrase::emojiForDistance(0));
+        $this->assertSame('🟢', ResultPhrase::emojiForDistance(499));
+        $this->assertSame('🟡', ResultPhrase::emojiForDistance(3200));
+        $this->assertSame('🟠', ResultPhrase::emojiForDistance(12400));
+        $this->assertSame('🔴', ResultPhrase::emojiForDistance(47000));
+    }
+
+    public function test_badge_follows_distance_not_score(): void
+    {
+        // 47 km scores ~526 points but is not "in de buurt".
+        $this->assertSame('Ver weg', ResultPhrase::labelForDistance(47000));
+        $this->assertSame('ver', ResultPhrase::bucketKeyForDistance(47000));
+        $this->assertSame('In de buurt', ResultPhrase::labelForDistance(12400));
+        $this->assertSame('Dichtbij', ResultPhrase::labelForDistance(3200));
+        $this->assertSame('Raak', ResultPhrase::labelForDistance(0));
+        $this->assertSame('raak', ResultPhrase::bucketKeyForDistance(499));
     }
 }

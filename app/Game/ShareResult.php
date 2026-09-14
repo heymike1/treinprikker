@@ -19,7 +19,7 @@ class ShareResult
         ];
 
         foreach ($session->guesses as $guess) {
-            $lines[] = ($guess->timed_out ? '⏱' : ResultPhrase::emojiForScore($guess->score)).' '.$guess->score;
+            $lines[] = ($guess->timed_out ? '⏱' : ResultPhrase::emojiForDistance($guess->distance_meters)).' '.$guess->score;
         }
 
         $lines[] = config('treinprikker.share_url');

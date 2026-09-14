@@ -35,45 +35,32 @@ class ResultPhrase
     }
 
     /**
-     * Emoji bucket for share text; never reveals the station.
+     * Bucket key (raak, dichtbij, buurt, ver) for a distance; drives badge, colours and share emoji.
      */
-    public static function emojiForScore(int $score): string
+    public static function bucketKeyForDistance(int $distanceMeters): string
     {
-        $buckets = config('treinprikker.share_buckets');
-        krsort($buckets, SORT_NUMERIC);
-
-        foreach ($buckets as $minimum => $emoji) {
-            if ($score >= $minimum) {
-                return $emoji;
+        foreach (config('treinprikker.result_buckets') as $upperBound => $key) {
+            if ($distanceMeters < $upperBound) {
+                return $key;
             }
         }
 
-        return '🔴';
+        return 'ver';
     }
 
     /**
-     * CSS modifier for a score bucket (raak, dichtbij, buurt, ver).
+     * Text label for a bucket, so quality is never communicated by colour alone.
      */
-    public static function bucketKeyForScore(int $score): string
+    public static function labelForDistance(int $distanceMeters): string
     {
-        return match (true) {
-            $score >= 900 => 'raak',
-            $score >= 700 => 'dichtbij',
-            $score >= 400 => 'buurt',
-            default => 'ver',
-        };
+        return config('treinprikker.bucket_labels')[self::bucketKeyForDistance($distanceMeters)] ?? 'Ver weg';
     }
 
     /**
-     * Text label for a score bucket, so quality is never communicated by colour alone.
+     * Emoji for share text; never reveals the station.
      */
-    public static function labelForScore(int $score): string
+    public static function emojiForDistance(int $distanceMeters): string
     {
-        return match (true) {
-            $score >= 900 => 'Raak',
-            $score >= 700 => 'Dichtbij',
-            $score >= 400 => 'In de buurt',
-            default => 'Ver weg',
-        };
+        return config('treinprikker.bucket_emoji')[self::bucketKeyForDistance($distanceMeters)] ?? '🔴';
     }
 }
