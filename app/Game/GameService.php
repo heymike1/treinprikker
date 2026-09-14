@@ -11,7 +11,6 @@ use App\Models\DailyGameStation;
 use App\Models\GameSession;
 use App\Models\Guess;
 use App\Models\Player;
-use App\Support\DistanceCalculator;
 use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -134,7 +133,7 @@ class GameService
             $station = $round->station;
             $timedOut = $latitude === null || $this->isPastDeadline($session);
 
-            $distance = $timedOut ? null : DistanceCalculator::meters($latitude, $longitude, $station->latitude, $station->longitude);
+            $distance = $timedOut ? null : StationDistance::toStation($station, $latitude, $longitude);
             $score = $timedOut ? 0 : $this->scores->score($distance);
 
             try {

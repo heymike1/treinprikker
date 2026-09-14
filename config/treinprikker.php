@@ -77,11 +77,17 @@ return [
         'exponent' => 1.2,
     ],
 
+    // A pin this close to a platform edge still counts as on the platform
+    // (station hall, stairs, fat fingers on a phone).
+    'platform_buffer_meters' => 25,
+
     // Distance thresholds (meters) used in statistics ("within X km").
     'distance_thresholds_meters' => [1000, 5000, 10000, 25000, 50000],
 
     // Result phrases keyed by upper distance bound in meters (first match wins).
     'result_phrases' => [
+        1 => 'Raak, precies op het perron.',
+        100 => 'Raak, dat is het station.',
         500 => 'Bijna op het perron.',
         2000 => 'Die zat heel dichtbij.',
         10000 => 'Netjes geprikt.',

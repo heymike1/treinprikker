@@ -155,11 +155,25 @@ export default function gameMap(config) {
                 : loadSatelliteStyle(config.satellite);
         },
 
-        // The dashed line between pin and station; re-added after every style change.
+        // The dashed line between pin and station and the platform outlines
+        // shown on reveal; re-added after every style change.
         addGuessLine() {
             if (map.getSource('guess-line')) {
                 return;
             }
+            map.addSource('platforms', { type: 'geojson', data: emptyCollection() });
+            map.addLayer({
+                id: 'platforms-fill',
+                type: 'fill',
+                source: 'platforms',
+                paint: { 'fill-color': '#f8c200', 'fill-opacity': 0.35 },
+            });
+            map.addLayer({
+                id: 'platforms-line',
+                type: 'line',
+                source: 'platforms',
+                paint: { 'line-color': '#f8c200', 'line-width': 2 },
+            });
             map.addSource('guess-line', { type: 'geojson', data: emptyLine() });
             map.addLayer({
                 id: 'guess-line',
@@ -280,6 +294,13 @@ export default function gameMap(config) {
 
             const bounds = new maplibregl.LngLatBounds().extend(actual);
 
+            if (result.platforms) {
+                map.getSource('platforms')?.setData({
+                    type: 'Feature',
+                    geometry: { type: 'MultiPolygon', coordinates: result.platforms },
+                });
+            }
+
             if (result.guessed) {
                 const guessed = [result.guessed.lng, result.guessed.lat];
                 guessMarker?.setDraggable(false);
@@ -299,7 +320,7 @@ export default function gameMap(config) {
             await this.$nextTick();
             await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
             map.resize();
-            map.fitBounds(bounds, { padding: { top: 60, bottom: 60, left: 50, right: 50 }, maxZoom: 12, duration: 700 });
+            map.fitBounds(bounds, { padding: { top: 60, bottom: 60, left: 50, right: 50 }, maxZoom: 16, duration: 700 });
         },
 
         reset(deadline = null) {
@@ -311,10 +332,15 @@ export default function gameMap(config) {
             guessMarker = null;
             actualMarker = null;
             map?.getSource('guess-line')?.setData(emptyLine());
+            map?.getSource('platforms')?.setData(emptyCollection());
             map?.fitBounds(config.bounds, { padding: 12, duration: 500 });
             this.startClock(deadline);
         },
     };
+}
+
+function emptyCollection() {
+    return { type: 'FeatureCollection', features: [] };
 }
 
 function emptyLine() {

@@ -60,6 +60,8 @@ meesturen) en een lage `SENTRY_TRACES_SAMPLE_RATE` (bijv. `0.1`) om binnen het q
 | Commando | Doel |
 | --- | --- |
 | `stations:import [pad] [--deactivate-missing] [--reset-difficulty]` | Stations importeren/bijwerken uit `database/data/stations.csv` (zie `database/data/README.md`) |
+| `stations:import-platforms [pad] [--clear-missing]` | Perronvlakken per station laden uit `database/data/platforms.json` (ProRail open data) |
+| `treinprikker:recalculate-distances [--dry-run]` | Alle prikken opnieuw beoordelen met de huidige stationsgeometrie, potjes en statistieken bijwerken |
 | `treinprikker:generate-daily [--days=7] [--date=YYYY-MM-DD] [--force]` | Daily Games genereren; `--date` + `--force` kiest een dag opnieuw |
 | `treinprikker:recalculate-stats` | Stationsstatistieken, moeilijkheid en dagstatistieken herberekenen uit de ruwe prikken |
 | `treinprikker:admin email@voorbeeld.nl [--password=...]` | Beheerder aanmaken voor `/admin` (HTTP basic auth) |
@@ -67,6 +69,9 @@ meesturen) en een lage `SENTRY_TRACES_SAMPLE_RATE` (bijv. `0.1`) om binnen het q
 
 ## Hoe het spel werkt
 
+- De afstand van een prik is de afstand tot het dichtstbijzijnde perronvlak van het station (ProRail open data, `stations.platforms`),
+  met `platform_buffer_meters` speling; een prik op het perron is 0 m en 1000 punten. Zonder perrondata telt het stationspunt.
+  Na het (opnieuw) laden van perrons: `php artisan treinprikker:recalculate-distances`.
 - Eén `DailyGame` per Nederlandse kalenderdag (`Europe/Amsterdam`, nooit UTC), met vijf `DailyGameStation`-rondes.
 - Een browser krijgt een willekeurige UUID in een versleutelde cookie (`players.anonymous_id`); geen fingerprinting, geen account.
   `players.user_id` is voorbereid zodat een toekomstig account een anonieme speler kan claimen.

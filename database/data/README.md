@@ -38,3 +38,18 @@ gebruik `--reset-difficulty` om heuristische ratings opnieuw te berekenen.
 `public/data/spoornet.json` is het Nederlandse spoornet als één MultiLineString, gebruikt op de kale Expert-kaart.
 Bron: OpenStreetMap (ODbL), Overpass-query `way["railway"="rail"]["usage"~"^(main|branch)$"]["service"!~"."]` binnen Nederland,
 vereenvoudigd met Douglas-Peucker (~50 m) en afgerond op 4 decimalen. Het bevat alleen lijnen, geen stations.
+
+## Perrons
+
+`platforms.json` bevat per NS-stationscode de perronvlakken als GeoJSON-MultiPolygon (WGS84, 6 decimalen) en is de bron voor
+`php artisan stations:import-platforms`. Een prik op een perron telt in het spel als 0 m.
+
+Bron: **ProRail open data**, laag *Perron* uit de Transfer-service (`mapservices.prorail.nl/arcgis/rest/services/Transfer_002`).
+Elk perronvlak gaat naar het dichtstbijzijnde station uit `stations.csv` als de rand binnen 250 m van het stationspunt ligt;
+stations die zo niets krijgen worden nog eens tot 600 m gezocht (Vught, in verbouwing).
+
+```bash
+python3 database/data/build_platforms_json.py > database/data/platforms.json
+php artisan stations:import-platforms
+php artisan treinprikker:recalculate-distances
+```

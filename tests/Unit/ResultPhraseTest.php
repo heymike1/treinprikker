@@ -19,6 +19,7 @@ class ResultPhraseTest extends TestCase
 
     public function test_distance_sentence_uses_meters_below_a_kilometer(): void
     {
+        $this->assertSame('op het perron', ResultPhrase::distanceSentence(0));
         $this->assertSame('312 meter ernaast', ResultPhrase::distanceSentence(312));
         $this->assertSame('12,4 km ernaast', ResultPhrase::distanceSentence(12400));
     }

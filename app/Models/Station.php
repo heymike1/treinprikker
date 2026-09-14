@@ -13,7 +13,7 @@ class Station extends Model
     use HasFactory;
 
     protected $fillable = [
-        'code', 'uic', 'name', 'slug', 'latitude', 'longitude', 'province',
+        'code', 'uic', 'name', 'slug', 'latitude', 'longitude', 'platforms', 'province',
         'municipality', 'station_type', 'active', 'difficulty_rating', 'difficulty_source',
     ];
 
@@ -22,6 +22,7 @@ class Station extends Model
         return [
             'latitude' => 'float',
             'longitude' => 'float',
+            'platforms' => 'array',
             'active' => 'boolean',
             'difficulty_rating' => 'integer',
         ];

@@ -49,7 +49,7 @@
 
                 <section class="card p-5">
                     <h2 class="text-lg font-bold">Punten</h2>
-                    <p class="text-sm text-muted">De score loopt vloeiend af met de afstand tot het station.</p>
+                    <p class="text-sm text-muted">De score loopt vloeiend af met de afstand tot het dichtstbijzijnde perron. Een prik op het perron is 1000 punten.</p>
                     <svg viewBox="0 0 340 190" class="mt-3 h-auto w-full overflow-visible" role="img" aria-label="Grafiek: {{ collect($curve['markers'])->map(fn ($m) => $m['km'].' km is '.$m['score'].' punten')->join(', ') }}">
                         <line x1="{{ $curve['left'] }}" y1="{{ $curve['baseline'] }}" x2="{{ $curve['right'] }}" y2="{{ $curve['baseline'] }}" stroke="#e1d8c9" />
                         <line x1="{{ $curve['left'] }}" y1="{{ $curve['top'] }}" x2="{{ $curve['left'] }}" y2="{{ $curve['baseline'] }}" stroke="#e1d8c9" />
