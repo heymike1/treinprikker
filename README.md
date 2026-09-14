@@ -84,8 +84,8 @@ Vóór station 1 kiest de speler een niveau (`config/treinprikker.php` → `mode
 
 | Niveau | Kaart | Vraag | Tijd |
 | --- | --- | --- | --- |
-| Makkelijk | luchtfoto met lands- en provinciegrenzen | stationsnaam | onbeperkt |
-| Moeilijk | luchtfoto | stationsnaam | 20 s per station |
+| Makkelijk | luchtfoto met landsgrens | stationsnaam | onbeperkt |
+| Moeilijk | luchtfoto met landsgrens | stationsnaam | 20 s per station |
 | Expert | luchtfoto | NS-code + stationstype als hint | 20 s per station |
 
 De tijd wordt server-side bewaakt via `game_sessions.round_started_at` (plus `time_limit_grace_seconds`): een te late prik telt als

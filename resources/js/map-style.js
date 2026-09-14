@@ -96,7 +96,7 @@ function dutchLabels(layer) {
 /**
  * Aerial imagery for the game map: nothing but the photo, which shows the
  * landscape, the cities and the railway lines by itself. With `borders` the
- * national and province borders from the vector tiles are drawn on top.
+ * national border from the vector tiles is drawn on top.
  */
 export async function loadSatelliteStyle(satellite, { borders = false, styleUrl = null } = {}) {
     const style = {
@@ -132,31 +132,19 @@ export async function loadSatelliteStyle(satellite, { borders = false, styleUrl 
     }
 
     style.sources[boundary.source] = vector.sources[boundary.source];
-    const common = { type: 'line', source: boundary.source, 'source-layer': boundary['source-layer'], layout: { 'line-cap': 'round', 'line-join': 'round' } };
-    style.layers.push(
-        {
-            ...common,
-            id: 'border-province',
-            minzoom: 5,
-            filter: ['all', ['==', ['get', 'admin_level'], 4], ['!=', ['get', 'maritime'], 1]],
-            paint: {
-                'line-color': '#ffffff',
-                'line-opacity': 0.6,
-                'line-dasharray': [3, 2],
-                'line-width': ['interpolate', ['linear'], ['zoom'], 6, 0.8, 10, 1.4],
-            },
+    style.layers.push({
+        id: 'border-country',
+        type: 'line',
+        source: boundary.source,
+        'source-layer': boundary['source-layer'],
+        filter: ['all', ['==', ['get', 'admin_level'], 2], ['!=', ['get', 'maritime'], 1], ['!=', ['get', 'disputed'], 1]],
+        layout: { 'line-cap': 'round', 'line-join': 'round' },
+        paint: {
+            'line-color': '#ffffff',
+            'line-opacity': 0.85,
+            'line-width': ['interpolate', ['linear'], ['zoom'], 5, 1.4, 10, 2.6],
         },
-        {
-            ...common,
-            id: 'border-country',
-            filter: ['all', ['==', ['get', 'admin_level'], 2], ['!=', ['get', 'maritime'], 1], ['!=', ['get', 'disputed'], 1]],
-            paint: {
-                'line-color': '#ffffff',
-                'line-opacity': 0.85,
-                'line-width': ['interpolate', ['linear'], ['zoom'], 5, 1.4, 10, 2.6],
-            },
-        },
-    );
+    });
 
     return style;
 }

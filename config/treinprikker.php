@@ -26,7 +26,7 @@ return [
     'modes' => [
         'easy' => [
             'label' => 'Makkelijk',
-            'description' => 'Luchtfoto met landsgrenzen, stationsnaam, alle tijd van de wereld.',
+            'description' => 'Luchtfoto met landsgrens, stationsnaam, alle tijd van de wereld.',
             'map' => 'satellite-borders',
             'reveal' => 'name',
             'time_limit_seconds' => null,
@@ -34,7 +34,7 @@ return [
         'hard' => [
             'label' => 'Moeilijk',
             'description' => 'Zelfde kaart, maar je hebt 20 seconden per station.',
-            'map' => 'satellite',
+            'map' => 'satellite-borders',
             'reveal' => 'name',
             'time_limit_seconds' => 20,
         ],
