@@ -216,6 +216,10 @@ class GamePlayTest extends TestCase
         $fresh->call('advance')->assertSet('phase', 'finished');
         $this->assertNotNull($fresh->get('summary'));
         $this->assertSame(5, $fresh->get('summary')['maximum_score'] / 1000);
+        $this->assertSame(
+            'treinprikker_'.$this->game->game_number.'_'.strtolower($this->game->date->translatedFormat('jFY')).'.png',
+            $fresh->get('summary')['share_filename'],
+        );
 
         // Reloading shows the finished screen again.
         Livewire::test(PlayGame::class)->assertSet('phase', 'finished')->assertSee('Deel je resultaat');

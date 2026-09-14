@@ -336,6 +336,8 @@ class PlayGame extends Component
             'ranking_label' => $ranking['label'],
             'average_score_today' => $ranking['average_score'],
             'share_text' => ShareResult::text($session),
+            // treinprikker_12_14september2026.png
+            'share_filename' => 'treinprikker_'.$session->dailyGame->game_number.'_'.strtolower($session->dailyGame->date->translatedFormat('jFY')).'.png',
             // Everything the share image needs (unlike the text, the image does name the stations).
             'share_image' => [
                 'modeLabel' => $session->mode === Mode::DEFAULT ? null : Mode::label($session->mode),

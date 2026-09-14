@@ -5,7 +5,7 @@ import { renderShareImage } from './share-image';
  * share button opens the native share sheet with image + text where the
  * browser has one, otherwise it copies the image (or downloads it).
  */
-export default function shareResult({ text, image }) {
+export default function shareResult({ text, image, filename = 'treinprikker.png' }) {
     let blob = null;
 
     return {
@@ -37,7 +37,7 @@ export default function shareResult({ text, image }) {
             this.busy = true;
             try {
                 if (blob) {
-                    const file = new File([blob], 'treinprikker.png', { type: 'image/png' });
+                    const file = new File([blob], filename, { type: 'image/png' });
                     if (navigator.share && navigator.canShare?.({ files: [file] })) {
                         try {
                             await navigator.share({ files: [file], text: this.text });
@@ -99,7 +99,7 @@ export default function shareResult({ text, image }) {
         },
 
         async saveImage() {
-            const file = new File([blob], 'treinprikker.png', { type: 'image/png' });
+            const file = new File([blob], filename, { type: 'image/png' });
             if (this.isAppleTouch && navigator.share && navigator.canShare?.({ files: [file] })) {
                 try {
                     await navigator.share({ files: [file] });
@@ -115,7 +115,7 @@ export default function shareResult({ text, image }) {
             if ('download' in HTMLAnchorElement.prototype && !this.isAppleTouch) {
                 const link = document.createElement('a');
                 link.href = this.imageUrl;
-                link.download = 'treinprikker.png';
+                link.download = filename;
                 document.body.appendChild(link);
                 link.click();
                 link.remove();

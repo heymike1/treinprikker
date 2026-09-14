@@ -10,7 +10,7 @@
         @endif
     </div>
 
-    <div x-data="shareResult(@js(['text' => $summary['share_text'], 'image' => $summary['share_image']]))" class="mt-5">
+    <div x-data="shareResult(@js(['text' => $summary['share_text'], 'image' => $summary['share_image'], 'filename' => $summary['share_filename']]))" class="mt-5">
         <div class="overflow-hidden rounded-2xl bg-[#142c66] shadow-[0_12px_24px_rgba(28,26,23,0.18)]">
             <img x-show="imageUrl" x-cloak x-bind:src="imageUrl" alt="Jouw Treinprikker-resultaat als afbeelding" class="block aspect-square w-full">
             <div x-show="!imageUrl && !imageFailed" class="flex aspect-square items-center justify-center text-sm text-paper/70">Afbeelding maken…</div>
