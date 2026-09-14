@@ -16,6 +16,7 @@ use App\Models\Guess;
 use App\Statistics\DailyGameRanking;
 use App\Statistics\StreakCalculator;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Str;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
 
@@ -320,6 +321,13 @@ class PlayGame extends Component
         $streak = app(StreakCalculator::class)->calculate($completedDates, DailyGame::currentDate());
         $ranking = app(DailyGameRanking::class)->for($session);
 
+        $mapRounds = $guesses->map(fn (Guess $guess) => [
+            'round' => $guess->round_number,
+            'bucket' => $guess->timed_out ? 'ver' : ResultPhrase::bucketKeyForDistance($guess->distance_meters),
+            'station' => ['lat' => (float) $guess->actual_latitude, 'lng' => (float) $guess->actual_longitude],
+            'guess' => $guess->timed_out ? null : ['lat' => (float) $guess->guessed_latitude, 'lng' => (float) $guess->guessed_longitude],
+        ])->values()->all();
+
         return [
             'mode' => $session->mode,
             'mode_label' => Mode::label($session->mode),
@@ -354,20 +362,17 @@ class PlayGame extends Component
             ])->values()->all(),
             'map' => [
                 'silhouetteUrl' => asset('data/nederland.json'),
-                'rounds' => $guesses->map(fn (Guess $guess) => [
-                    'round' => $guess->round_number,
-                    'bucket' => $guess->timed_out ? 'ver' : ResultPhrase::bucketKeyForDistance($guess->distance_meters),
-                    'station' => ['lat' => (float) $guess->actual_latitude, 'lng' => (float) $guess->actual_longitude],
-                    'guess' => $guess->timed_out ? null : ['lat' => (float) $guess->guessed_latitude, 'lng' => (float) $guess->guessed_longitude],
-                ])->values()->all(),
+                'rounds' => $mapRounds,
             ],
             'share_text' => ShareResult::text($session),
             // treinprikker_12_14september2026.png
             'share_filename' => 'treinprikker_'.$session->dailyGame->game_number.'_'.strtolower($session->dailyGame->date->translatedFormat('jFY')).'.png',
             // Everything the share image needs (unlike the text, the image does name the stations).
             'share_image' => [
-                'modeLabel' => $session->mode === Mode::DEFAULT ? null : Mode::label($session->mode),
+                'gameNumber' => $session->dailyGame->game_number,
                 'date' => $session->dailyGame->date->translatedFormat('j M'),
+                'modeLabel' => Mode::label($session->mode),
+                'headline' => $ranking['label'] ? Str::replaceLast(' vandaag', '', $ranking['label']) : 'Vijf stations geprikt',
                 'totalScore' => $session->total_score,
                 'maximumScore' => $session->maximumScore(),
                 'rounds' => $guesses->map(fn (Guess $guess) => [
@@ -378,7 +383,7 @@ class PlayGame extends Component
                     'bucket' => $guess->timed_out ? 'ver' : ResultPhrase::bucketKeyForDistance($guess->distance_meters),
                     'label' => $guess->timed_out ? 'Te laat' : ResultPhrase::labelForDistance($guess->distance_meters),
                 ])->values()->all(),
-                'rankingLabel' => $ranking['label'],
+                'map' => $mapRounds,
                 'silhouetteUrl' => asset('data/nederland.json'),
             ],
         ];
