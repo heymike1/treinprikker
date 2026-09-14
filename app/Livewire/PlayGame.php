@@ -298,7 +298,7 @@ class PlayGame extends Component
             'bucket' => $timedOut ? 'ver' : ResultPhrase::bucketKeyForDistance($guess->distance_meters),
             'guessed' => $timedOut ? null : ['lat' => $guess->guessed_latitude, 'lng' => $guess->guessed_longitude],
             'actual' => ['lat' => $guess->actual_latitude, 'lng' => $guess->actual_longitude],
-            'platforms' => $guess->station->platforms,
+            'platforms' => $guess->station->hitZones(),
         ];
     }
 

@@ -7,9 +7,9 @@ use App\Support\DistanceCalculator;
 use App\Support\PlatformGeometry;
 
 /**
- * How far a pin is from a station. With platform outlines a pin on (or within
- * a small buffer of) a platform counts as 0 m; otherwise the distance to the
- * nearest platform edge, never more than the distance to the station point.
+ * How far a pin is from a station. With platform and building outlines a pin
+ * on (or within a small buffer of) one of them counts as 0 m; otherwise the
+ * distance to the nearest edge, never more than the distance to the station point.
  */
 class StationDistance
 {
@@ -32,6 +32,6 @@ class StationDistance
 
     public static function toStation(Station $station, float $latitude, float $longitude): int
     {
-        return self::meters($latitude, $longitude, $station->latitude, $station->longitude, $station->platforms);
+        return self::meters($latitude, $longitude, $station->latitude, $station->longitude, $station->hitZones());
     }
 }

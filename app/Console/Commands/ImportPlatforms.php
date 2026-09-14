@@ -6,33 +6,50 @@ use App\Models\Station;
 use Illuminate\Console\Command;
 
 /**
- * Loads platform outlines from database/data/platforms.json (built from ProRail
- * open data by build_platforms_json.py) into the stations table.
+ * Loads platform outlines from database/data/platforms.json (ProRail open data,
+ * build_platforms_json.py) and station buildings from database/data/buildings.json
+ * (OpenStreetMap, build_buildings_json.py) into the stations table.
  */
 class ImportPlatforms extends Command
 {
     protected $signature = 'stations:import-platforms
-        {path? : Path to the JSON (defaults to database/data/platforms.json)}
-        {--clear-missing : Remove outlines from stations that are not in the file}';
+        {path? : Path to the platforms JSON (defaults to database/data/platforms.json)}
+        {--buildings= : Path to the buildings JSON (defaults to database/data/buildings.json; "none" to skip)}
+        {--clear-missing : Remove outlines from stations that are not in the files}';
 
-    protected $description = 'Import platform outlines per station from a JSON file';
+    protected $description = 'Import platform and station building outlines per station from JSON files';
 
     public function handle(): int
     {
-        $path = $this->argument('path') ?? database_path('data/platforms.json');
+        $platforms = $this->argument('path') ?? database_path('data/platforms.json');
+        $buildings = $this->option('buildings') ?? database_path('data/buildings.json');
 
+        if (! $this->import('platforms', $platforms)) {
+            return self::FAILURE;
+        }
+        if ($buildings !== 'none' && ! $this->import('buildings', $buildings)) {
+            return self::FAILURE;
+        }
+
+        $this->line('Draai <comment>php artisan treinprikker:recalculate-distances</comment> om bestaande prikken opnieuw te beoordelen.');
+
+        return self::SUCCESS;
+    }
+
+    private function import(string $column, string $path): bool
+    {
         if (! is_readable($path)) {
             $this->error("Bestand niet gevonden: {$path}");
 
-            return self::FAILURE;
+            return false;
         }
 
         $data = json_decode((string) file_get_contents($path), true);
 
         if (! is_array($data)) {
-            $this->error('Het bestand bevat geen geldige JSON.');
+            $this->error("{$path} bevat geen geldige JSON.");
 
-            return self::FAILURE;
+            return false;
         }
 
         $updated = 0;
@@ -53,22 +70,21 @@ class ImportPlatforms extends Command
                 continue;
             }
 
-            $station->forceFill(['platforms' => $coordinates])->save();
+            $station->forceFill([$column => $coordinates])->save();
             $updated++;
         }
 
         $cleared = 0;
         if ($this->option('clear-missing')) {
-            $cleared = Station::whereNotNull('platforms')->whereNotIn('code', array_keys($data))->update(['platforms' => null]);
+            $cleared = Station::whereNotNull($column)->whereNotIn('code', array_keys($data))->update([$column => null]);
         }
 
-        $this->info("{$updated} stations bijgewerkt".($cleared ? ", {$cleared} leeggemaakt" : '').'.');
+        $label = $column === 'platforms' ? 'perrons' : 'gebouwen';
+        $this->info("{$label}: {$updated} stations bijgewerkt".($cleared ? ", {$cleared} leeggemaakt" : '').'.');
         if ($unknown) {
             $this->warn('Onbekende stationscodes: '.implode(', ', $unknown));
         }
 
-        $this->line('Draai <comment>php artisan treinprikker:recalculate-distances</comment> om bestaande prikken opnieuw te beoordelen.');
-
-        return self::SUCCESS;
+        return true;
     }
 }

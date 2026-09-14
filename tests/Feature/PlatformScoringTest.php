@@ -64,21 +64,41 @@ class PlatformScoringTest extends TestCase
         );
     }
 
+    /** Station building 200 m west of the station point. */
+    private const BUILDING = [[[
+        [5.1070, 52.0885], [5.1080, 52.0885], [5.1080, 52.0895], [5.1070, 52.0895], [5.1070, 52.0885],
+    ]]];
+
+    public function test_pin_on_the_station_building_is_a_direct_hit(): void
+    {
+        $station = Station::factory()->create(['latitude' => 52.0890, 'longitude' => 5.1100, 'platforms' => self::PLATFORM, 'buildings' => self::BUILDING]);
+
+        $this->assertSame(0, StationDistance::toStation($station, 52.0890, 5.1075));
+        $this->assertSame(0, StationDistance::toStation($station, 52.0890, 5.1165));
+        $this->assertCount(2, $station->hitZones());
+    }
+
     public function test_import_command_loads_outlines_by_station_code(): void
     {
         $station = Station::factory()->create(['code' => 'TST']);
-        $path = tempnam(sys_get_temp_dir(), 'platforms');
-        file_put_contents($path, json_encode([
+        $platforms = tempnam(sys_get_temp_dir(), 'platforms');
+        file_put_contents($platforms, json_encode([
             'TST' => ['type' => 'MultiPolygon', 'coordinates' => self::PLATFORM],
             'XXX' => ['type' => 'MultiPolygon', 'coordinates' => self::PLATFORM],
         ]));
+        $buildings = tempnam(sys_get_temp_dir(), 'buildings');
+        file_put_contents($buildings, json_encode([
+            'TST' => ['type' => 'MultiPolygon', 'coordinates' => self::BUILDING],
+        ]));
 
-        $this->artisan('stations:import-platforms', ['path' => $path])
-            ->expectsOutputToContain('1 stations bijgewerkt')
+        $this->artisan('stations:import-platforms', ['path' => $platforms, '--buildings' => $buildings])
+            ->expectsOutputToContain('perrons: 1 stations bijgewerkt')
             ->expectsOutputToContain('XXX')
+            ->expectsOutputToContain('gebouwen: 1 stations bijgewerkt')
             ->assertSuccessful();
 
         $this->assertSame(self::PLATFORM, $station->fresh()->platforms);
+        $this->assertSame(self::BUILDING, $station->fresh()->buildings);
     }
 
     public function test_recalculation_rescores_existing_guesses_and_session_totals(): void

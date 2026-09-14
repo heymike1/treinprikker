@@ -42,7 +42,7 @@ class RecalculateDistances extends Command
                     (float) $guess->guessed_longitude,
                     (float) $guess->actual_latitude,
                     (float) $guess->actual_longitude,
-                    $station->platforms,
+                    $station->hitZones(),
                 );
                 $score = $scores->score($distance);
 

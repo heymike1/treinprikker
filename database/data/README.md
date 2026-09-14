@@ -53,3 +53,18 @@ python3 database/data/build_platforms_json.py > database/data/platforms.json
 php artisan stations:import-platforms
 php artisan treinprikker:recalculate-distances
 ```
+
+## Stationsgebouwen
+
+`buildings.json` bevat per NS-stationscode de stationsgebouwen als GeoJSON-MultiPolygon en wordt door hetzelfde commando
+geladen (`stations.buildings`). Een prik op het gebouw telt, net als op het perron, als 0 m.
+
+Bron: **BAG** (Kadaster, CC0) via de PDOK WFS `bag:pand`. Een pand telt mee als het het stationspunt bevat of binnen 20 m
+van een perronvlak ligt, tussen 200 en 40.000 m² groot is en nergens verder dan 250 m van de perrons reikt (winkelcentra
+naast het station vallen daardoor af; overkappingen, hallen en fietsenstallingen tegen het perron tellen mee).
+
+```bash
+python3 database/data/build_buildings_json.py > database/data/buildings.json
+php artisan stations:import-platforms
+php artisan treinprikker:recalculate-distances
+```

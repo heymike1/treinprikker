@@ -60,7 +60,7 @@ meesturen) en een lage `SENTRY_TRACES_SAMPLE_RATE` (bijv. `0.1`) om binnen het q
 | Commando | Doel |
 | --- | --- |
 | `stations:import [pad] [--deactivate-missing] [--reset-difficulty]` | Stations importeren/bijwerken uit `database/data/stations.csv` (zie `database/data/README.md`) |
-| `stations:import-platforms [pad] [--clear-missing]` | Perronvlakken per station laden uit `database/data/platforms.json` (ProRail open data) |
+| `stations:import-platforms [pad] [--buildings=pad] [--clear-missing]` | Perronvlakken (`platforms.json`, ProRail) en stationsgebouwen (`buildings.json`, BAG) per station laden |
 | `treinprikker:recalculate-distances [--dry-run]` | Alle prikken opnieuw beoordelen met de huidige stationsgeometrie, potjes en statistieken bijwerken |
 | `treinprikker:generate-daily [--days=7] [--date=YYYY-MM-DD] [--force]` | Daily Games genereren; `--date` + `--force` kiest een dag opnieuw |
 | `treinprikker:recalculate-stats` | Stationsstatistieken, moeilijkheid en dagstatistieken herberekenen uit de ruwe prikken |
@@ -69,8 +69,9 @@ meesturen) en een lage `SENTRY_TRACES_SAMPLE_RATE` (bijv. `0.1`) om binnen het q
 
 ## Hoe het spel werkt
 
-- De afstand van een prik is de afstand tot het dichtstbijzijnde perronvlak van het station (ProRail open data, `stations.platforms`),
-  met `platform_buffer_meters` speling; een prik op het perron is 0 m en 1000 punten. Zonder perrondata telt het stationspunt.
+- De afstand van een prik is de afstand tot het dichtstbijzijnde perronvlak (ProRail open data, `stations.platforms`) of
+  stationsgebouw (BAG, `stations.buildings`), met `platform_buffer_meters` speling; een prik op perron of gebouw is 0 m en
+  1000 punten. Zonder geometrie telt het stationspunt.
   Na het (opnieuw) laden van perrons: `php artisan treinprikker:recalculate-distances`.
 - Eén `DailyGame` per Nederlandse kalenderdag (`Europe/Amsterdam`, nooit UTC), met vijf `DailyGameStation`-rondes.
 - Een browser krijgt een willekeurige UUID in een versleutelde cookie (`players.anonymous_id`); geen fingerprinting, geen account.

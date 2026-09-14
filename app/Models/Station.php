@@ -13,7 +13,7 @@ class Station extends Model
     use HasFactory;
 
     protected $fillable = [
-        'code', 'uic', 'name', 'slug', 'latitude', 'longitude', 'platforms', 'province',
+        'code', 'uic', 'name', 'slug', 'latitude', 'longitude', 'platforms', 'buildings', 'province',
         'municipality', 'station_type', 'active', 'difficulty_rating', 'difficulty_source',
     ];
 
@@ -23,9 +23,22 @@ class Station extends Model
             'latitude' => 'float',
             'longitude' => 'float',
             'platforms' => 'array',
+            'buildings' => 'array',
             'active' => 'boolean',
             'difficulty_rating' => 'integer',
         ];
+    }
+
+    /**
+     * Everything that counts as "on the station": platforms plus the station building.
+     *
+     * @return array<int, array<int, array<int, array{0: float, 1: float}>>>|null
+     */
+    public function hitZones(): ?array
+    {
+        $zones = array_merge($this->platforms ?? [], $this->buildings ?? []);
+
+        return $zones === [] ? null : $zones;
     }
 
     public function getRouteKeyName(): string
